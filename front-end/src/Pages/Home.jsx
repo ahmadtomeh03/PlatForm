@@ -69,7 +69,6 @@ export default function Home() {
         <button className="explore-button">Explore More</button>
       </div>
       <Login />
-      {/* <h1 class="bg-[yellow]">aofdxdfxfdxfdxdfxijfoi</h1> */}
     </div>
   );
 }
