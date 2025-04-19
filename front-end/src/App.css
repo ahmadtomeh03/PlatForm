@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+.container {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f3f3f3;
+}
+
+.register {
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  color: #2185d5;
+  margin: 5px;
+  font-size: 15px;
+}
+.login:hover {
+  background-color: #2395ed;
+  color: #303841;
+}
+.register:hover {
+  background-color: #6eb8f0;
+  color: #303841;
+}
+.login:active,
+.register:active {
+  transform: scale(0.98);
+}

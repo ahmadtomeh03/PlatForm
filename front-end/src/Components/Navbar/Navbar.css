@@ -1,0 +1,54 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #303841;
+  padding: 15px 3%;
+}
+.logo {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.navbarList {
+  flex: 1;
+  list-style: none;
+  text-align: center;
+}
+.navbarList li {
+  color: #f3f3f3;
+  display: inline-block;
+  margin: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.navbarList li:hover {
+  padding: 5px;
+  background-color: #2185d5;
+  color: white;
+  border-radius: 5px;
+  transform: scale(1.05);
+}
+.logo:hover {
+  transform: scale(1.2, 1.2);
+}
+.login,
+.register {
+  background-color: #303841;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #f3f3f3;
+  margin: 5px;
+  font-size: 15px;
+  display: inline-block;
+  user-select: none;
+  text-align: center;
+  border: none;
+}
+
+.login:hover,
+.register:hover {
+  background-color: #1a6db3;
+}

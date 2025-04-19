@@ -1,0 +1,141 @@
+/* Login.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f3f3; /* خلفية الصفحة بلون F3F3F3 */
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f3f3f3; /* خلفية مريحة للعين */
+}
+
+.login-box {
+  display: flex;
+  max-width: 1000px;
+  margin: auto;
+  background: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.login-image {
+  flex: 1;
+}
+
+.login-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-form {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #3a4750; /* لون الخلفية الداخلي #3A4750 */
+  color: #f3f3f3; /* النص بلون F3F3F3 */
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+  color: #2185d5; /* العنوان بلون #2185D5 */
+}
+
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+}
+
+.facebook {
+  background: #3b5998;
+}
+
+.google {
+  background: #1da1f2;
+}
+
+.linkedin {
+  background: #0077b5;
+}
+
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  color: #f3f3f3; /* تغيير لون الخط للفاصل */
+}
+
+.login-form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #f3f3f3; /* النص بلون F3F3F3 */
+}
+
+/* تغيير لون روابط "Forgot password?" */
+.options a {
+  color: #2185d5; /* جعل الرابط بلون #2185D5 */
+  text-decoration: none; /* إزالة التسطير من الرابط */
+}
+
+.options a:hover {
+  color: #1a6ab6; /* تغيير اللون عند التمرير عليه */
+}
+
+/* تغيير لون رابط "Register" */
+.register-text a {
+  color: #2185d5; /* جعل الرابط بلون #2185D5 */
+  text-decoration: none; /* إزالة التسطير من الرابط */
+}
+
+.register-text a:hover {
+  color: #1a6ab6; /* تغيير اللون عند التمرير عليه */
+}
+
+.btn.login {
+  background: #2185d5; /* لون الزر بلون #2185D5 */
+}
+
+.register-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #f3f3f3; /* النص بلون F3F3F3 */
+}
+
+.login-footer {
+  background: #303841; /* خلفية الفوتر بلون #303841 */
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-icons span {
+  margin: 0 10px;
+  cursor: pointer;
+  color: #f3f3f3; /* تغيير لون الأيقونات إلى F3F3F3 */
+}
