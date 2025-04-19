@@ -1,9 +1,12 @@
 import React from 'react';
 import './About.css';
-import logo from '../images/';
+import logo from '../images/EduPlat.png';
+import Navbar from '../Components/Navbar/Navbar';
 
 const About = () => {
   return (
+    <div className="main-container">
+     <Navbar></Navbar>
     <div className="about-container">
       {/* Left: Image */}
       <div className="about-image">
@@ -12,21 +15,18 @@ const About = () => {
 
       {/* Right: Text */}
       <div className="about-text">
-        <h2>About Milk Bar</h2>
+        <h2>About Edu Platform</h2>
         <p>
-          Milk Bar is a sweet (and occasionally savory) shop that's been turning familiar treats upside down and on their heads, shaking up the dessert scene since 2008. Bon Appétit magazine called us “one of the most exciting bakeries in the country.” But you can literally just call us Milk Bar. We’re not big on feeding the hype beast. But we’re super into feeding our flavorful treats to those who crave the unexpected.
+        Welcome to the PTUK Education Platform — your gateway to smarter, more flexible learning at Palestine Technical University - Kadoorie. Our platform is designed to support students by offering a rich collection of video lectures, comprehensive course summaries, and interactive quizzes tailored to the university’s curriculum. Whether you're reviewing class material, preparing for exams, or seeking to deepen your understanding, our tools help you stay engaged and achieve academic success. We’re committed to making learning accessible, organized, and effective — anytime, anywhere.
         </p>
+        
         <p>
-          Founded by James Beard award–winning pastry chef Christina Tosi, Milk Bar first opened its doors in NYC’s East Village, and soon developed a loyal fanbase.
-        </p>
-        <p>
-          Recently profiled on Netflix’s docu-series Chef’s Table, Tosi is known for combining her formal culinary training and her informal obsession with home baking, grocery store staples and classic American sweets, with menu items like the Compost Cookie®, layer cakes with unfrosted sides, Cereal Milk™ Soft Serve, Milk Bar Pie and more.
-        </p>
-        <p>
-          At Milk Bar, we believe in the transformative power of a really freakin’ good cookie or an outstanding piece of cake. And we consider NO occasion at all to be a perfectly valid occasion to celebrate yourself or someone else. We hope you’ll agree.
+        Our mission is to enhance the educational experience at PTUK by integrating technology with academic excellence. The platform is continually updated in collaboration with faculty members to ensure content accuracy and alignment with current course objectives. Students can track their progress, revisit key concepts through summaries, and test their knowledge with practice quizzes — all in one place. With a user-friendly interface and multilingual support, the PTUK Education Platform is built to empower every student to learn at their own pace and thrive in their academic journey.
         </p>
       </div>
     </div>
+    </div>
+
   );
 };
 
