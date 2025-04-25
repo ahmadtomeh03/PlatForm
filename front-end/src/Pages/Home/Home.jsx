@@ -1,13 +1,12 @@
 import Welcome from "./welcome";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import Login from "./Login";
-import "./Home.css";
-import About from "./About";
+import Login from "../Login";
+import "../Home/Home.css";
+import About from "../About/About";
 export default function Home() {
   return (
     <div>
-      
       <div
         style={{
           background: "#303841",
@@ -70,8 +69,6 @@ export default function Home() {
         </p>
         <button className="explore-button">Explore More</button>
       </div>
-      <Login />
-      <About />
     </div>
   );
 }
