@@ -16,6 +16,7 @@ export default function Home() {
           justifyContent: "flex-start",
           alignItems: "center",
           fontFamily: "Amiri",
+          borderRadius: "0px 0px 100px 100px",
         }}
         className="home"
       >

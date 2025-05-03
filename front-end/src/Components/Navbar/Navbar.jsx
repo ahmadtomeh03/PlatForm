@@ -4,13 +4,14 @@ import Logo from "./Logo";
 import Button from "@mui/material/Button";
 import Login from "../../Pages/Login";
 import { Link } from "react-router-dom";
+import LoginRegisterPage from "../../Pages/LoginRegisterPage";
 
 export default function Navbar() {
   return (
     <nav className="navbar" style={{ fontFamily: "Amiri" }}>
       <Logo />
       <ul className="navbarList">
-        <Link to="/">
+        <Link to="/home">
           <li>Home</li>
         </Link>
         <Link to="/college">
@@ -23,16 +24,12 @@ export default function Navbar() {
           <li>Help</li>
         </Link>
       </ul>
-      <Link to="/login">
-        <button
-          className="login"
-          style={{ fontFamily: "Amiri" }}
-          onClick={<Login />}
-        >
+      <Link to="/acount/login">
+        <button className="login" style={{ fontFamily: "Amiri" }}>
           Login
         </button>
       </Link>
-      <Link to="/register">
+      <Link to="/acount/register">
         <button className="register" style={{ fontFamily: "Amiri" }}>
           Register
         </button>

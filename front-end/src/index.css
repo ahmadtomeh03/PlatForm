@@ -1,7 +1,27 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Merriweather", serif;
+}
+
+:root {
+  --color1: #2185d5;
+  --color2: #3a4750;
+  --color3: #303841;
+  --color4: #f3f3f3;
+}
+button {
+  background-color: var(--color1);
+  color: var(--color4);
+  border-radius: 10px;
+  padding: 5px;
+}
+button:hover {
+  background-color: var(--color3);
 }
 .container {
   width: 100vw;

@@ -1,24 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-function Login() {
+function Register() {
   return (
     <div className="flex flex-col justify-center items-center">
-      {/* welcome  */}
       <h1 style={{ margin: "5px", textAlign: "center" }}>
         <b>Welcome back!</b> <br />
         Log in to continue learning with us
       </h1>
-      {/* username */}
+
       <label style={{ margin: "5px", width: "100%", textAlign: "left" }}>
-        Username{" "}
+        Username
       </label>
       <input
         style={{ margin: "5px", padding: "10px" }}
         className="border-2 rounded-xl border-[#2185D5] w-full"
         placeholder="Enter your Username "
       />
-      {/* password */}
+
+      <label style={{ margin: "5px", width: "100%", textAlign: "left" }}>
+        Email
+      </label>
+      <input
+        style={{ margin: "5px", padding: "10px" }}
+        className="border-2 rounded-xl border-[#2185D5] w-full"
+        placeholder="Enter your Email "
+      />
+
       <label style={{ margin: "5px", width: "100%", textAlign: "left" }}>
         Password
       </label>
@@ -27,26 +34,12 @@ function Login() {
         className="border-2 rounded-xl border-[#2185D5] w-full"
         placeholder="Enter your Password"
       />
-      {/* remember and forget passwaord */}
-      <div
-        className="flex justify-center items-center w-full"
-        style={{ justifyContent: "space-between" }}
-      >
-        <div>
-          <input type="checkbox" style={{ margin: "5px" }} />
-          <span>Remember me</span>
-        </div>
-        <Link>
-          <label style={{ margin: "10px" }}>Forget Password ?</label>
-        </Link>
-      </div>
 
-      {/*login button  */}
-      <button style={{ width: "50%", padding: "10px", marginTop: "10px" }}>
-        Login
+      <button style={{ marginTop: "10px", width: "50%", padding: "10px" }}>
+        Register
       </button>
     </div>
   );
 }
 
-export default Login;
+export default Register;
