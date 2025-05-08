@@ -5,6 +5,7 @@ import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login";
 import { Route, Routes } from "react-router-dom";
 import "./index.css";
+import ProfilePage from "./Pages/MyProfile/MyProfile";
 import LoginRegisterPage from "./Pages/LoginRegisterPage";
 import Register from "./Pages/Register";
 
@@ -12,6 +13,7 @@ export default function App() {
   return (
     <div className="container">
       <Navbar />
+      
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -21,6 +23,7 @@ export default function App() {
         <Route path="/help" element={""} />
         <Route path="acount/:type" element={<LoginRegisterPage />} />
       </Routes>
+      <ProfilePage></ProfilePage>
     </div>
   );
 }

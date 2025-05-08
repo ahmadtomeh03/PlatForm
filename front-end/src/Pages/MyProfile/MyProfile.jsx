@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './MyProfile.css';
-
 
 const ProfilePage = () => {
   const profile = {
     name: "Izkhem Nafee",
-    studnetId: "ERD246534",
-    phone: "0594946930",
-    email: "yasahmadtomeh@studens.ptuk.edu",
+    username: "Izkehm",
+    datejoined: "2024/10/30",
+    email: "ahmadtomeh@gmail.com",
     address: {
       street: "390 Market Street",
       city: "San Francisco, CA",
@@ -38,7 +37,7 @@ const ProfilePage = () => {
     ],
     activity: [
       { courseName: "Data Structre", courseID: "13139837" },
-      { courseName: "Object Oriented Program", courseID: "13188837" },
+      { courseName: "OOP", courseID: "13188837" },
       { courseName: "Digital", courseID: "13299807" }
     ],
     studentUsed: [
@@ -49,10 +48,45 @@ const ProfilePage = () => {
       },
       {
         mID: "#128989EA",
-        mCourseName: "Object Orientied Program",
+        mCourseName: "OOP",
         mUsed: "Final Exam Java 2022 first semster"
       }
     ]
+  };
+
+  const [editMode, setEditMode] = useState(false);
+  const [tempInfo, setTempInfo] = useState({
+    name: profile.name,
+    email: profile.email,
+    datejoined: profile.datejoined
+  });
+
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTempInfo((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSaveClick = () => {
+    profile.name = tempInfo.name;
+    profile.email = tempInfo.email;
+    profile.datejoined = tempInfo.datejoined;
+    setEditMode(false);
+  };
+
+  const handleCancelClick = () => {
+    setTempInfo({
+      name: profile.name,
+      email: profile.email,
+      datejoined: profile.datejoined
+    });
+    setEditMode(false);
   };
 
   return (
@@ -64,63 +98,48 @@ const ProfilePage = () => {
           alt="Profile"
           className="profile-image"
         />
-        <h2>{profile.name}</h2>
-        <p className="light-text">#{profile.studnetId}</p>
+        <h2>{profile.username}</h2>
 
         <div className="profile-section">
-          <h3 className="profile-heading">About</h3>
-          <p><span className="profile-label">Phone:</span> {profile.phone}</p>
+          <div className="about-header">
+            <h3 className="profile-heading">About</h3>
+            <button className="edit-button" onClick={handleEditClick}>
+              Edit
+            </button>
+          </div>
+
           <p><span className="profile-label">Email:</span> {profile.email}</p>
-          <p><span className="profile-label">Student ID:</span> {profile.details.studnetNumber}</p>
+          <p><span className="profile-label">Full Name:</span> {profile.name}</p>
+          <p><span className="profile-label">Date Joined:</span> {profile.datejoined}</p>
         </div>
-
-        <div className="profile-section">
-          <h3 className="profile-heading">Details</h3>
-          <p><span className="profile-label">Faculty:</span> {profile.details.facultyName}</p>
-          <p><span className="profile-label">Major:</span> {profile.details.major}</p>
-          <p><span className="profile-label">Advisor:</span> {profile.details.advisor}</p>
-          <p><span className="profile-label">Status:</span> {profile.details.status}</p>
-        </div>
-
-        
       </div>
 
       {/* Right Panel */}
       <div className="right-panel">
+        {/* Student Schedule as Cards */}
         <div className="profile-section">
           <h3 className="profile-heading">Student Schedule</h3>
-          <table className="profile-table">
-            <thead>
-              <tr>
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>Course Instructor</th>
-                <th>Course Time</th>
-                <th>Course Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              {profile.studentSchedule.map((course, index) => (
-                <tr key={index}>
-                  <td>{course.cID}</td>
-                  <td>{course.cName}</td>
-                  <td>{course.cInstructor}</td>
-                  <td>{course.cTime}</td>
-                  <td>{course.clocation}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="card-container">
+            {profile.studentSchedule.map((course, index) => (
+              <div className="course-card" key={index}>
+                <h4>{course.cName}</h4>
+                <p><strong>ID:</strong> {course.cID}</p>
+                <p><strong>Instructor:</strong> {course.cInstructor}</p>
+                <p><strong>Time:</strong> {course.cTime}</p>
+                <p><strong>Location:</strong> {course.clocation}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
+        {/* Favorite Courses */}
         <div className="profile-section">
           <h3 className="profile-heading">Favorite Courses</h3>
-          <table className="profile-table">
+          {/* <table className="profile-table">
             <thead>
               <tr>
                 <th>Course ID</th>
                 <th>Course Name</th>
-                
               </tr>
             </thead>
             <tbody>
@@ -131,12 +150,13 @@ const ProfilePage = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
         </div>
 
+        {/* Latest Used */}
         <div className="profile-section">
           <h3 className="profile-heading">Latest Used</h3>
-          <table className="profile-table">
+          {/* <table className="profile-table">
             <thead>
               <tr>
                 <th>Material ID</th>
@@ -153,9 +173,47 @@ const ProfilePage = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {editMode && (
+        <>
+          <div className="overlay" />
+          <div className="edit-modal">
+            <h3>Edit Profile Info</h3>
+            <label>Email:
+              <input
+                type="text"
+                name="email"
+                value={tempInfo.email}
+                onChange={handleChange}
+              />
+            </label>
+            <label>Full Name:
+              <input
+                type="text"
+                name="name"
+                value={tempInfo.name}
+                onChange={handleChange}
+              />
+            </label>
+            <label>Date Joined:
+              <input
+                type="text"
+                name="datejoined"
+                value={tempInfo.datejoined}
+                onChange={handleChange}
+              />
+            </label>
+            <div className="edit-modal-buttons">
+              <button onClick={handleSaveClick}>Save</button>
+              <button onClick={handleCancelClick}>Cancel</button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
