@@ -1,7 +1,10 @@
+import Department from "../../Components/Department/Department";
+
 export default function College() {
   return (
     <div>
-      <h1>College</h1>
+      {" "}
+      <Department />
     </div>
   );
 }

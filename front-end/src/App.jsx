@@ -8,6 +8,8 @@ import "./index.css";
 import ProfilePage from "./Pages/MyProfile/MyProfile";
 import LoginRegisterPage from "./Pages/LoginRegisterPage";
 import Register from "./Pages/Register";
+import Help from "./Pages/Help/Help";
+import EngineeringTechnology from "./Components/College/EngineeringTechnology";
 
 export default function App() {
   return (
@@ -18,9 +20,19 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/college" element={<College />} />
+        <Route path="/college">
+          <Route index={true} element={<College />} />
+          <Route path="science" element={<div>hello</div>} />
+          <Route path="work" />
+          <Route path="tech" element={<EngineeringTechnology />} />
+          <Route path="adab" />
+          <Route path="zeracha" />
+          <Route path="sports" />
+          <Route path="techinformation" />
+          <Route />
+        </Route>
         <Route path="/aboutSite" element={<About />} />
-        <Route path="/help" element={""} />
+        <Route path="/help" element={<Help />} />
         <Route path="acount/:type" element={<LoginRegisterPage />} />
       </Routes>
       <ProfilePage></ProfilePage>

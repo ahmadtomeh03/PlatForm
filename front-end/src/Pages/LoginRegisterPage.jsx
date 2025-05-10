@@ -28,7 +28,7 @@ export default function LoginRegisterPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        margin: "75px",
         background: "#F3F3F3",
       }}
     >
@@ -38,7 +38,6 @@ export default function LoginRegisterPage() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
           width: "70%",
           border: "1px solid #2185D5",
           borderRadius: "10px",
