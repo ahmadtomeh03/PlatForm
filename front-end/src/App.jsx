@@ -35,7 +35,7 @@ export default function App() {
         <Route path="/help" element={<Help />} />
         <Route path="acount/:type" element={<LoginRegisterPage />} />
       </Routes>
-      <ProfilePage></ProfilePage>
+      {/* <ProfilePage></ProfilePage> */}
     </div>
   );
 }
