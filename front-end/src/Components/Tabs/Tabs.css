@@ -1,0 +1,61 @@
+.radio-input input {
+  display: none;
+}
+.radio-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: #fff;
+  color: black;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(53, 52, 52, 0.226);
+}
+
+.radio-input label {
+  width: 25%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+.selection {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 25%;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  transition: 0.15s ease;
+  background-color: var(--color1);
+  border-radius: 9999px;
+}
+.radio-input label:has(input:checked) {
+  color: #fff;
+}
+.radio-input label:has(input:checked) ~ .selection {
+  display: inline-block;
+}
+.radio-input label:nth-of-type(1):has(input:checked) ~ .selection {
+  transform: translateX(0%);
+}
+
+.radio-input label:nth-of-type(2):has(input:checked) ~ .selection {
+  transform: translateX(100%);
+}
+
+.radio-input label:nth-of-type(3):has(input:checked) ~ .selection {
+  transform: translateX(200%);
+}
+
+.radio-input label:nth-of-type(4):has(input:checked) ~ .selection {
+  transform: translateX(300%);
+}

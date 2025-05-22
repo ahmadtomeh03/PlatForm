@@ -1,9 +1,89 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import React, { useState } from "react";
-import Majer from "../Majer/Majer";
 import { faculties } from "./faculties";
-import { listOfMajerEngineering } from "./MajerEngineering";
+import CardMajer from "../CardMajer/CardMajer";
+import ComputerIcon from "@mui/icons-material/Computer";
+import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
+import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
+import SettingsInputAntennaIcon from "@mui/icons-material/SettingsInputAntenna";
+import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
+import BuildIcon from "@mui/icons-material/Build";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import ArchitectureIcon from "@mui/icons-material/Architecture";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import SecurityIcon from "@mui/icons-material/Security";
+import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+
 export default function EngineeringTechnology() {
+  const listOfMajerEngineering = [
+    {
+      nameOfMajer: "Computer Engineering",
+      decription:
+        "Focuses on designing and developing computer systems, both hardware and software.",
+      icon: <ComputerIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Electrical Engineering",
+      decription:
+        "Covers the principles and applications of electricity, electronics, and electromagnetism.",
+      icon: <ElectricalServicesIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Mechatronics Engineering",
+      decription:
+        "Combines mechanical, electrical, and computer engineering to build smart systems and automation.",
+      icon: <PrecisionManufacturingIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Telecommunication Engineering",
+      decription:
+        "Deals with the transmission of information across channels like cables, optical fiber, or air.",
+      icon: <SettingsInputAntennaIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Sustainable Energy Engineering",
+      decription:
+        "Focuses on developing and applying renewable and efficient energy solutions.",
+      icon: <EnergySavingsLeafIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Mechanical Engineering",
+      decription:
+        "Applies physics and materials science to design and manufacture mechanical systems.",
+      icon: <BuildIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Civil Engineering",
+      decription:
+        "Involves designing, constructing, and maintaining infrastructure like roads and buildings.",
+      icon: <EngineeringIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Architectural Engineering",
+      decription:
+        "Focuses on the engineering aspects of building design and construction.",
+      icon: <ArchitectureIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Automotive Engineering",
+      decription:
+        "Specialized in the design, development, and maintenance of vehicles.",
+      icon: <DirectionsCarIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Public Safety Engineering",
+      decription:
+        "Focuses on systems and designs that ensure public safety in various environments.",
+      icon: <SecurityIcon fontSize="large" color="primary" />,
+    },
+    {
+      nameOfMajer: "Sound Engineering",
+      decription:
+        "Covers the technology and techniques of recording, mixing, and reproducing sound.",
+      icon: <GraphicEqIcon fontSize="large" color="primary" />,
+    },
+  ];
+
   const [selectedFaculty, setSelectedFaculty] = useState(
     faculties.find((f) => f.path === "tech")
   );
@@ -16,7 +96,13 @@ export default function EngineeringTechnology() {
 
   const listOfMajer = listOfMajerEngineering.map((majer) => {
     return (
-      <Majer nameOfMajer={majer.nameOfMajer} decription={majer.decription} />
+      <div style={{}}>
+        <CardMajer
+          nameOfMajer={majer.nameOfMajer}
+          decription={majer.decription}
+          icon={majer.icon}
+        />
+      </div>
     );
   });
   return (
@@ -99,7 +185,9 @@ export default function EngineeringTechnology() {
           </div>
         )}
       </div>
-      {listOfMajer}
+      <div className="flex flex-row items-center justify-center gap-5 flex-wrap">
+        {listOfMajer}
+      </div>
     </div>
   );
 }
