@@ -4,6 +4,7 @@ import Vedio from "../Vedio/Vedio";
 import Summaries from "../Summaries/Summaries";
 import AccordionUsage from "../Accordion/AccordionUsage";
 import { listOfSummary } from "./summary";
+import CardExam from "../CardExam/CardExam";
 
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState("lectures");
@@ -36,8 +37,10 @@ export default function Tabs() {
           </div>
         );
       case "exams":
-        return <></>;
+        return <CardExam />;
       case "book":
+        return <></>;
+      case "slides":
         return <></>;
       default:
         return null;
@@ -82,6 +85,15 @@ export default function Tabs() {
             onChange={() => setSelectedTab("book")}
           />
           <span className="name">Book</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="value-radio"
+            checked={selectedTab === "slides"}
+            onChange={() => setSelectedTab("slides")}
+          />
+          <span className="name">Slides</span>
         </label>
         <span className="selection"></span>
       </div>

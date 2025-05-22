@@ -14,7 +14,7 @@
 }
 
 .radio-input label {
-  width: 25%;
+  width: 20%;
   padding: 10px;
   cursor: pointer;
   display: flex;
@@ -30,7 +30,7 @@
   display: none;
   position: absolute;
   height: 100%;
-  width: 25%;
+  width: 20%;
   z-index: 0;
   left: 0;
   top: 0;
@@ -58,4 +58,14 @@
 
 .radio-input label:nth-of-type(4):has(input:checked) ~ .selection {
   transform: translateX(300%);
+}
+
+.radio-input label:nth-of-type(5):has(input:checked) ~ .selection {
+  transform: translateX(400%);
+}
+.name {
+  font-weight: 100;
+  font-family: "Times New Roman", Times, serif;
+  padding: 10px;
+  font-size: 15px;
 }

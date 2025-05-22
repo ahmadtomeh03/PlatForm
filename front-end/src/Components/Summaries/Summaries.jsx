@@ -22,7 +22,7 @@ export default function Summaries({
         <div className="icons">
           <a
             className="btn"
-            href="/ISAD.pdf"
+            href="/c++(Mid).pdf"
             download
             target="_blank"
             rel="noopener noreferrer"

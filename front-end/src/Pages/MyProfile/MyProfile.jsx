@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import './MyProfile.css';
-import NavbarLoggedIn from '../../Components/Navbar/LoginBar';
+import React, { useState } from "react";
+import "./MyProfile.css";
+import NavbarLoggedIn from "../../Components/Navbar/LoginBar";
+import CardMatirial from "../../Components/Card/CardMatirial";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -11,55 +12,56 @@ const ProfilePage = () => {
     address: {
       street: "390 Market Street",
       city: "San Francisco, CA",
-      zip: "94102"
+      zip: "94102",
     },
     details: {
       facultyName: "College of Engineering and Technology",
       major: "Computer System Engineering",
       status: "Regular",
       advisor: "Dr.Yazeed Sleet",
-      studnetNumber: "202110871"
+      studnetNumber: "202110871",
     },
     studentSchedule: [
       {
         cID: "13139487",
         cName: "Object Orientied Program",
-        cInstructor: "Dr. Nael Salman ",
+        cInstructor: "We use in this material Java language",
         cTime: "11AM - 12 PM 'Sun,Tues,Th' ",
-        clocation: "H021"
+        clocation: "H021",
       },
       {
         cID: "13137787",
         cName: "Data Structure",
-        cInstructor: "Dr. Nael Salman",
+        cInstructor:
+          "In this course we use java language and use oop to create data structure",
         cTime: "10AM - 11AM 'Sun,Tues,Th' ",
-        clocation: "H012"
-      }
+        clocation: "H012",
+      },
     ],
     activity: [
       { courseName: "Data Structre", courseID: "13139837" },
       { courseName: "OOP", courseID: "13188837" },
-      { courseName: "Digital", courseID: "13299807" }
+      { courseName: "Digital", courseID: "13299807" },
     ],
     studentUsed: [
       {
         mID: "#128930EA",
         mCourseName: "Engineering Economics",
-        mUsed: "Summary of engineering economics by Saeed Jaber 2022"
+        mUsed: "Summary of engineering economics by Saeed Jaber 2022",
       },
       {
         mID: "#128989EA",
         mCourseName: "OOP",
-        mUsed: "Final Exam Java 2022 first semster"
-      }
-    ]
+        mUsed: "Final Exam Java 2022 first semster",
+      },
+    ],
   });
 
   const [editMode, setEditMode] = useState(false);
   const [tempInfo, setTempInfo] = useState({
     name: profile.name,
     email: profile.email,
-    datejoined: profile.datejoined
+    datejoined: profile.datejoined,
   });
 
   const handleEditClick = () => {
@@ -70,7 +72,7 @@ const ProfilePage = () => {
     const { name, value } = e.target;
     setTempInfo((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -79,7 +81,7 @@ const ProfilePage = () => {
       ...prev,
       name: tempInfo.name,
       email: tempInfo.email,
-      datejoined: tempInfo.datejoined
+      datejoined: tempInfo.datejoined,
     }));
     setEditMode(false);
   };
@@ -88,7 +90,7 @@ const ProfilePage = () => {
     setTempInfo({
       name: profile.name,
       email: profile.email,
-      datejoined: profile.datejoined
+      datejoined: profile.datejoined,
     });
     setEditMode(false);
   };
@@ -115,9 +117,16 @@ const ProfilePage = () => {
               </button>
             </div>
 
-            <p><span className="profile-label">Email:</span> {profile.email}</p>
-            <p><span className="profile-label">Full Name:</span> {profile.name}</p>
-            <p><span className="profile-label">Date Joined:</span> {profile.datejoined}</p>
+            <p>
+              <span className="profile-label">Email:</span> {profile.email}
+            </p>
+            <p>
+              <span className="profile-label">Full Name:</span> {profile.name}
+            </p>
+            <p>
+              <span className="profile-label">Date Joined:</span>{" "}
+              {profile.datejoined}
+            </p>
           </div>
         </div>
 
@@ -128,11 +137,10 @@ const ProfilePage = () => {
             <div className="card-container">
               {profile.studentSchedule.map((course, index) => (
                 <div className="course-card" key={index}>
-                  <h4>{course.cName}</h4>
-                  <p><strong>ID:</strong> {course.cID}</p>
-                  <p><strong>Instructor:</strong> {course.cInstructor}</p>
-                  <p><strong>Time:</strong> {course.cTime}</p>
-                  <p><strong>Location:</strong> {course.clocation}</p>
+                  <CardMatirial
+                    description={course.cInstructor}
+                    nameOfCourse={course.cName}
+                  />
                 </div>
               ))}
             </div>
@@ -155,7 +163,8 @@ const ProfilePage = () => {
             <div className="overlay" />
             <div className="edit-modal">
               <h3>Edit Profile Info</h3>
-              <label>Email:
+              <label>
+                Email:
                 <input
                   type="text"
                   name="email"
@@ -163,7 +172,8 @@ const ProfilePage = () => {
                   onChange={handleChange}
                 />
               </label>
-              <label>Full Name:
+              <label>
+                Full Name:
                 <input
                   type="text"
                   name="name"
@@ -171,7 +181,8 @@ const ProfilePage = () => {
                   onChange={handleChange}
                 />
               </label>
-              <label>Date Joined:
+              <label>
+                Date Joined:
                 <input
                   type="text"
                   name="datejoined"
