@@ -9,7 +9,7 @@ import LoginRegisterPage from "../../Pages/LoginRegisterPage";
 export default function Navbar() {
   return (
     <nav className="navbar" style={{ fontFamily: "Amiri" }}>
-      <Logo />
+      <Logo/>
       <ul className="navbarList">
         <Link to="/home">
           <li>Home</li>

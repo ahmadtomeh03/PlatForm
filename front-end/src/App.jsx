@@ -9,6 +9,7 @@ import Help from "./Pages/Help/Help";
 import EngineeringTechnology from "./Components/College/EngineeringTechnology";
 import DetailsMaterial from "./Components/DetailsMaterial/DetailsMaterial";
 import Material from "./Components/Material/Material";
+import Chatbot from "./Components/Chatbot/Chatbot";
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="/help" element={<Help />} />
         <Route path="acount/:type" element={<LoginRegisterPage />} />
       </Routes>
+      <Chatbot></Chatbot>
     </div>
   );
 }

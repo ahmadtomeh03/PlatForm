@@ -10,11 +10,11 @@
 .container {
   width: 100vw;
   min-height: 100vh;
-  background-color: #f3f3f3;
+  background-color: #ffffff;
 }
 
 .register {
-  background-color: #f3f3f3;
+  background-color: #ffffff;
   border-radius: 5px;
   padding: 10px;
   cursor: pointer;
