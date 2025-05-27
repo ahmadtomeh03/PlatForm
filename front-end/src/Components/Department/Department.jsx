@@ -56,7 +56,8 @@ const Department = () => {
     axios
       .get("http://localhost:3000/List-colleges")
       .then((response) => {
-        console.log(response);
+        setCollege(response.data.data);
+        console.log(response.data.data)
       })
       .catch((error) => {
         console.log(error);
@@ -68,10 +69,10 @@ const Department = () => {
         className="flex flex-row flex-wrap justify-evenly items-center "
         style={{ marginTop: "8px" }}
       >
-        {faculties.map((faculty, index) => (
-          <Link to={`/college/${faculty.path}`}>
+        {college.map((faculty, index) => (
+          <Link to={`/college/${faculty.college_name}`}>
             <motion.div
-              key={index}
+              key={faculty.college_id}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.05, rotate: 1 }}
@@ -85,9 +86,9 @@ const Department = () => {
               style={{ margin: "8px" }}
             >
               <h3 className="text-xl font-semibold text-center">
-                {faculty.name}
+                {faculty.college_name}
               </h3>
-              <div>{faculty.icon}</div>
+              {/*<div>{faculty.icon}</div>*/}
             </motion.div>
           </Link>
         ))}
