@@ -13,7 +13,7 @@ import Chatbot from "./Components/Chatbot/Chatbot";
 
 export default function App() {
   return (
-    <div className="container">
+    <div className="containers">
       <Navbar />
 
       {/* Routes */}

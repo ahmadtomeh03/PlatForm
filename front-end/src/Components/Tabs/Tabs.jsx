@@ -8,18 +8,20 @@ import CardExam from "../CardExam/CardExam";
 import CardUpload from "../CardUpload/CardUpload";
 import CardBook from "../CardBook/CardBook";
 import CardSlides from "../CardSlides/CardSlides";
-
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState("lectures");
-  const listOfSummaries = listOfSummary.map((sumamry) => {
+  const listOfSummaries = listOfSummary.map((sumamry, index) => {
     return (
-      <Summaries
-        midOrFinal={sumamry.midOrFinal}
-        nameOfDector={sumamry.nameOfDector}
-        nameOfMaterial={sumamry.nameOfMaterial}
-      />
+      <div key={index} style={{ width: "100%" }} className="swipcard">
+        <Summaries
+          midOrFinal={sumamry.midOrFinal}
+          nameOfDector={sumamry.nameOfDector}
+          nameOfMaterial={sumamry.nameOfMaterial}
+        />
+      </div>
     );
   });
+
   const renderContent = () => {
     switch (selectedTab) {
       case "lectures":
@@ -41,14 +43,15 @@ export default function Tabs() {
               style={{ width: "90%" }}
             >
               <div
-                className="flex flex-row flex-wrap gap-2"
+                // className="flex flex-row flex-wrap gap-2"
+                className="swaiperCard"
                 style={{ padding: "10px", flex: "2" }}
               >
                 {listOfSummaries}
               </div>
-              <div style={{ flex: "1" }}>
+              {/* <div style={{ flex: "1" }}>
                 <CardUpload />
-              </div>
+              </div> */}
             </div>
           </div>
         );

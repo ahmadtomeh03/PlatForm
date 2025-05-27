@@ -20,67 +20,56 @@ export default function EngineeringTechnology() {
       nameOfMajer: "Computer Engineering",
       decription:
         "Focuses on designing and developing computer systems, both hardware and software.",
-      icon: <ComputerIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Electrical Engineering",
       decription:
         "Covers the principles and applications of electricity, electronics, and electromagnetism.",
-      icon: <ElectricalServicesIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Mechatronics Engineering",
       decription:
         "Combines mechanical, electrical, and computer engineering to build smart systems and automation.",
-      icon: <PrecisionManufacturingIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Telecommunication Engineering",
       decription:
         "Deals with the transmission of information across channels like cables, optical fiber, or air.",
-      icon: <SettingsInputAntennaIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Sustainable Energy Engineering",
       decription:
         "Focuses on developing and applying renewable and efficient energy solutions.",
-      icon: <EnergySavingsLeafIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Mechanical Engineering",
       decription:
         "Applies physics and materials science to design and manufacture mechanical systems.",
-      icon: <BuildIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Civil Engineering",
       decription:
         "Involves designing, constructing, and maintaining infrastructure like roads and buildings.",
-      icon: <EngineeringIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Architectural Engineering",
       decription:
         "Focuses on the engineering aspects of building design and construction.",
-      icon: <ArchitectureIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Automotive Engineering",
       decription:
         "Specialized in the design, development, and maintenance of vehicles.",
-      icon: <DirectionsCarIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Public Safety Engineering",
       decription:
         "Focuses on systems and designs that ensure public safety in various environments.",
-      icon: <SecurityIcon fontSize="large" color="primary" />,
     },
     {
       nameOfMajer: "Sound Engineering",
       decription:
         "Covers the technology and techniques of recording, mixing, and reproducing sound.",
-      icon: <GraphicEqIcon fontSize="large" color="primary" />,
     },
   ];
 
@@ -100,7 +89,6 @@ export default function EngineeringTechnology() {
         <CardMajer
           nameOfMajer={majer.nameOfMajer}
           decription={majer.decription}
-          icon={majer.icon}
         />
       </div>
     );

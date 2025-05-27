@@ -1,13 +1,11 @@
 import React from "react";
 import "./CardMajer.css";
 import { useNavigate } from "react-router-dom";
-export default function CardMajer({ nameOfMajer, decription, icon }) {
+export default function CardMajer({ nameOfMajer, decription }) {
   const navigate = useNavigate();
   return (
     <div className="new-card">
       <div className="new-card-content">
-        <div className="new-card-icon">{icon}</div>
-
         <div className="new-card-body">
           <h2 className="new-card-title">{nameOfMajer}</h2>
           <p className="new-card-description">{decription}</p>

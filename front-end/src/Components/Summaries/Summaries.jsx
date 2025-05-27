@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 import "./Summaries.css";
 import CardUpload from "../CardUpload/CardUpload";
@@ -7,8 +8,10 @@ export default function Summaries({
   nameOfDector,
   midOrFinal,
 }) {
+  const [showPdf, setShowPdf] = useState(false);
+
   return (
-    <div>
+    <div className="flex flex-row justify-start items-start">
       <div className="card-sum">
         <div className="text">
           <span>{nameOfMaterial}</span>
@@ -30,8 +33,26 @@ export default function Summaries({
           >
             <SimCardDownloadIcon />
           </a>
+          <button className="btn" onClick={() => setShowPdf(!showPdf)}>
+            {showPdf ? "Hide" : "View"}
+          </button>
         </div>
       </div>
+      {showPdf && (
+        <div style={{ marginLeft: "10px", width: "1100px" }}>
+          <iframe
+            src="/c++(Mid).pdf"
+            width="100%"
+            height="500px"
+            style={{
+              marginTop: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "10px",
+            }}
+            title="PDF Preview"
+          />
+        </div>
+      )}
     </div>
   );
 }

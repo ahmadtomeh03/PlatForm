@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MdScience,
@@ -10,6 +10,7 @@ import {
   MdSports,
   MdComputer,
 } from "react-icons/md";
+import axios from "axios";
 
 const faculties = [
   {
@@ -48,10 +49,19 @@ const faculties = [
     path: "techinformation",
   },
 ];
-function handleToCollege() {
-  console.log("hello");
-}
+
 const Department = () => {
+  const [college, setCollege] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/List-colleges")
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <div>
       <div
@@ -72,7 +82,6 @@ const Department = () => {
                 stiffness: 120,
               }}
               className={`rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] w-[400px] h-[200px] flex flex-col justify-center items-center`}
-              onClick={handleToCollege}
               style={{ margin: "8px" }}
             >
               <h3 className="text-xl font-semibold text-center">

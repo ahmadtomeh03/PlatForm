@@ -6,8 +6,15 @@
   box-sizing: border-box;
   font-family: "Merriweather", serif;
 }
-
+body {
+  overflow-x: hidden;
+}
 :root {
+  --color1: #2185d5;
+  --color2: #3a4750;
+  --color3: #303841;
+  --color4: #f3f3f3;
+}:root {
   --color1: #2185d5;
   --color2: #3a4750;
   --color3: #303841;
@@ -22,7 +29,7 @@ button {
 button:hover {
   background-color: var(--color1);
 }
-.container {
+.containers {
   width: 100%;
   min-height: 100vh;
   background-color: #f3f3f3;

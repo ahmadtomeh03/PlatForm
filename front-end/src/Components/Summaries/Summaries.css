@@ -7,7 +7,7 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid rgba(200, 243, 157, 0.3);
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease,
