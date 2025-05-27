@@ -3,9 +3,11 @@ import { Outlet } from "react-router-dom";
 
 export default function College() {
   return (
-    <div>
+    <div className="w-full">
       <Outlet />
-      <Department />
+      <div className="w-[100%]">
+        <Department />
+      </div>
     </div>
   );
 }

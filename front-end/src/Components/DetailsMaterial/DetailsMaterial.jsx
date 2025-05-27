@@ -5,8 +5,7 @@ import Vedio from "../Vedio/Vedio";
 
 export default function DetailsMaterial() {
   return (
-    <div className="relative" style={{}}>
-      
+    <div style={{ margin: "20px" }}>
       <Tabs />
     </div>
   );

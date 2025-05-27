@@ -11,7 +11,7 @@
   --color1: #2185d5;
   --color2: #3a4750;
   --color3: #303841;
-  --color4: #ffffff;
+  --color4: #f3f3f3;
 }
 button {
   background-color: var(--color1);
@@ -23,9 +23,9 @@ button:hover {
   background-color: var(--color1);
 }
 .container {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f3f3f3;
 }
 .text1 {
   color: var(--color1);

@@ -1,5 +1,6 @@
 import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 import "./Summaries.css";
+import CardUpload from "../CardUpload/CardUpload";
 
 export default function Summaries({
   nameOfMaterial,
@@ -7,7 +8,7 @@ export default function Summaries({
   midOrFinal,
 }) {
   return (
-    <div style={{ margin: "10px" }}>
+    <div>
       <div className="card-sum">
         <div className="text">
           <span>{nameOfMaterial}</span>

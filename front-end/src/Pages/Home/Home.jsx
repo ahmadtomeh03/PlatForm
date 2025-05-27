@@ -6,7 +6,7 @@ import "../Home/Home.css";
 import About from "../About/About";
 export default function Home() {
   return (
-    <div>
+    <div >
       <div
         style={{
           background: "#303841",

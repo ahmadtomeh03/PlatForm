@@ -5,6 +5,9 @@ import Summaries from "../Summaries/Summaries";
 import AccordionUsage from "../Accordion/AccordionUsage";
 import { listOfSummary } from "./summary";
 import CardExam from "../CardExam/CardExam";
+import CardUpload from "../CardUpload/CardUpload";
+import CardBook from "../CardBook/CardBook";
+import CardSlides from "../CardSlides/CardSlides";
 
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState("lectures");
@@ -32,23 +35,92 @@ export default function Tabs() {
         );
       case "summaries":
         return (
-          <div className="flex flex-row items-center justify-center flex-wrap gap-5">
-            {listOfSummaries}
+          <div className="w-full flex justify-center">
+            <div
+              className="flex flex-row items-start gap-4"
+              style={{ width: "90%" }}
+            >
+              <div
+                className="flex flex-row flex-wrap gap-2"
+                style={{ padding: "10px", flex: "2" }}
+              >
+                {listOfSummaries}
+              </div>
+              <div style={{ flex: "1" }}>
+                <CardUpload />
+              </div>
+            </div>
           </div>
         );
       case "exams":
-        return <CardExam />;
+        return (
+          <div className="w-full flex justify-center">
+            <div
+              className="flex flex-row items-start gap-4"
+              style={{ width: "90%" }}
+            >
+              <div
+                className="flex flex-row flex-wrap gap-2"
+                style={{ padding: "10px", flex: "2" }}
+              >
+                <CardExam />
+              </div>
+              <div style={{ flex: "1" }}>
+                <CardUpload />
+              </div>
+            </div>
+          </div>
+        );
       case "book":
-        return <></>;
+        return (
+          <div className="w-full flex justify-center">
+            <div
+              className="flex flex-row items-start gap-4"
+              style={{ width: "90%" }}
+            >
+              <div
+                className="flex flex-row flex-wrap gap-2"
+                style={{ padding: "10px", flex: "2" }}
+              >
+                <CardBook />
+              </div>
+              <div style={{ flex: "1" }}>
+                <CardUpload />
+              </div>
+            </div>
+          </div>
+        );
       case "slides":
-        return <></>;
+        return (
+          <div className="w-full flex justify-center">
+            <div
+              className="flex flex-row items-start gap-4"
+              style={{ width: "90%" }}
+            >
+              <div
+                className="flex flex-row flex-wrap gap-2"
+                style={{ padding: "10px", flex: "2" }}
+              >
+                <CardSlides />
+              </div>
+              <div style={{ flex: "1" }}>
+                <CardUpload />
+              </div>
+            </div>
+          </div>
+        );
       default:
         return null;
     }
   };
 
   return (
-    <div className="radio" style={{ margin: "10px" }}>
+    <div
+      className="radio "
+      style={{
+        margin: "10px",
+      }}
+    >
       <div className="radio-input">
         <label>
           <input
@@ -98,9 +170,7 @@ export default function Tabs() {
         <span className="selection"></span>
       </div>
 
-      <div className="tab-content " style={{ margin: "20px" }}>
-        {renderContent()}
-      </div>
+      <div className="tab-content">{renderContent()}</div>
     </div>
   );
 }

@@ -17,9 +17,7 @@ export default function CardMatirial({ nameOfCourse, description }) {
           </div>
         </div>
         <div className="card__menu-buttons">
-          <button className="btn-favorites" title="Add to Favorites" >
-            <FavoriteIcon />
-          </button>
+         
           <button className="btn-save" title="Save">
             <BookmarkAddIcon />
           </button>
