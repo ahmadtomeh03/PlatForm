@@ -14,7 +14,8 @@ body {
   --color2: #3a4750;
   --color3: #303841;
   --color4: #f3f3f3;
-}:root {
+}
+:root {
   --color1: #2185d5;
   --color2: #3a4750;
   --color3: #303841;
@@ -48,4 +49,15 @@ button:hover {
 
 .text4 {
   color: var(--color4);
+}
+.swiper-container {
+  width: 100%;
+  padding: 40px;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 300px !important;
 }

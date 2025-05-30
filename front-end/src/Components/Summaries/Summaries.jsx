@@ -1,58 +1,30 @@
-import { useState } from "react";
-import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 import "./Summaries.css";
-import CardUpload from "../CardUpload/CardUpload";
-
 export default function Summaries({
   nameOfMaterial,
   nameOfDector,
   midOrFinal,
+  isOpen,
+  onToggle,
 }) {
-  const [showPdf, setShowPdf] = useState(false);
-
   return (
-    <div className="flex flex-row justify-start items-start">
+    <div className="flex flex-col w-full h-full">
       <div className="card-sum">
         <div className="text">
           <span>{nameOfMaterial}</span>
-          <p className="subtitle">{midOrFinal}Summaries</p>
+          <p className="subtitle">{midOrFinal} Summaries</p>
           <h1
-            className="text-[10px] "
+            className="text-[10px]"
             style={{ fontWeight: "normal", marginBottom: "5px" }}
           >
             {nameOfDector}
           </h1>
         </div>
         <div className="icons">
-          <a
-            className="btn"
-            href="/c++(Mid).pdf"
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SimCardDownloadIcon />
-          </a>
-          <button className="btn" onClick={() => setShowPdf(!showPdf)}>
-            {showPdf ? "Hide" : "View"}
+          <button className="btn" onClick={onToggle}>
+            {isOpen ? "Hide" : "View"}
           </button>
         </div>
       </div>
-      {showPdf && (
-        <div style={{ marginLeft: "10px", width: "1100px" }}>
-          <iframe
-            src="/c++(Mid).pdf"
-            width="100%"
-            height="500px"
-            style={{
-              marginTop: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "10px",
-            }}
-            title="PDF Preview"
-          />
-        </div>
-      )}
     </div>
   );
 }

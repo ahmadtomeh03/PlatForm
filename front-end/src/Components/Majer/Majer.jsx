@@ -2,8 +2,7 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-//import CardActionArea from "@mui/material/CardActionArea";
-//import { MdComputer } from "react-icons/md";
+
 import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
 import "../../index.css";
@@ -26,7 +25,6 @@ export default function Majer({ nameOfMajer, decription, icon }) {
           }}
           className="rounded-full flex flex-col justify-center items-center "
         >
-          {/* <MdComputer size={20} /> */}
           {icon}
         </div>
 

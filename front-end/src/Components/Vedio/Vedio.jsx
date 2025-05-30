@@ -1,7 +1,13 @@
 import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
 import Checked from "../Checked/Checked";
 
-export default function Vedio({ numberOfLecture }) {
+export default function Vedio({
+  nameOfMaterial,
+  nameOfDector,
+  midOrFinal,
+  isOpen,
+  onToggle,
+}) {
   return (
     <div
       className="flex flex-row items-center justify-between border-1 rounded-full border-#303841 "
@@ -9,7 +15,7 @@ export default function Vedio({ numberOfLecture }) {
     >
       <div className="flex flex-row cursor-pointer">
         <PlayCircleFilledWhiteIcon />
-        <h1>Lecture #{numberOfLecture}</h1>
+        <h1></h1>
       </div>
       <Checked />
     </div>

@@ -1,54 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  MdScience,
-  MdBusiness,
-  MdEngineering,
-  MdSchool,
-  MdAgriculture,
-  MdSports,
-  MdComputer,
-} from "react-icons/md";
 import axios from "axios";
-
-const faculties = [
-  {
-    name: "العلوم التطبيقية",
-    icon: <MdScience size={150} />,
-    path: "science",
-  },
-  {
-    name: "الأعمال والاقتصاد",
-    icon: <MdBusiness size={150} />,
-    path: "work",
-  },
-  {
-    name: "الهندسة والتكنولوجيا",
-    icon: <MdEngineering size={150} />,
-    path: "tech",
-  },
-  {
-    name: "الآداب والعلوم التربوية",
-    icon: <MdSchool size={150} />,
-    path: "adab",
-  },
-  {
-    name: "العلوم وتكنولوجيا الزراعة",
-    icon: <MdAgriculture size={150} />,
-    path: "zeracha",
-  },
-  {
-    name: "التربية البدنية وعلوم الرياضة",
-    icon: <MdSports size={150} />,
-    path: "sports",
-  },
-  {
-    name: "تكنولوجيا المعلومات",
-    icon: <MdComputer size={150} />,
-    path: "techinformation",
-  },
-];
 
 const Department = () => {
   const [college, setCollege] = useState([]);
@@ -57,7 +10,7 @@ const Department = () => {
       .get("http://localhost:3000/List-colleges")
       .then((response) => {
         setCollege(response.data.data);
-        console.log(response.data.data)
+        console.log(response.data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -88,7 +41,9 @@ const Department = () => {
               <h3 className="text-xl font-semibold text-center">
                 {faculty.college_name}
               </h3>
-              {/*<div>{faculty.icon}</div>*/}
+              <div>
+                <img src={faculty.image} alt={faculty.college_name} />
+              </div>
             </motion.div>
           </Link>
         ))}

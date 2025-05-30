@@ -1,10 +1,7 @@
 import * as React from "react";
 import "./Navbar.css";
 import Logo from "./Logo";
-import Button from "@mui/material/Button";
-import Login from "../../Pages/Login";
 import { Link } from "react-router-dom";
-import LoginRegisterPage from "../../Pages/LoginRegisterPage";
 
 export default function Navbar() {
   return (
