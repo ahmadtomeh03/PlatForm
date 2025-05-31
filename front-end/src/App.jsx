@@ -10,6 +10,11 @@ import EngineeringTechnology from "./Components/College/EngineeringTechnology";
 import DetailsMaterial from "./Components/DetailsMaterial/DetailsMaterial";
 import Material from "./Components/Material/Material";
 import Chatbot from "./Components/Chatbot/Chatbot";
+import MainDashboard from "./Components/Dashboard/MainDashboard";
+import Students from "./Components/Dashboard/Students";
+import Admins from "./Components/Dashboard/Admins";
+
+
 
 export default function App() {
   return (
@@ -39,6 +44,10 @@ export default function App() {
         <Route path="/aboutSite" element={<About />} />
         <Route path="/help" element={<Help />} />
         <Route path="acount/:type" element={<LoginRegisterPage />} />
+          <Route path="/dashboard" element={<MainDashboard />} />
+          <Route path="/students" element={<Students />} />
+                    <Route path="/admins" element={<Admins />} />
+
       </Routes>
       <Chatbot></Chatbot>
     </div>
