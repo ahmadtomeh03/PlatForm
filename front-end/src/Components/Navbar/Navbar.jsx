@@ -1,12 +1,23 @@
 import * as React from "react";
 import "./Navbar.css";
 import Logo from "./Logo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/UserContext";
+import FadeMenu from "../Menu/FadeMenu";
 
 export default function Navbar() {
+  const { isLogin, login, logout } = React.useContext(UserContext);
+  const navigate = useNavigate();
   return (
     <nav className="navbar" style={{ fontFamily: "Amiri" }}>
-      <Logo />
+      <div
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <Logo />
+      </div>
+
       <ul className="navbarList">
         <Link to="/home">
           <li>Home</li>
@@ -21,16 +32,21 @@ export default function Navbar() {
           <li>Help</li>
         </Link>
       </ul>
-      <Link to="/acount/login">
-        <button className="login" style={{ fontFamily: "Amiri" }}>
-          Login
-        </button>
-      </Link>
-      <Link to="/acount/register">
-        <button className="register" style={{ fontFamily: "Amiri" }}>
-          Register
-        </button>
-      </Link>
+      {!isLogin && (
+        <>
+          <Link to="/acount/login">
+            <button className="login" style={{ fontFamily: "Amiri" }}>
+              Login
+            </button>
+          </Link>
+          <Link to="/acount/register">
+            <button className="register" style={{ fontFamily: "Amiri" }}>
+              Register
+            </button>
+          </Link>
+        </>
+      )}
+      {isLogin && <FadeMenu />}
     </nav>
   );
 }

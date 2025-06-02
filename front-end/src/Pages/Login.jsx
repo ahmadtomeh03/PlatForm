@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../Context/UserContext";
+
 function Login() {
+  const { isLogin, login, logout } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [values, setValues] = useState({
     emailOrUsername: "",
     password: "",
@@ -17,6 +23,8 @@ function Login() {
         const token = res.data.data.token;
         localStorage.setItem("token", token);
         console.log(res.data.data.token);
+        login();
+        navigate("/home");
       })
       .catch((error) => {
         console.log(error.data);

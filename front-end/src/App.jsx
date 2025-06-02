@@ -10,46 +10,52 @@ import EngineeringTechnology from "./Components/College/EngineeringTechnology";
 import DetailsMaterial from "./Components/DetailsMaterial/DetailsMaterial";
 import Material from "./Components/Material/Material";
 import Chatbot from "./Components/Chatbot/Chatbot";
-import MainDashboard from "./Components/Dashboard/MainDashboard";
-import Students from "./Components/Dashboard/Students";
-import Admins from "./Components/Dashboard/Admins";
-
-
+import { UserProvider } from "./Context/UserProvider";
+import ProfilePage from "./Pages/MyProfile/MyProfile";
 
 export default function App() {
   return (
-    <div className="containers">
-      <Navbar />
+    <UserProvider>
+      <div className="containers">
+        <Navbar />
 
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/college">
-          <Route index element={<College />} />
-          <Route path="science" element={<div>hello</div>} />
-          <Route path="work" />
-          <Route path="tech">
-            <Route index element={<EngineeringTechnology />} />
-            <Route path="material">
-              <Route index element={<Material />} />
-              <Route path="details" element={<DetailsMaterial />} />
+        {/* Routes */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          {/* <Route path="/college">
+            <Route index element={<College />} />
+            <Route path="science" element={<div>hello</div>} />
+            <Route path="work" />
+            <Route path="tech">
+              <Route index element={<EngineeringTechnology />} />
+              <Route path="material">
+                <Route index element={<Material />} />
+                <Route path="details" element={<DetailsMaterial />} />
+              </Route>
+            </Route>
+            <Route path="adab" />
+            <Route path="zeracha" />
+            <Route path="sports" />
+            <Route path="techinformation" />
+          </Route> */}
+          <Route path="/college">
+            <Route index element={<College />} />
+            <Route path=":collegeId">
+              <Route index element={<EngineeringTechnology />} />
+              <Route path=":majorId">
+                <Route index element={<Material />} />
+                <Route path=":materialId" element={<DetailsMaterial />} />
+              </Route>
             </Route>
           </Route>
-          <Route path="adab" />
-          <Route path="zeracha" />
-          <Route path="sports" />
-          <Route path="techinformation" />
-        </Route>
-        <Route path="/aboutSite" element={<About />} />
-        <Route path="/help" element={<Help />} />
-        <Route path="acount/:type" element={<LoginRegisterPage />} />
-          <Route path="/dashboard" element={<MainDashboard />} />
-          <Route path="/students" element={<Students />} />
-                    <Route path="/admins" element={<Admins />} />
-
-      </Routes>
-      <Chatbot></Chatbot>
-    </div>
+          <Route path="/aboutSite" element={<About />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="acount/:type" element={<LoginRegisterPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
+        {/* <Chatbot></Chatbot> */}
+      </div>
+    </UserProvider>
   );
 }

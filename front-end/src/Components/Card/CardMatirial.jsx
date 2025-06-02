@@ -2,11 +2,14 @@ import "./CardMatirial.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/UserContext";
+import React from "react";
 export default function CardMatirial({ nameOfCourse, description }) {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("details");
   };
+  const { isLogin } = React.useContext(UserContext);
   return (
     <div className="card" onClick={handleClick} style={{ cursor: "pointer" }}>
       <div className="card__wrapper">
@@ -16,12 +19,13 @@ export default function CardMatirial({ nameOfCourse, description }) {
             {nameOfCourse.charAt(0)}
           </div>
         </div>
-        <div className="card__menu-buttons">
-         
-          <button className="btn-save" title="Save">
-            <BookmarkAddIcon />
-          </button>
-        </div>
+        {isLogin && (
+          <div className="card__menu-buttons">
+            <button className="btn-save" title="Save">
+              <BookmarkAddIcon />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="card__title">{nameOfCourse}</div>
