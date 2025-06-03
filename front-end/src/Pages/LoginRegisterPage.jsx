@@ -29,7 +29,7 @@ export default function LoginRegisterPage() {
         justifyContent: "center",
         alignItems: "center",
         margin: "75px",
-        background: "#F3F3F3",
+        background: "#FFFFFF",
       }}
     >
       <div
@@ -53,7 +53,7 @@ export default function LoginRegisterPage() {
                 background: "#2185D5",
                 height: "500px",
                 borderRadius: "8px 100px 100px 8px",
-                color: "#F3F3F3",
+                color: "#FFFFFF",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

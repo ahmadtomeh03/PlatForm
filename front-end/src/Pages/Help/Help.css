@@ -1,115 +1,112 @@
-.body {
-    background-color: #ffffff;
-    margin: 0;
-    padding: 0;
-  }
-
-  .contact-container {
-    background-color: #ffffff;  /* Ensure it's white */
-    padding: 40px 20px;
-    font-family: 'Arial', sans-serif;
-    max-width: 1200px;
-    margin: auto;
-    color: #000;
-  }
-  
-  
-  h1 {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .subtitle {
-    margin-bottom: 30px;
-    font-size: 15px;
-    color: #666;
-  }
-  
-  .contact-main {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .contact-form,
-  .contact-info {
-    flex: 1;
-    min-width: 320px;
-  }
-  
-  .contact-form {
-    background: #f7f7f7;
-    padding: 25px 30px;
-    border-radius: 10px;
-  }
-  
-  .contact-form h2 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-  }
-  
-  .contact-form form {
-    display: grid;
-    gap: 15px;
-  }
-  
-  .contact-form input,
-  .contact-form textarea {
-    padding: 12px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-  }
-  
-  .contact-form textarea {
-    height: 100px;
-    resize: none;
-  }
-  
-  .contact-form button {
-    background-color: #007bff; /* blue */
-    color: white;
-    font-weight: bold;
-    padding: 12px 0;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+.help-page body {
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
 }
 
-.contact-form button:hover {
-    background-color: #0056b3; /* darker blue for hover */
+.help-page .contact-container {
+  background-color: #ffffff;
+  padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
+  max-width: 1200px;
+  margin: auto;
+  color: #000;
 }
 
-  
-  .contact-info .info-box {
-    background: #f7f7f7;
-    padding: 20px 25px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .contact-info h3 {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-  }
-  
-  .contact-info p {
-    font-size: 14px;
-    margin: 6px 0;
-  }
-  
-  .map {
-    margin-top: 30px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-  }
-  
+.help-page h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.help-page .subtitle {
+  margin-bottom: 30px;
+  font-size: 15px;
+  color: #666;
+}
+
+.help-page .contact-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.help-page .contact-form,
+.help-page .contact-info {
+  flex: 1;
+  min-width: 320px;
+}
+
+.help-page .contact-form {
+  background: #f7f7f7;
+  padding: 25px 30px;
+  border-radius: 10px;
+}
+
+.help-page .contact-form h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.help-page .contact-form form {
+  display: grid;
+  gap: 15px;
+}
+
+.help-page .contact-form input,
+.help-page .contact-form textarea {
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.help-page .contact-form textarea {
+  height: 100px;
+  resize: none;
+}
+
+.help-page .contact-form button {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  padding: 12px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.help-page .contact-form button:hover {
+  background-color: #0056b3;
+}
+
+.help-page .contact-info .info-box {
+  background: #f7f7f7;
+  padding: 20px 25px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.help-page .contact-info h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.help-page .contact-info p {
+  font-size: 14px;
+  margin: 6px 0;
+}
+
+.help-page .map {
+  margin-top: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}

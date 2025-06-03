@@ -3,6 +3,8 @@ import './Help.css';
 
 const Help = () => {
   return (
+  <div className="help-page">
+
     <div id="root" className="contact-container">
       <h1>CONTACT US</h1>
       <p className="subtitle">
@@ -56,6 +58,7 @@ const Help = () => {
 
       </div>
     </div>
+  </div>
   );
 };
 
