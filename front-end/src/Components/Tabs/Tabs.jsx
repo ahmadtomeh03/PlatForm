@@ -5,50 +5,69 @@ import Summaries from "../Summaries/Summaries";
 import AccordionUsage from "../Accordion/AccordionUsage";
 import { listOfSummary } from "./summary";
 import CardExam from "../CardExam/CardExam";
+import CardUpload from "../CardUpload/CardUpload";
+import CardBook from "../CardBook/CardBook";
+import CardSlides from "../CardSlides/CardSlides";
+import SwiperCard from "../SwiperCard/SwiperCard";
+import { listOfExam } from "./exam";
 
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState("lectures");
-  const listOfSummaries = listOfSummary.map((sumamry) => {
-    return (
-      <Summaries
-        midOrFinal={sumamry.midOrFinal}
-        nameOfDector={sumamry.nameOfDector}
-        nameOfMaterial={sumamry.nameOfMaterial}
-      />
-    );
-  });
   const renderContent = () => {
+    // every swiper contain type of card and list of detalis of this card
     switch (selectedTab) {
       case "lectures":
         return (
-          <div>
-            <AccordionUsage numberOfWeek={1} />
-            <AccordionUsage numberOfWeek={2} />
-            <AccordionUsage numberOfWeek={3} />
-            <AccordionUsage numberOfWeek={4} />
-            <AccordionUsage numberOfWeek={5} />
-            <AccordionUsage numberOfWeek={6} />
-          </div>
+          <SwiperCard
+            key={selectedTab}
+            CardComponent={Summaries}
+            list={listOfSummary}
+          />
         );
       case "summaries":
         return (
-          <div className="flex flex-row items-center justify-center flex-wrap gap-5">
-            {listOfSummaries}
-          </div>
+          <SwiperCard
+            key={selectedTab}
+            CardComponent={Summaries}
+            list={listOfSummary}
+          />
         );
       case "exams":
-        return <CardExam />;
+        return (
+          <SwiperCard
+            key={selectedTab}
+            CardComponent={CardExam}
+            list={listOfExam}
+          />
+        );
       case "book":
-        return <></>;
+        return (
+          <SwiperCard
+            key={selectedTab}
+            CardComponent={CardBook}
+            list={listOfExam}
+          />
+        );
       case "slides":
-        return <></>;
+        return (
+          <SwiperCard
+            key={selectedTab}
+            CardComponent={CardSlides}
+            list={listOfExam}
+          />
+        );
       default:
         return null;
     }
   };
 
   return (
-    <div className="radio" style={{ margin: "10px" }}>
+    <div
+      className="radio "
+      style={{
+        margin: "10px",
+      }}
+    >
       <div className="radio-input">
         <label>
           <input
@@ -98,9 +117,7 @@ export default function Tabs() {
         <span className="selection"></span>
       </div>
 
-      <div className="tab-content " style={{ margin: "20px" }}>
-        {renderContent()}
-      </div>
+      <div className="tab-content">{renderContent()}</div>
     </div>
   );
 }

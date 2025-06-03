@@ -38,20 +38,6 @@
   align-items: center;
   cursor: pointer;
 }
-
-/* .card__acounts {
-  width: 42px;
-  height: 42px;
-}
-
-.card__acounts img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-} */
-
-/* في CardMatirial.css */
 .card__acounts {
   background-color: #3a4750;
   color: white;

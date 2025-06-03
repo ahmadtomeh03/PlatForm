@@ -4,7 +4,9 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import Login from "../Login";
 import "../Home/Home.css";
 import About from "../About/About";
+import { useNavigate } from "react-router-dom";
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <div>
       <div
@@ -68,7 +70,14 @@ export default function Home() {
           Our platform provides lecture slides, past exams, summaries, and smart
           tools like AI-powered assistance to help you study better and smarter.
         </p>
-        <button className="explore-button">Explore More</button>
+        <button
+          className="explore-button"
+          onClick={() => {
+            navigate("/college");
+          }}
+        >
+          Explore More
+        </button>
       </div>
     </div>
   );

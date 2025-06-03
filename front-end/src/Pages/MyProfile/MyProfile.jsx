@@ -97,7 +97,7 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <NavbarLoggedIn />
+      {/* <NavbarLoggedIn /> */}
 
       <div className="profile-container">
         {/* Left Panel */}

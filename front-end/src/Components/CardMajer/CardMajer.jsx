@@ -1,13 +1,19 @@
-import React from "react";
-import "./CardMajer.css";
 import { useNavigate } from "react-router-dom";
-export default function CardMajer({ nameOfMajer, decription, icon }) {
+import "./CardMajer.css";
+export default function CardMajer({
+  nameOfMajer,
+  decription,
+  collegeId,
+  majorId,
+}) {
   const navigate = useNavigate();
+
+  const handleToCourse = () => {
+    navigate(`/college/${collegeId}/${majorId}`);
+  };
   return (
     <div className="new-card">
       <div className="new-card-content">
-        <div className="new-card-icon">{icon}</div>
-
         <div className="new-card-body">
           <h2 className="new-card-title">{nameOfMajer}</h2>
           <p className="new-card-description">{decription}</p>
@@ -16,7 +22,7 @@ export default function CardMajer({ nameOfMajer, decription, icon }) {
         <button
           type="submit"
           className="explore-btn group"
-          onClick={() => navigate("/college/tech/material")}
+          onClick={handleToCourse}
         >
           Show Material
           <svg

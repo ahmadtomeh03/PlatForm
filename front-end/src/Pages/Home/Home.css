@@ -1,5 +1,7 @@
-/* @import "tailwindcss"; */
-
+.home {
+  width: 100%;
+  position: relative;
+}
 .welcome,
 .explore,
 .ourPlatForm {

@@ -6,12 +6,20 @@
   box-sizing: border-box;
   font-family: "Merriweather", serif;
 }
-
+body {
+  overflow-x: hidden;
+}
 :root {
   --color1: #2185d5;
   --color2: #3a4750;
   --color3: #303841;
-  --color4: #ffffff;
+  --color4: #f3f3f3;
+}
+:root {
+  --color1: #2185d5;
+  --color2: #3a4750;
+  --color3: #303841;
+  --color4: #f3f3f3;
 }
 button {
   background-color: var(--color1);
@@ -22,10 +30,10 @@ button {
 button:hover {
   background-color: var(--color1);
 }
-.container {
-  width: 100vw;
+.containers {
+  width: 100%;
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f3f3f3;
 }
 .text1 {
   color: var(--color1);
@@ -41,4 +49,15 @@ button:hover {
 
 .text4 {
   color: var(--color4);
+}
+.swiper-container {
+  width: 100%;
+  padding: 40px;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 300px !important;
 }

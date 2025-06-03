@@ -1,6 +1,7 @@
 .radio-input input {
   display: none;
 }
+
 .radio-input {
   position: relative;
   display: flex;

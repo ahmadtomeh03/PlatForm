@@ -1,12 +1,57 @@
-import ComputerIcon from "@mui/icons-material/Computer";
-import ElectricalServicesIcon from "@mui/icons-material/ElectricalServices";
-import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
-import SettingsInputAntennaIcon from "@mui/icons-material/SettingsInputAntenna";
-import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
-import BuildIcon from "@mui/icons-material/Build";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import ArchitectureIcon from "@mui/icons-material/Architecture";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import SecurityIcon from "@mui/icons-material/Security";
-import GraphicEqIcon from "@mui/icons-material/GraphicEq";
-
+export const listOfMajerEngineering = [
+  {
+    nameOfMajer: "Computer Engineering",
+    decription:
+      "Focuses on designing and developing computer systems, both hardware and software.",
+  },
+  {
+    nameOfMajer: "Electrical Engineering",
+    decription:
+      "Covers the principles and applications of electricity, electronics, and electromagnetism.",
+  },
+  {
+    nameOfMajer: "Mechatronics Engineering",
+    decription:
+      "Combines mechanical, electrical, and computer engineering to build smart systems and automation.",
+  },
+  {
+    nameOfMajer: "Telecommunication Engineering",
+    decription:
+      "Deals with the transmission of information across channels like cables, optical fiber, or air.",
+  },
+  {
+    nameOfMajer: "Sustainable Energy Engineering",
+    decription:
+      "Focuses on developing and applying renewable and efficient energy solutions.",
+  },
+  {
+    nameOfMajer: "Mechanical Engineering",
+    decription:
+      "Applies physics and materials science to design and manufacture mechanical systems.",
+  },
+  {
+    nameOfMajer: "Civil Engineering",
+    decription:
+      "Involves designing, constructing, and maintaining infrastructure like roads and buildings.",
+  },
+  {
+    nameOfMajer: "Architectural Engineering",
+    decription:
+      "Focuses on the engineering aspects of building design and construction.",
+  },
+  {
+    nameOfMajer: "Automotive Engineering",
+    decription:
+      "Specialized in the design, development, and maintenance of vehicles.",
+  },
+  {
+    nameOfMajer: "Public Safety Engineering",
+    decription:
+      "Focuses on systems and designs that ensure public safety in various environments.",
+  },
+  {
+    nameOfMajer: "Sound Engineering",
+    decription:
+      "Covers the technology and techniques of recording, mixing, and reproducing sound.",
+  },
+];
