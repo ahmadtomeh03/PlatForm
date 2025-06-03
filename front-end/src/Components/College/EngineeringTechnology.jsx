@@ -1,9 +1,11 @@
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import CardMajer from "../CardMajer/CardMajer";
 import axios from "axios";
+import ButtonBack from "../GoBack/ButtonBack";
 export default function EngineeringTechnology() {
   const { collegeId } = useParams();
+  const navigate = useNavigate();
   const [majors, setMajors] = useState([]); // this state to save the list of majer from API
   useEffect(() => {
     axios
@@ -15,6 +17,15 @@ export default function EngineeringTechnology() {
   }, [collegeId]);
   return (
     <div className="p-4 relative">
+      <div
+        onClick={() => {
+          navigate("/college");
+        }}
+        style={{ marginLeft: "20px" }}
+      >
+        <ButtonBack to={"Back To College"} />
+      </div>
+
       <div className="flex flex-row items-center justify-center gap-5 flex-wrap">
         {majors.map((major) => (
           <Link

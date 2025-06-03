@@ -21,10 +21,12 @@ function Login() {
       .then((res) => {
         console.log(res.data);
         const token = res.data.data.token;
+        const studentId = res.data.data.user.id;
         localStorage.setItem("token", token);
+        localStorage.setItem("student_id", studentId);
         console.log(res.data.data.token);
         login();
-        navigate("/home");
+        navigate("/");
       })
       .catch((error) => {
         console.log(error.data);

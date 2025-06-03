@@ -19,7 +19,7 @@ export default function Navbar() {
       </div>
 
       <ul className="navbarList">
-        <Link to="/home">
+        <Link to="/">
           <li>Home</li>
         </Link>
         <Link to="/college">
@@ -30,6 +30,9 @@ export default function Navbar() {
         </Link>
         <Link to="/help">
           <li>Help</li>
+        </Link>
+        <Link to="/dashboard">
+          <li>Dashboard</li>
         </Link>
       </ul>
       {!isLogin && (
