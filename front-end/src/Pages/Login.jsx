@@ -66,9 +66,7 @@ function Login() {
           <input type="checkbox" style={{ margin: "5px" }} />
           <span>Remember me</span>
         </div>
-        <Link>
           <label style={{ margin: "10px" }}>Forget Password?</label>
-        </Link>
       </div>
 
       <button
