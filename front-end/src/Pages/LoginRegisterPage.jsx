@@ -29,7 +29,7 @@ export default function LoginRegisterPage() {
         justifyContent: "center",
         alignItems: "center",
         margin: "75px",
-        background: "#FFFFFF",
+        background: "#f3f3f3",
       }}
     >
       <div

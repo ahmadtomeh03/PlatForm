@@ -4,6 +4,7 @@ import notificationSound from './relax-message-tone.mp3';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [messages, setMessages] = useState([
     { from: "bot", text: "Hi! How can I help you today?" },
   ]);
@@ -52,31 +53,47 @@ const Chatbot = () => {
     <>
       <audio ref={audioRef} src={notificationSound} preload="auto" />
 
-      <button
-        onClick={() => setIsOpen((open) => !open)}
-        className="chatbot-toggle-button"
-        aria-label={isOpen ? "Close chat" : "Open chat"}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="28"
-          viewBox="0 0 24 24"
-          width="28"
-          fill="white"
+      {!isExpanded && (
+        <button
+          onClick={() => setIsOpen((open) => !open)}
+          className="chatbot-toggle-button"
+          aria-label={isOpen ? "Close chat" : "Open chat"}
         >
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M20 2H4c-1.1 0-2 .9-2 2v14l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="28"
+            viewBox="0 0 24 24"
+            width="28"
+            fill="white"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v14l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+          </svg>
+        </button>
+      )}
 
       <div
-        className={`chatbot-container ${isOpen ? "open" : "closed"}`}
+        className={`chatbot-container ${isOpen ? "open" : "closed"} ${
+          isExpanded ? "expanded fullscreen" : ""
+        }`}
         aria-hidden={!isOpen}
       >
         <div className="chatbot-header">
           Chatbot
+          <div style={{ position: "absolute", top: 8, left: 12 }}>
+            <button
+              onClick={() => setIsExpanded((prev) => !prev)}
+              className="chatbot-expand-button"
+              aria-label="Expand chat"
+            >
+              {isExpanded ? "⤡" : "⤢"}
+            </button>
+          </div>
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false);
+              setIsExpanded(false);
+            }}
             className="chatbot-close-button"
             aria-label="Close chat"
           >
@@ -108,7 +125,7 @@ const Chatbot = () => {
             className="chatbot-input"
           />
           <button onClick={handleSend} className="chatbot-send-button">
-            Send
+            ➤
           </button>
         </div>
       </div>
