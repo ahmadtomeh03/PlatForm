@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./MainDashboard.css";
 
 function Courses() {
   const [materials, setMaterials] = useState({
@@ -25,29 +26,38 @@ function Courses() {
   };
 
   return (
-    <div>
-      <h1>Courses</h1>
-      <select value={type} onChange={(e) => setType(e.target.value)}>
+    <div className="dashboard-section">
+      <h1 className="dashboard-section-title">Courses</h1>
+      <select
+        className="dashboard-input"
+        value={type}
+        onChange={(e) => setType(e.target.value)}
+      >
         <option value="books">Books</option>
         <option value="exams">Exams</option>
         <option value="summaries">Summaries</option>
         <option value="assignments">Assignments</option>
       </select>
-      <input value={item} onChange={(e) => setItem(e.target.value)} placeholder={`Add to ${type}`} />
-      <button onClick={addMaterial}>Add</button>
-      <table>
+      <input
+        className="dashboard-input"
+        value={item}
+        onChange={(e) => setItem(e.target.value)}
+        placeholder={`Add to ${type}`}
+      />
+      <button className="dashboard-button" onClick={addMaterial}>Add</button>
+      <table className="dashboard-table">
         <thead>
           <tr>
-            <th>{type.charAt(0).toUpperCase() + type.slice(1)}</th>
-            <th>Actions</th>
+            <th className="dashboard-th">{type.charAt(0).toUpperCase() + type.slice(1)}</th>
+            <th className="dashboard-th">Delete</th>
           </tr>
         </thead>
         <tbody>
           {materials[type].map((mat, index) => (
-            <tr key={index}>
-              <td>{mat}</td>
-              <td>
-                <button className="delete-button" onClick={() => deleteMaterial(index)}>Delete</button>
+            <tr key={index} className="dashboard-tr">
+              <td className="dashboard-td">{mat}</td>
+              <td className="dashboard-td">
+                <button className="dashboard-delete-button" onClick={() => deleteMaterial(index)}>✖</button>
               </td>
             </tr>
           ))}

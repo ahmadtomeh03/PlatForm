@@ -1,5 +1,5 @@
-// Students.jsx
 import React, { useState } from "react";
+import "./MainDashboard.css";
 
 function Students() {
   const [students, setStudents] = useState([
@@ -7,9 +7,9 @@ function Students() {
     { id: 2, name: "Bob", username: "bobster", email: "bob@example.com", date: "2024-02-15" }
   ]);
   const [form, setForm] = useState({ name: "", username: "", email: "", date: "" });
+  const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
-  const [invalidFields, setInvalidFields] = useState({});
   const [confirmId, setConfirmId] = useState(null);
 
   const handleChange = (e) => {
@@ -18,26 +18,27 @@ function Students() {
   };
 
   const handleSubmit = () => {
-    const { name, username, email, date } = form;
-    const newInvalid = {
-      name: !name,
-      username: !username,
-      email: !email,
-      date: !date
-    };
-    setInvalidFields(newInvalid);
-    const hasError = Object.values(newInvalid).some((val) => val);
-    if (hasError) return;
+    const missing = {};
+    Object.keys(form).forEach((key) => {
+      if (!form[key].trim()) missing[key] = true;
+    });
+
+    if (Object.keys(missing).length > 0) {
+      setInvalidFields(missing);
+      return;
+    }
+
     setStudents([...students, { ...form, id: students.length + 1 }]);
     setForm({ name: "", username: "", email: "", date: "" });
+    setInvalidFields({});
   };
 
-  const confirmDelete = (id) => {
+  const handleDelete = (id) => {
     setConfirmId(id);
   };
 
-  const handleDelete = () => {
-    setStudents(students.filter((student) => student.id !== confirmId));
+  const confirmDelete = () => {
+    setStudents(students.filter((s) => s.id !== confirmId));
     setConfirmId(null);
   };
 
@@ -45,84 +46,36 @@ function Students() {
     setConfirmId(null);
   };
 
-  const filteredStudents = students.filter((student) =>
-    student[searchBy].toLowerCase().includes(searchQuery.toLowerCase())
+  const filtered = students.filter((s) =>
+    s[searchBy].toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const inputStyle = (field) => ({
-    border: "1px solid #ccc",
-    padding: "8px",
-    marginBottom: "4px",
-    borderColor: invalidFields[field] ? "red" : "#ccc",
-    display: "block",
-    width: "100%",
-    maxWidth: "300px"
-  });
-
-  const filterStyle = {
-    padding: "8px",
-    border: "1px solid #ccc",
-    borderRadius: "4px"
-  };
-
-  const deleteButtonStyle = {
-    backgroundColor: "transparent",
-    color: "#f44336",
-    border: "none",
-    padding: "4px 8px",
-    cursor: "pointer",
-    fontWeight: "bold"
-  };
-
-  const modalStyle = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#fff",
-    padding: "20px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
-    zIndex: 1000,
-    borderRadius: "6px",
-    border: "1px solid #ccc"
-  };
-
-  const overlayStyle = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    zIndex: 999
-  };
-
   return (
-    <div>
-      <h1>Students</h1>
-      <div>
-        <input style={inputStyle("name")} name="name" value={form.name} onChange={handleChange} placeholder="Name" />
-        {invalidFields.name && <small style={{ color: "red" }}>Please fill in the name</small>}
-      </div>
-      <div>
-        <input style={inputStyle("username")} name="username" value={form.username} onChange={handleChange} placeholder="Username" />
-        {invalidFields.username && <small style={{ color: "red" }}>Please fill in the username</small>}
-      </div>
-      <div>
-        <input style={inputStyle("email")} name="email" value={form.email} onChange={handleChange} placeholder="Email" />
-        {invalidFields.email && <small style={{ color: "red" }}>Please fill in the email</small>}
-      </div>
-      <div>
-        <input style={inputStyle("date")} name="date" type="date" value={form.date} onChange={handleChange} placeholder="Date of Register" />
-        {invalidFields.date && <small style={{ color: "red" }}>Please fill in the date</small>}
-      </div>
-      <button onClick={handleSubmit}>Add Student</button>
+    <div className="dashboard-section">
+      <h1 className="dashboard-title">Students</h1>
 
-      <div style={{ marginTop: "20px", display: "flex", gap: "10px", alignItems: "center" }}>
-        <label htmlFor="filter">Filter:</label>
+      <div className="dashboard-form">
+        {["name", "username", "email", "date"].map((field) => (
+          <div key={field}>
+            <input
+              className={`dashboard-input ${invalidFields[field] ? "dashboard-input-error" : ""}`}
+              name={field}
+              value={form[field]}
+              onChange={handleChange}
+              placeholder={field[0].toUpperCase() + field.slice(1)}
+            />
+            {invalidFields[field] && (
+              <div className="dashboard-error-text">Please fill in the {field}</div>
+            )}
+          </div>
+        ))}
+        <button className="dashboard-button" onClick={handleSubmit}>Add Student</button>
+      </div>
+
+      <div className="dashboard-filter-group">
+        <label className="dashboard-filter-label">Search students by:</label>
         <select
-          id="filter"
-          style={filterStyle}
+          className="dashboard-input"
           value={searchBy}
           onChange={(e) => setSearchBy(e.target.value)}
         >
@@ -132,35 +85,34 @@ function Students() {
           <option value="date">Date</option>
         </select>
         <input
-          type="text"
-          placeholder={`Search by ${searchBy}`}
+          className="dashboard-input"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ ...filterStyle, flexGrow: 1 }}
+          placeholder="Search..."
         />
       </div>
 
-      <table>
+      <table className="dashboard-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Date of Register</th>
-            <th>Delete</th>
+            <th className="dashboard-th">ID</th>
+            <th className="dashboard-th">Name</th>
+            <th className="dashboard-th">Username</th>
+            <th className="dashboard-th">Email</th>
+            <th className="dashboard-th">Date</th>
+            <th className="dashboard-th">Delete</th>
           </tr>
         </thead>
         <tbody>
-          {filteredStudents.map((s) => (
+          {filtered.map((s) => (
             <tr key={s.id}>
-              <td>{s.id}</td>
-              <td>{s.name}</td>
-              <td>{s.username}</td>
-              <td>{s.email}</td>
-              <td>{s.date}</td>
-              <td>
-                <button style={deleteButtonStyle} onClick={() => confirmDelete(s.id)}>✖</button>
+              <td className="dashboard-td">{s.id}</td>
+              <td className="dashboard-td">{s.name}</td>
+              <td className="dashboard-td">{s.username}</td>
+              <td className="dashboard-td">{s.email}</td>
+              <td className="dashboard-td">{s.date}</td>
+              <td className="dashboard-td">
+                <button className="dashboard-delete-button" onClick={() => handleDelete(s.id)}>✖</button>
               </td>
             </tr>
           ))}
@@ -168,14 +120,13 @@ function Students() {
       </table>
 
       {confirmId && (
-        <>
-          <div style={overlayStyle} onClick={cancelDelete}></div>
-          <div style={modalStyle}>
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal">
             <p>Are you sure you want to delete this student?</p>
-            <button onClick={handleDelete} style={{ marginRight: "10px" }}>Yes, Delete</button>
-            <button onClick={cancelDelete}>Cancel</button>
+            <button className="dashboard-button" onClick={confirmDelete}>Yes</button>
+            <button className="dashboard-button" onClick={cancelDelete}>No</button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
