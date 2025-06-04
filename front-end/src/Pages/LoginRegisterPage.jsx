@@ -29,7 +29,6 @@ export default function LoginRegisterPage() {
         justifyContent: "center",
         alignItems: "center",
         margin: "75px",
-        background: "#FFFFFF",
       }}
     >
       <div
@@ -72,7 +71,9 @@ export default function LoginRegisterPage() {
                   padding: "5px",
                   width: "200px",
                   marginTop: "10px",
+                  
                 }}
+                className="register-login"
               >
                 Register
               </button>
@@ -112,6 +113,8 @@ export default function LoginRegisterPage() {
                   width: "200px",
                   marginTop: "10px",
                 }}
+                className="register-login"
+
               >
                 Login
               </button>

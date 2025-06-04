@@ -22,6 +22,7 @@ export default function Tabs() {
             key={selectedTab}
             CardComponent={Summaries}
             list={listOfSummary}
+            type={"video"}
           />
         );
       case "summaries":
@@ -30,6 +31,7 @@ export default function Tabs() {
             key={selectedTab}
             CardComponent={Summaries}
             list={listOfSummary}
+            type={"summary"}
           />
         );
       case "exams":
@@ -38,6 +40,7 @@ export default function Tabs() {
             key={selectedTab}
             CardComponent={CardExam}
             list={listOfExam}
+            type={"exam"}
           />
         );
       case "book":
@@ -46,6 +49,7 @@ export default function Tabs() {
             key={selectedTab}
             CardComponent={CardBook}
             list={listOfExam}
+            type={"book"}
           />
         );
       case "slides":
@@ -54,6 +58,7 @@ export default function Tabs() {
             key={selectedTab}
             CardComponent={CardSlides}
             list={listOfExam}
+            type={"slide"}
           />
         );
       default:

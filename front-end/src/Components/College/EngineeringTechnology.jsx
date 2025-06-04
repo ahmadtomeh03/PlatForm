@@ -21,7 +21,7 @@ export default function EngineeringTechnology() {
         onClick={() => {
           navigate("/college");
         }}
-        style={{ marginLeft: "20px" }}
+        style={{ marginLeft: "20px", marginTop: "20px" }}
       >
         <ButtonBack to={"Back To College"} />
       </div>
