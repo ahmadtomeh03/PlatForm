@@ -1,0 +1,30 @@
+.bin-button-delete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 15px;
+  background-color: rgb(255, 95, 95);
+  cursor: pointer;
+  border: 3px solid rgb(255, 201, 201);
+  transition-duration: 0.3s;
+}
+.bin-bottom-delete {
+  width: 15px;
+}
+.bin-top-delete {
+  width: 17px;
+  transform-origin: right;
+  transition-duration: 0.3s;
+}
+.bin-button-delete:hover .bin-top-delete {
+  transform: rotate(45deg);
+}
+.bin-button-delete:hover {
+  background-color: rgb(255, 0, 0);
+}
+.bin-button-delete:active {
+  transform: scale(0.9);
+}

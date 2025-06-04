@@ -5,7 +5,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
 function SwiperCard({ CardComponent, type }) {
   const [openPdfIndex, setOpenPdfIndex] = useState(null);
   const [materialDetails, setMaterialDetails] = useState([]);
