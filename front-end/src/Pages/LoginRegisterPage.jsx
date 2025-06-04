@@ -29,10 +29,7 @@ export default function LoginRegisterPage() {
         justifyContent: "center",
         alignItems: "center",
         margin: "75px",
-<<<<<<< HEAD
         background: "#f3f3f3",
-=======
->>>>>>> da2a212173c3d86a883a1f77cceef76df2742654
       }}
     >
       <div
@@ -75,7 +72,6 @@ export default function LoginRegisterPage() {
                   padding: "5px",
                   width: "200px",
                   marginTop: "10px",
-                  
                 }}
                 className="register-login"
               >
@@ -118,7 +114,6 @@ export default function LoginRegisterPage() {
                   marginTop: "10px",
                 }}
                 className="register-login"
-
               >
                 Login
               </button>

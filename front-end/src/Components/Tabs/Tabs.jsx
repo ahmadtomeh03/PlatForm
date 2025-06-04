@@ -2,14 +2,10 @@ import { useState } from "react";
 import "./Tabs.css";
 import Vedio from "../Vedio/Vedio";
 import Summaries from "../Summaries/Summaries";
-import AccordionUsage from "../Accordion/AccordionUsage";
-import { listOfSummary } from "./summary";
 import CardExam from "../CardExam/CardExam";
-import CardUpload from "../CardUpload/CardUpload";
 import CardBook from "../CardBook/CardBook";
 import CardSlides from "../CardSlides/CardSlides";
 import SwiperCard from "../SwiperCard/SwiperCard";
-import { listOfExam } from "./exam";
 
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState("lectures");
@@ -21,7 +17,6 @@ export default function Tabs() {
           <SwiperCard
             key={selectedTab}
             CardComponent={Summaries}
-            list={listOfSummary}
             type={"video"}
           />
         );
@@ -30,7 +25,6 @@ export default function Tabs() {
           <SwiperCard
             key={selectedTab}
             CardComponent={Summaries}
-            list={listOfSummary}
             type={"summary"}
           />
         );
@@ -39,7 +33,6 @@ export default function Tabs() {
           <SwiperCard
             key={selectedTab}
             CardComponent={CardExam}
-            list={listOfExam}
             type={"exam"}
           />
         );
@@ -48,7 +41,6 @@ export default function Tabs() {
           <SwiperCard
             key={selectedTab}
             CardComponent={CardBook}
-            list={listOfExam}
             type={"book"}
           />
         );
@@ -57,7 +49,6 @@ export default function Tabs() {
           <SwiperCard
             key={selectedTab}
             CardComponent={CardSlides}
-            list={listOfExam}
             type={"slide"}
           />
         );

@@ -32,10 +32,10 @@
 }
 
 .help-page .contact-form {
-  background: var(--color3);
+  background: #ffffff;
   padding: 25px 30px;
   border-radius: 10px;
-  color: var(--color4);
+  color: var(--color2);
 }
 
 .help-page .contact-form h2 {
@@ -82,11 +82,11 @@
 }
 
 .help-page .contact-info .info-box {
-  background: var(--color3);
+  background: #ffffff;
   padding: 20px 25px;
   border-radius: 10px;
   margin-bottom: 20px;
-  color: var(--color4);
+  color: var(--color2);
 }
 
 .help-page .contact-info h3 {

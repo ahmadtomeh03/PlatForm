@@ -5,7 +5,7 @@ import Summaries from "../Summaries/Summaries";
 import Tabs from "../Tabs/Tabs";
 import Vedio from "../Vedio/Vedio";
 import ButtonUpload from "../ButtonUpload/ButtonUpload";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CardUpload from "../CardUpload/CardUpload";
 
 export default function DetailsMaterial() {
@@ -13,7 +13,7 @@ export default function DetailsMaterial() {
   const { majorId } = useParams();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
- 
+
   return (
     <div style={{ margin: "20px" }}>
       <div className="flex flex-row justify-between items-center">
