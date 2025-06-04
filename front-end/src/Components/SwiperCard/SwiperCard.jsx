@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-function SwiperCard({ CardComponent, list = [] }) {
+function SwiperCard({ CardComponent, type }) {
   const [openPdfIndex, setOpenPdfIndex] = useState(null);
+  const [materialDetails, setMaterialDetails] = useState([]);
+  const { materialId } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/${type}?course_id=${materialId}`)
+      .then((response) => {
+        setMaterialDetails(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error.response?.data || error.message);
+      });
+  }, [materialId]);
 
   return (
     <div className="swiper-container">
@@ -15,12 +31,12 @@ function SwiperCard({ CardComponent, list = [] }) {
         slidesPerView="auto"
         navigation
       >
-        {list.map((summary, i) => (
+        {materialDetails.map((summary, i) => (
           <SwiperSlide key={i} className="!w-[320px]">
             <CardComponent
-              nameOfMaterial={summary.nameOfMaterial}
-              nameOfDector={summary.nameOfDector}
-              midOrFinal={summary.midOrFinal}
+              nameOfMaterial={summary.exam_name || "No name"}
+              nameOfDector={summary.doctor_name}
+              midOrFinal={summary.description}
               isOpen={openPdfIndex === i}
               onToggle={() => setOpenPdfIndex(openPdfIndex === i ? null : i)}
             />
@@ -31,7 +47,7 @@ function SwiperCard({ CardComponent, list = [] }) {
       {openPdfIndex !== null && (
         <div className="mt-6 w-full px-4">
           <iframe
-            src={list[openPdfIndex].src}
+            src={materialDetails[openPdfIndex].exam_path}
             width="100%"
             height="500px"
             className="rounded border border-gray-300"

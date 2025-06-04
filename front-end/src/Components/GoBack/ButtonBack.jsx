@@ -2,7 +2,7 @@ export default function ButtonBack({ to }) {
   return (
     <div>
       <button
-        className="bg-white text-center w-48  h-14 relative text-black text-xl font-semibold group"
+        className="bg-white text-center w-48  h-14 relative text-black text-xl font-semibold group cursor-pointer"
         type="button"
         style={{ background: "white", borderRadius: "30px" }}
       >

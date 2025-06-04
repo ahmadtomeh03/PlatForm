@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* الوضع العادي */
 
 
@@ -217,34 +218,18 @@ body.dark-mode .login-footer {
   padding: 10px;
   border-radius: 5px;
   color: white;
+=======
+.login-card:hover,
+.register-card:hover {
+  background-color: var(--color3);
+  color: var(--color4);
+>>>>>>> da2a212173c3d86a883a1f77cceef76df2742654
   cursor: pointer;
 }
-
-.forgot-password-panel button:hover {
-  background: #1673c2;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transform: translateY(-1px);
+.login-card,
+.register-card {
+  background-color: var(--color1);
 }
-
-.forgot-password-panel button:active {
-  background: #0d5a9e;
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.forgot-password-panel button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(33, 133, 213, 0.5);
-}
-
-.cancel-link {
-  margin-top: 10px;
-  color: #dcdcdc;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: underline;
-}
-
-.cancel-link:hover {
-  color: #1a6ab6;
+.register-login:hover {
+  background-color: var(--color1);
 }

@@ -56,7 +56,8 @@
   background-color: #0f766e;
   box-shadow: 0 4px 12px rgba(20, 184, 166, 0.6);
   transform: translateY(-2px);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .home-page .hero-section img {
@@ -151,7 +152,8 @@
   background-color: #0f766e;
   box-shadow: 0 4px 12px rgba(20, 184, 166, 0.6);
   transform: translateY(-2px);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .home-page .related-blogs {

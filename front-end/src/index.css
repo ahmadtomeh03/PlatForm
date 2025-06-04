@@ -15,21 +15,13 @@ body {
   --color3: #303841;
   --color4: #f3f3f3;
 }
-:root {
-  --color1: #2185d5;
-  --color2: #3a4750;
-  --color3: #303841;
-  --color4: #f3f3f3;
-}
 button {
   background-color: var(--color1);
   color: var(--color4);
   border-radius: 10px;
   padding: 5px;
 }
-button:hover {
-  background-color: var(--color1);
-}
+
 .containers {
   width: 100%;
   min-height: 100vh;

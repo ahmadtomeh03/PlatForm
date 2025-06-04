@@ -45,7 +45,11 @@ export default function CardMatirial({ nameOfCourse, description, courseId }) {
   };
 
   return (
-    <div className="card" onClick={handleClick} style={{ cursor: "pointer" }}>
+    <div
+      className="card flex flex-col justify-around"
+      onClick={handleClick}
+      style={{ cursor: "pointer" }}
+    >
       <div className="card__wrapper">
         <div className="card___wrapper-acounts">
           <div className="card__acounts">{nameOfCourse.charAt(0)}</div>

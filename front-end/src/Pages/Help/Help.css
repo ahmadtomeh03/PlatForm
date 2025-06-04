@@ -1,13 +1,7 @@
-.help-page body {
-  background-color: #ffffff;
-  margin: 0;
-  padding: 0;
-}
-
 .help-page .contact-container {
-  background-color: #ffffff;
+  background-color: var(--color4);
   padding: 40px 20px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   max-width: 1200px;
   margin: auto;
   color: #000;
@@ -38,9 +32,10 @@
 }
 
 .help-page .contact-form {
-  background: #f7f7f7;
+  background: var(--color3);
   padding: 25px 30px;
   border-radius: 10px;
+  color: var(--color4);
 }
 
 .help-page .contact-form h2 {
@@ -61,7 +56,8 @@
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: var(--color4);
+  color: black;
 }
 
 .help-page .contact-form textarea {
@@ -86,10 +82,11 @@
 }
 
 .help-page .contact-info .info-box {
-  background: #f7f7f7;
+  background: var(--color3);
   padding: 20px 25px;
   border-radius: 10px;
   margin-bottom: 20px;
+  color: var(--color4);
 }
 
 .help-page .contact-info h3 {

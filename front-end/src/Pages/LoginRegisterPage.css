@@ -13,3 +13,8 @@
   opacity: 0;
   transform: scale(0.95) translateY(20px);
 }
+.register-login:hover {
+  background-color: var(--color4);
+  color: var(--color1);
+  cursor: pointer;
+}

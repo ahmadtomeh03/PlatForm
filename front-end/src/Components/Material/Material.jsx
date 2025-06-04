@@ -20,11 +20,17 @@ export default function Material() {
   }, [majorId]);
   const listOfMaterial = courses.map((material) => {
     return (
-      <CardMatirial
-        nameOfCourse={material.course_name}
-        description={material.course_note}
-        courseId={material.course_id}
-      />
+      <div
+        onClick={() => {
+          navigate(`/college/${collegeId}/${majorId}/${material.course_id}`);
+        }}
+      >
+        <CardMatirial
+          nameOfCourse={material.course_name}
+          description={material.course_note}
+          courseId={material.course_id}
+        />
+      </div>
     );
   });
   return (
@@ -33,7 +39,7 @@ export default function Material() {
         onClick={() => {
           navigate(`/college/${collegeId}`);
         }}
-        style={{ marginLeft: "20px" }}
+        style={{ margin: "20px" }}
       >
         <ButtonBack to={`Back To Courses`} />
       </div>
