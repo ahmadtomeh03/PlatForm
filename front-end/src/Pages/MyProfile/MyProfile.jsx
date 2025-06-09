@@ -36,7 +36,7 @@ const ProfilePage = () => {
           "In this course we use java language and use oop to create data structure",
         cTime: "10AM - 11AM 'Sun,Tues,Th' ",
         clocation: "H012",
-      },
+      }
     ],
     activity: [
       { courseName: "Data Structre", courseID: "13139837" },
@@ -107,7 +107,7 @@ const ProfilePage = () => {
             alt="Profile"
             className="profile-image"
           />
-          <h2>{profile.username}</h2>
+          <h2 style={{marginLeft: "25px"}}>{profile.username}</h2>
 
           <div className="profile-section">
             <div className="about-header">

@@ -6,6 +6,7 @@ function Students() {
     { id: 1, name: "Alice", username: "alice123", email: "alice@example.com", date: "2024-01-01" },
     { id: 2, name: "Bob", username: "bobster", email: "bob@example.com", date: "2024-02-15" }
   ]);
+
   const [form, setForm] = useState({ name: "", username: "", email: "", date: "" });
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("name");
@@ -13,14 +14,35 @@ function Students() {
   const [confirmId, setConfirmId] = useState(null);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setInvalidFields({ ...invalidFields, [e.target.name]: false });
+    const { name, value } = e.target;
+    let updatedValue = value;
+
+    // Custom input handling per field
+    if (name === "name" || name === "username") {
+      updatedValue = value.trimStart();
+    }
+
+    if (name === "email") {
+      updatedValue = value.toLowerCase();
+    }
+
+    if (name === "date" && value === "") {
+      const today = new Date().toISOString().split("T")[0];
+      updatedValue = today;
+    }
+
+    setForm({ ...form, [name]: updatedValue });
+    setInvalidFields({ ...invalidFields, [name]: false });
   };
 
   const handleSubmit = () => {
     const missing = {};
     Object.keys(form).forEach((key) => {
-      if (!form[key].trim()) missing[key] = true;
+      if (!form[key].trim()) {
+        missing[key] = true;
+      } else if (key === "email" && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form[key])) {
+        missing[key] = true;
+      }
     });
 
     if (Object.keys(missing).length > 0) {
@@ -60,12 +82,15 @@ function Students() {
             <input
               className={`dashboard-input ${invalidFields[field] ? "dashboard-input-error" : ""}`}
               name={field}
+              type={field === "date" ? "date" : "text"}
               value={form[field]}
               onChange={handleChange}
               placeholder={field[0].toUpperCase() + field.slice(1)}
             />
             {invalidFields[field] && (
-              <div className="dashboard-error-text">Please fill in the {field}</div>
+              <div className="dashboard-error-text">
+                {field === "email" ? "Please enter a valid email" : `Please fill in the ${field}`}
+              </div>
             )}
           </div>
         ))}

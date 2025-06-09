@@ -1,6 +1,6 @@
 import React from "react";
 import "./Help.css";
-
+import MyProfile from "../MyProfile/MyProfile";
 const Help = () => {
   return (
     <div className="help-page">
@@ -66,6 +66,7 @@ const Help = () => {
           />
         </div>
       </div>
+      <MyProfile></MyProfile>
     </div>
   );
 };
