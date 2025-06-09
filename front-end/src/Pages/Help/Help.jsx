@@ -66,7 +66,7 @@ const Help = () => {
           />
         </div>
       </div>
-      <MyProfile></MyProfile>
+      {/* <MyProfile></MyProfile> */}
     </div>
   );
 };

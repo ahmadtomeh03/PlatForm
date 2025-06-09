@@ -22,6 +22,8 @@ function Login() {
       .then((res) => {
         const { token, user, role } = res.data.data;
         const { username, id } = user;
+        console.log(res.data.data);
+        localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("student_id", id);
         login(token, username, role);
         navigate("/");

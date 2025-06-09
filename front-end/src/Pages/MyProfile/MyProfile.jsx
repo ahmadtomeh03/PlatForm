@@ -1,68 +1,47 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./MyProfile.css";
 import NavbarLoggedIn from "../../Components/Navbar/LoginBar";
 import CardMatirial from "../../Components/Card/CardMatirial";
+import { UserContext } from "../../Context/UserContext";
+import axios from "axios";
 
 const ProfilePage = () => {
-  const [profile, setProfile] = useState({
-    name: "Izkhem Nafee",
-    username: "Izkehm",
-    datejoined: "2024/10/30",
-    email: "ahmadtomeh@gmail.com",
-    address: {
-      street: "390 Market Street",
-      city: "San Francisco, CA",
-      zip: "94102",
-    },
-    details: {
-      facultyName: "College of Engineering and Technology",
-      major: "Computer System Engineering",
-      status: "Regular",
-      advisor: "Dr.Yazeed Sleet",
-      studnetNumber: "202110871",
-    },
-    studentSchedule: [
-      {
-        cID: "13139487",
-        cName: "Object Orientied Program",
-        cInstructor: "We use in this material Java language",
-        cTime: "11AM - 12 PM 'Sun,Tues,Th' ",
-        clocation: "H021",
-      },
-      {
-        cID: "13137787",
-        cName: "Data Structure",
-        cInstructor:
-          "In this course we use java language and use oop to create data structure",
-        cTime: "10AM - 11AM 'Sun,Tues,Th' ",
-        clocation: "H012",
-      }
-    ],
-    activity: [
-      { courseName: "Data Structre", courseID: "13139837" },
-      { courseName: "OOP", courseID: "13188837" },
-      { courseName: "Digital", courseID: "13299807" },
-    ],
-    studentUsed: [
-      {
-        mID: "#128930EA",
-        mCourseName: "Engineering Economics",
-        mUsed: "Summary of engineering economics by Saeed Jaber 2022",
-      },
-      {
-        mID: "#128989EA",
-        mCourseName: "OOP",
-        mUsed: "Final Exam Java 2022 first semster",
-      },
-    ],
-  });
+  const { role } = useContext(UserContext);
 
   const [editMode, setEditMode] = useState(false);
-  const [tempInfo, setTempInfo] = useState({
-    name: profile.name,
-    email: profile.email,
-    datejoined: profile.datejoined,
-  });
+  const [tempInfoStd, setTempInfoStd] = useState({});
+  const [tempInfoAdm, setTempInfoAdm] = useState({});
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (role === "student") {
+      axios
+        .get("http://localhost:3000/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          console.log(response.data.data);
+          setTempInfoStd(response.data.data);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch profile data:", error);
+        });
+    } else {
+      let isAdmin = true;
+      axios
+        .get("http://localhost:3000/admin-profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          console.log(response.data.data[0]);
+          setTempInfoAdm(response.data.data[0]);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch profile data:", error);
+        });
+    }
+  }, [role]);
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -70,35 +49,31 @@ const ProfilePage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTempInfo((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (role === "student") {
+      setTempInfoStd((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    } else {
+      setTempInfoAdm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSaveClick = () => {
-    setProfile((prev) => ({
-      ...prev,
-      name: tempInfo.name,
-      email: tempInfo.email,
-      datejoined: tempInfo.datejoined,
-    }));
     setEditMode(false);
+    // You can also send PATCH/PUT request here to save
   };
 
   const handleCancelClick = () => {
-    setTempInfo({
-      name: profile.name,
-      email: profile.email,
-      datejoined: profile.datejoined,
-    });
     setEditMode(false);
+    // Optional: refetch from server or reset to old values
   };
 
   return (
     <div>
-      {/* <NavbarLoggedIn /> */}
-
       <div className="profile-container">
         {/* Left Panel */}
         <div className="left-panel">
@@ -107,7 +82,11 @@ const ProfilePage = () => {
             alt="Profile"
             className="profile-image"
           />
-          <h2 style={{marginLeft: "25px"}}>{profile.username}</h2>
+          <h2 style={{ marginLeft: "25px" }}>
+            {role === "student"
+              ? tempInfoStd.student_username
+              : tempInfoAdm.admin_username}
+          </h2>
 
           <div className="profile-section">
             <div className="about-header">
@@ -117,43 +96,71 @@ const ProfilePage = () => {
               </button>
             </div>
 
-            <p>
-              <span className="profile-label">Email:</span> {profile.email}
-            </p>
-            <p>
-              <span className="profile-label">Full Name:</span> {profile.name}
-            </p>
-            <p>
-              <span className="profile-label">Date Joined:</span>{" "}
-              {profile.datejoined}
-            </p>
+            {role === "student" ? (
+              <>
+                <p>
+                  <span className="profile-label">Email:</span>{" "}
+                  {tempInfoStd.student_email}
+                </p>
+                <p>
+                  <span className="profile-label">Full Name:</span>{" "}
+                  {tempInfoStd.student_name}
+                </p>
+                <p>
+                  <span className="profile-label">Date Joined:</span>{" "}
+                  {tempInfoStd.date_of_register?.slice(0, 10)}
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  <span className="profile-label">Email:</span>{" "}
+                  {tempInfoAdm.admin_email}
+                </p>
+                <p>
+                  <span className="profile-label">Full Name:</span>{" "}
+                  {tempInfoAdm.admin_name}
+                </p>
+                <p>
+                  <span style={{width:"125px"}} className="profile-label">Date Registered:</span>{" "}
+                  {tempInfoAdm.date_of_register?.slice(0, 10)}
+                </p>
+
+                <p>
+                  <span style={{width:"125px"}} className="profile-label">Department ID:</span>{" "}
+                  {tempInfoAdm.department_id}
+                </p>
+
+                <p>
+                  <span  className="profile-label">Role:</span>{" "}
+                  {tempInfoAdm.role}
+                </p>
+              </>
+            )}
           </div>
         </div>
 
         {/* Right Panel */}
         <div className="right-panel">
           <div className="profile-section">
-            <h3 className="profile-heading">Student Schedule</h3>
+            <h3 className="profile-heading">{role} Schedule</h3>
             <div className="card-container">
-              {profile.studentSchedule.map((course, index) => (
-                <div className="course-card" key={index}>
-                  <CardMatirial
-                    description={course.cInstructor}
-                    nameOfCourse={course.cName}
-                  />
-                </div>
-              ))}
+              {/* Future: Add map rendering here */}
             </div>
           </div>
 
           <div className="profile-section">
             <h3 className="profile-heading">Favorite Courses</h3>
-            {/* You can uncomment and render the activity list here */}
+            <ul>
+              {/* Future: Add map rendering here */}
+            </ul>
           </div>
 
           <div className="profile-section">
             <h3 className="profile-heading">Latest Used</h3>
-            {/* You can uncomment and render the studentUsed list here */}
+            <ul>
+              {/* Future: Add map rendering here */}
+            </ul>
           </div>
         </div>
 
@@ -168,7 +175,11 @@ const ProfilePage = () => {
                 <input
                   type="text"
                   name="email"
-                  value={tempInfo.email}
+                  value={
+                    role === "student"
+                      ? tempInfoStd.student_email
+                      : tempInfoAdm.admin_email
+                  }
                   onChange={handleChange}
                 />
               </label>
@@ -177,16 +188,24 @@ const ProfilePage = () => {
                 <input
                   type="text"
                   name="name"
-                  value={tempInfo.name}
+                  value={
+                    role === "student"
+                      ? tempInfoStd.student_name
+                      : tempInfoAdm.admin_name
+                  }
                   onChange={handleChange}
                 />
               </label>
               <label>
-                Date Joined:
+                Username:
                 <input
                   type="text"
-                  name="datejoined"
-                  value={tempInfo.datejoined}
+                  name="username"
+                  value={
+                    role === "student"
+                      ? tempInfoStd.student_username
+                      : tempInfoAdm.admin_username
+                  }
                   onChange={handleChange}
                 />
               </label>
