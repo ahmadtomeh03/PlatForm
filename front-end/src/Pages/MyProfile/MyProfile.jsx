@@ -5,15 +5,40 @@ import CardMatirial from "../../Components/Card/CardMatirial";
 import { UserContext } from "../../Context/UserContext";
 import axios from "axios";
 
+import Courses from "../../Components/Dashboard/Courses";
+
 const ProfilePage = () => {
   const { role } = useContext(UserContext);
 
   const [editMode, setEditMode] = useState(false);
   const [tempInfoStd, setTempInfoStd] = useState({});
   const [tempInfoAdm, setTempInfoAdm] = useState({});
-
+  const dateAdm = new Date(tempInfoAdm.date_of_register);
+  const localDateAdm = dateAdm.toLocaleDateString('en-US', { timeZone: 'Asia/Gaza' });
+  const dateStd = new Date(tempInfoStd.date_of_register);
+  const localDateStd = dateStd.toLocaleDateString('en-US', { timeZone: 'Asia/Gaza' });
   const token = localStorage.getItem("token");
+  const [studentCourses, setStudentCourses] = useState([]);
+  const listOfStudentCourses= studentCourses.map((courses) =>{
+    return <CardMatirial nameOfCourse={courses.course_name} description={""} courseId={courses.course_id}></CardMatirial>
+  });
+  useEffect(() => {
+    axios.get("http://localhost:3000/student-course-list",{headers: { Authorization: `Bearer ${token}` }},)
 
+    .then((response) => {
+      
+      console.log("student courses",response.data.data);
+      setStudentCourses(response.data.data);
+      console.log(studentCourses);
+    })
+    .catch((error) => {
+      console.error("Failed to fetch profile data:", error);
+    });
+
+
+
+
+  },[])
   useEffect(() => {
     if (role === "student") {
       axios
@@ -28,7 +53,6 @@ const ProfilePage = () => {
           console.error("Failed to fetch profile data:", error);
         });
     } else {
-      let isAdmin = true;
       axios
         .get("http://localhost:3000/admin-profile", {
           headers: { Authorization: `Bearer ${token}` },
@@ -61,11 +85,57 @@ const ProfilePage = () => {
       }));
     }
   };
+  
 
   const handleSaveClick = () => {
-    setEditMode(false);
-    // You can also send PATCH/PUT request here to save
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+  
+    if (role === "student") {
+      const updatedStudentData = {
+        student_name: tempInfoStd.student_name,
+        student_email: tempInfoStd.student_email,
+        student_username: tempInfoStd.student_username,
+      };
+  
+      axios
+        .put("http://localhost:3000/student/update-profile", updatedStudentData, { headers })
+        .then((res) => {
+          console.log("Student update successful:", res.data);
+          setEditMode(false);
+          return axios.get("http://localhost:3000/profile", { headers });
+        })
+        .then((res) => {
+          setTempInfoStd(res.data.data);
+        })
+        .catch((err) => {
+          console.error("Student update failed:", err.response?.data || err.message);
+        });
+    } else {
+      const updatedAdminData = {
+        admin_name: tempInfoAdm.admin_name,
+        admin_email: tempInfoAdm.admin_email,
+        admin_username: tempInfoAdm.admin_username,
+      };
+  
+      axios
+        .put("http://localhost:3000/admin/update-profile", updatedAdminData, { headers })
+        .then((res) => {
+          console.log("Admin update successful:", res.data);
+          setEditMode(false);
+          return axios.get("http://localhost:3000/admin-profile", { headers });
+        })
+        .then((res) => {
+          setTempInfoAdm(res.data.data[0]);
+        })
+        .catch((err) => {
+          console.error("Admin update failed:", err.response?.data || err.message);
+        });
+    }
   };
+  
+  
 
   const handleCancelClick = () => {
     setEditMode(false);
@@ -108,7 +178,7 @@ const ProfilePage = () => {
                 </p>
                 <p>
                   <span className="profile-label">Date Joined:</span>{" "}
-                  {tempInfoStd.date_of_register?.slice(0, 10)}
+                  {localDateStd}
                 </p>
               </>
             ) : (
@@ -123,7 +193,7 @@ const ProfilePage = () => {
                 </p>
                 <p>
                   <span style={{width:"125px"}} className="profile-label">Date Registered:</span>{" "}
-                  {tempInfoAdm.date_of_register?.slice(0, 10)}
+                  {localDateAdm}
                 </p>
 
                 <p>
@@ -145,7 +215,9 @@ const ProfilePage = () => {
           <div className="profile-section">
             <h3 className="profile-heading">{role} Schedule</h3>
             <div className="card-container">
-              {/* Future: Add map rendering here */}
+              
+              {listOfStudentCourses}
+              {console.log("saeed",studentCourses)}
             </div>
           </div>
 
@@ -165,6 +237,7 @@ const ProfilePage = () => {
         </div>
 
         {/* Edit Modal */}
+        {/* Edit Modal */}
         {editMode && (
           <>
             <div className="overlay" />
@@ -174,7 +247,7 @@ const ProfilePage = () => {
                 Email:
                 <input
                   type="text"
-                  name="email"
+                  name={role === "student" ? "student_email" : "admin_email"}
                   value={
                     role === "student"
                       ? tempInfoStd.student_email
@@ -187,7 +260,7 @@ const ProfilePage = () => {
                 Full Name:
                 <input
                   type="text"
-                  name="name"
+                  name={role === "student" ? "student_name" : "admin_name"}
                   value={
                     role === "student"
                       ? tempInfoStd.student_name
@@ -200,7 +273,7 @@ const ProfilePage = () => {
                 Username:
                 <input
                   type="text"
-                  name="username"
+                  name={role === "student" ? "student_username" : "admin_username"}
                   value={
                     role === "student"
                       ? tempInfoStd.student_username
@@ -216,6 +289,7 @@ const ProfilePage = () => {
             </div>
           </>
         )}
+
       </div>
     </div>
   );
