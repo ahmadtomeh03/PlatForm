@@ -1,0 +1,195 @@
+import React, { useState } from "react";
+import "./MainDashboard.css";
+
+function UploadedFiles() {
+  const [files, setFiles] = useState([
+    {
+      course_id: "CSE101",
+      uploaded_state: "pending",
+      uploaded_type: "assignment",
+      uploaded_datetime: "2024-06-01T10:00",
+      upload_name: "report.pdf",
+      doctor_name: "Dr. Smith",
+      upload_url: "http://example.com/report.pdf",
+      description: "First assignment"
+    }
+  ]);
+
+  const initialForm = {
+    course_id: "",
+    uploaded_state: "",
+    uploaded_type: "",
+    uploaded_datetime: "",
+    upload_name: "",
+    doctor_name: "",
+    upload_url: "",
+    description: ""
+  };
+
+  const [form, setForm] = useState(initialForm);
+  const [invalidFields, setInvalidFields] = useState({});
+  const [searchBy, setSearchBy] = useState("upload_name");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [confirmItem, setConfirmItem] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value.trimStart() });
+    setInvalidFields({ ...invalidFields, [name]: false });
+  };
+
+  const handleSubmit = () => {
+    const missing = {};
+    Object.keys(form).forEach((key) => {
+      if (!form[key].trim()) {
+        missing[key] = true;
+      }
+    });
+
+    if (Object.keys(missing).length > 0) {
+      setInvalidFields(missing);
+      return;
+    }
+
+    setFiles([...files, { ...form }]);
+    setForm(initialForm);
+    setInvalidFields({});
+  };
+
+  const handleDelete = (item) => {
+    setConfirmItem(item);
+  };
+
+  const confirmDelete = () => {
+    setFiles(files.filter((f) => f !== confirmItem));
+    setConfirmItem(null);
+  };
+
+  const cancelDelete = () => {
+    setConfirmItem(null);
+  };
+
+  const handleAccept = (item) => {
+    setFiles(files.map((f) => f === item ? { ...f, uploaded_state: "accepted" } : f));
+  };
+
+  const handleReject = (item) => {
+    setFiles(files.map((f) => f === item ? { ...f, uploaded_state: "rejected" } : f));
+  };
+
+  const formatDateTime = (value) => {
+    const date = new Date(value);
+    return isNaN(date) ? "" : date.toLocaleString();
+  };
+
+  const filtered = files.filter((f) =>
+    f[searchBy]?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="dashboard-section">
+      <h1 className="dashboard-title">Uploaded Files</h1>
+
+      {/* Form */}
+      <div className="dashboard-form">
+        {Object.keys(initialForm).map((field) => (
+          <div key={field}>
+            <input
+              className={`dashboard-input ${invalidFields[field] ? "dashboard-input-error" : ""}`}
+              name={field}
+              type={field.includes("datetime") ? "datetime-local" : "text"}
+              value={form[field]}
+              onChange={handleChange}
+              placeholder={field.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+            />
+            {invalidFields[field] && (
+              <div className="dashboard-error-text">Please fill in {field}</div>
+            )}
+          </div>
+        ))}
+        <button className="dashboard-button" onClick={handleSubmit}>Add File</button>
+      </div>
+
+      {/* Search Filter */}
+      <div className="dashboard-filter-group">
+        <label className="dashboard-filter-label">Search by:</label>
+        <select
+          className="dashboard-input"
+          value={searchBy}
+          onChange={(e) => setSearchBy(e.target.value)}
+        >
+          {Object.keys(initialForm).map((field) => (
+            <option key={field} value={field}>{field}</option>
+          ))}
+        </select>
+        <input
+          className="dashboard-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search..."
+        />
+      </div>
+
+      {/* Table */}
+      <table className="dashboard-table">
+        <thead>
+          <tr>
+            {Object.keys(initialForm).map((field) => (
+              <th key={field} className="dashboard-th">{field}</th>
+            ))}
+            <th className="dashboard-th">Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filtered.map((f, index) => (
+            <tr key={index}>
+              {Object.entries(f).map(([key, value]) => (
+                <td key={key} className="dashboard-td">
+                  {key === "uploaded_datetime" ? formatDateTime(value) : value}
+                </td>
+              ))}
+              <td className="dashboard-td">
+                <div className="dashboard-operation-buttons">
+                  <button
+                    title="Accept"
+                    className="dashboard-icon-button accept"
+                    onClick={() => handleAccept(f)}
+                  >
+                    ✅
+                  </button>
+                  <button
+                    title="Reject"
+                    className="dashboard-icon-button reject"
+                    onClick={() => handleReject(f)}
+                  >
+                    ❌
+                  </button>
+                  <button
+                    title="Delete"
+                    className="dashboard-icon-button delete"
+                    onClick={() => handleDelete(f)}
+                  >
+                    🗑
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Confirm Modal */}
+      {confirmItem && (
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal">
+            <p>Are you sure you want to delete this file?</p>
+            <button className="dashboard-button" onClick={confirmDelete}>Yes</button>
+            <button className="dashboard-button" onClick={cancelDelete}>No</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default UploadedFiles;

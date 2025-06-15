@@ -272,3 +272,33 @@
   font-weight: bold;
   user-select: none;
 }
+.dashboard-operation-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dashboard-icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.dashboard-icon-button:hover {
+  transform: scale(1.2);
+}
+
+.dashboard-icon-button.accept {
+  color: green;
+}
+
+.dashboard-icon-button.reject {
+  color: red;
+}
+
+.dashboard-icon-button.delete {
+  color: gray;
+}
