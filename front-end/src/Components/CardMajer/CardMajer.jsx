@@ -1,20 +1,48 @@
 import { useNavigate } from "react-router-dom";
 import "./CardMajer.css";
+import ButtonDelete from "../ButtonDelete/ButtonDelete";
+import axios from "axios";
+import React from "react";
+import { UserContext } from "../../Context/UserContext";
 export default function CardMajer({
   nameOfMajer,
   decription,
   collegeId,
   majorId,
+  onDelete,
 }) {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const handleToDelete = () => {
+    axios
+      .delete(`http://localhost:3000/admin/department-delete/${majorId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("College deleted successfully", response.data);
+        onDelete(majorId);
+      })
+      .catch((error) => {
+        console.error("Error deleting college", error);
+      });
+  };
 
   const handleToCourse = () => {
     navigate(`/college/${collegeId}/${majorId}`);
   };
+  const { role } = React.useContext(UserContext);
+
   return (
     <div className="new-card">
       <div className="new-card-content">
         <div className="new-card-body">
+          {role == "superadmin" && (
+            <div onClick={handleToDelete}>
+              <ButtonDelete />
+            </div>
+          )}
           <h2 className="new-card-title">{nameOfMajer}</h2>
           <p className="new-card-description">{decription}</p>
         </div>

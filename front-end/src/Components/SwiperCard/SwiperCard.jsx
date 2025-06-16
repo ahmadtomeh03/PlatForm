@@ -5,10 +5,12 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
 function SwiperCard({ CardComponent, type }) {
   const [openPdfIndex, setOpenPdfIndex] = useState(null);
   const [materialDetails, setMaterialDetails] = useState([]);
   const { materialId } = useParams();
+  const BASE_URL = "http://localhost:3000";
 
   useEffect(() => {
     axios
@@ -22,6 +24,23 @@ function SwiperCard({ CardComponent, type }) {
       });
   }, [materialId]);
 
+  // Dynamically get ID, name, path
+  const getId = (item) => {
+    return item[`${type}_id`];
+  };
+
+  const getName = (item) => {
+    return item[`${type}_name`] || "No name";
+  };
+
+  const getPath = (item) => {
+    return item[`${type}_path`];
+  };
+
+  const handleDelete = (id) => {
+    setMaterialDetails((prev) => prev.filter((item) => getId(item) !== id));
+  };
+
   return (
     <div className="swiper-container">
       <Swiper
@@ -30,14 +49,16 @@ function SwiperCard({ CardComponent, type }) {
         slidesPerView="auto"
         navigation
       >
-        {materialDetails.map((summary, i) => (
+        {materialDetails.map((item, i) => (
           <SwiperSlide key={i} className="!w-[320px]">
             <CardComponent
-              nameOfMaterial={summary.exam_name || "No name"}
-              nameOfDector={summary.doctor_name}
-              midOrFinal={summary.description}
+              id_type={getId(item)}
+              nameOfMaterial={getName(item)}
+              nameOfDector={item.doctor_name}
+              midOrFinal={item.description}
               isOpen={openPdfIndex === i}
               onToggle={() => setOpenPdfIndex(openPdfIndex === i ? null : i)}
+              onDelete={() => handleDelete(getId(item))}
             />
           </SwiperSlide>
         ))}
@@ -46,7 +67,7 @@ function SwiperCard({ CardComponent, type }) {
       {openPdfIndex !== null && (
         <div className="mt-6 w-full px-4">
           <iframe
-            src={materialDetails[openPdfIndex].exam_path}
+            src={`${BASE_URL}/${getPath(materialDetails[openPdfIndex])}`}
             width="100%"
             height="500px"
             className="rounded border border-gray-300"

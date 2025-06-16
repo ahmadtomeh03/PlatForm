@@ -1,9 +1,33 @@
-import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import ButtonAdd from "../ButtonAdd/ButtonAdd";
+import ButtonDelete from "../ButtonDelete/ButtonDelete";
+import { UserContext } from "../../Context/UserContext";
+import MultiInputAlert from "../MultiInputAlert/MultiInputAlert";
+import Swal from "sweetalert2";
 const Department = () => {
   const [colleges, setColleges] = useState([]);
+  const { role } = useContext(UserContext);
+  const token = localStorage.getItem("token");
+  const handleToDelete = (college_id) => {
+    axios
+      .delete(`http://localhost:3000/admin/college-delete/${college_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("College deleted successfully", response.data);
+        setColleges((prevColleges) =>
+          prevColleges.filter((college) => college.college_id !== college_id)
+        );
+      })
+      .catch((error) => {
+        console.error("Error deleting college", error);
+      });
+  };
 
   useEffect(() => {
     axios
@@ -16,13 +40,51 @@ const Department = () => {
         console.log(error);
       });
   }, []);
+  const handleToAdd = async () => {
+    const result = await MultiInputAlert({
+      title: "Inter New College",
+      inputs: [{ id: "name", placeholder: "College Name" }],
+      validate: () => {
+        return null;
+      },
+    });
+    if (result) {
+      console.log(result.name);
 
+      Swal.fire(
+        "Success",
+        `You entered:<br>${JSON.stringify(result)}`,
+        "success"
+      );
+      axios
+        .post(
+          "http://localhost:3000/admin/college-create",
+          { college_name: result.name },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      Swal.fire("Cancelled", "You closed the alert", "info");
+    }
+  };
   return (
     <div>
       <div
         className="flex flex-row flex-wrap justify-evenly items-center"
         style={{ marginTop: "8px" }}
       >
+        {role == "superadmin" && (
+          <ButtonAdd handleToAdd={handleToAdd} type={"College"} />
+        )}
         {colleges.map((faculty, index) => (
           <Link key={faculty.college_id} to={`/college/${faculty.college_id}`}>
             <motion.div
@@ -38,6 +100,19 @@ const Department = () => {
               className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] w-[400px] h-[200px] flex flex-col justify-center items-center"
               style={{ margin: "8px" }}
             >
+              {role == "superadmin" && (
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (window.confirm("هل أنت متأكد من حذف الكلية؟")) {
+                      handleToDelete(faculty.college_id);
+                    }
+                  }}
+                >
+                  <ButtonDelete />
+                </div>
+              )}
+
               <h3 className="text-xl font-semibold text-center">
                 {faculty.college_name}
               </h3>

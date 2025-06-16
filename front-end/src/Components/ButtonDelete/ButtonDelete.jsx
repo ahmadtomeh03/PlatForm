@@ -1,7 +1,7 @@
 import "./ButtonDelete.css";
-export default function ButtonDelete() {
+export default function ButtonDelete({handleToDelete}) {
   return (
-    <button className="bin-button-delete">
+    <button className="bin-button-delete" onClick={handleToDelete}>
       <svg
         className="bin-top-delete"
         viewBox="0 0 39 7"

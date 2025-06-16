@@ -40,7 +40,7 @@ export default function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/dashboard" element={<MainDashboard />} />
         </Routes>
-        <Chatbot></Chatbot>
+        {/* <Chatbot></Chatbot> */}
       </div>
     </UserProvider>
   );

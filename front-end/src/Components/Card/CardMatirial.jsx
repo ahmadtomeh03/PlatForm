@@ -5,10 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ButtonDelete from "../ButtonDelete/ButtonDelete";
 
-export default function CardMatirial({ nameOfCourse, description, courseId }) {
+export default function CardMatirial({
+  nameOfCourse,
+  description,
+  courseId,
+  dc_id,
+  onDeleteSuccess,
+}) {
   const navigate = useNavigate();
-  const { isLogin } = React.useContext(UserContext);
+  const { isLogin, role } = React.useContext(UserContext);
   const studentId = localStorage.getItem("student_id");
   const token = localStorage.getItem("token");
 
@@ -28,7 +35,25 @@ export default function CardMatirial({ nameOfCourse, description, courseId }) {
   const handleClick = () => {
     navigate("details");
   };
-
+  const handleToDelete = (e) => {
+    e.stopPropagation();
+    axios
+      .delete(`http://localhost:3000/admin/deleteDC/${dc_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("College deleted successfully", response.data);
+        console.log(dc_id);
+        if (onDeleteSuccess) {
+          onDeleteSuccess(dc_id);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting college", error);
+      });
+  };
   const handleToSubmit = () => {
     axios
       .post("http://localhost:3000/student-course-create", studentCourse, {
@@ -54,6 +79,12 @@ export default function CardMatirial({ nameOfCourse, description, courseId }) {
         <div className="card___wrapper-acounts">
           <div className="card__acounts">{nameOfCourse.charAt(0)}</div>
         </div>
+        {role == "superadmin" && (
+          <div onClick={handleToDelete}>
+            <ButtonDelete />
+          </div>
+        )}
+
         {isLogin && (
           <div className="card__menu-buttons">
             <button className="btn-save" title="Save" onClick={handleToSubmit}>

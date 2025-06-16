@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import axios from "axios";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -6,8 +6,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./CardUpload.css";
 import DetailsUpload from "./DetailsUpload";
 import { useParams } from "react-router-dom";
+import { UserContext } from "../../Context/UserContext";
+import Swal from "sweetalert2";
 
-export default function CardUpload() {
+export default function CardUpload({ onClose }) {
+  const [showCard, setShowCard] = useState(true);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [nameOfDoctor, setNameOfDoctor] = useState("");
@@ -24,6 +27,7 @@ export default function CardUpload() {
   const { materialId } = useParams();
   const student_id = localStorage.getItem("student_id");
   const token = localStorage.getItem("token");
+  const { role } = useContext(UserContext);
   const handleClick = () => fileInputRef.current.click();
 
   const handleFileChange = (e) => {
@@ -49,33 +53,80 @@ export default function CardUpload() {
       alert("يرجى تعبئة جميع الحقول واختيار ملف.");
       return;
     }
-    const formData = new FormData();
-    formData.append("upload_name", selectedFile.name);
-    formData.append("doctor_name", nameOfDoctor);
-    formData.append("uploaded_type", type);
-    formData.append("description", description);
-    formData.append("course_id", materialId);
-    formData.append("file", selectedFile);
+    if (!token || (role !== "student" && role !== "superadmin")) {
+      alert("غير مصرح لك برفع الملفات. الرجاء تسجيل الدخول بحساب صالح.");
+      return;
+    }
 
-    try {
-      setLoading(true);
-      const res = await axios.post(
-        "http://localhost:3000/student/upload",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("✅ تم الرفع بنجاح:", res.data);
-    } catch (err) {
-      console.error("❌ فشل في الرفع:", err.response?.data || err.message);
-      alert("حدث خطأ أثناء رفع الملف");
-    } finally {
-      setLoading(false);
+    const formData = new FormData();
+    if (role == "superadmin") {
+      formData.append(`${type}_name`, selectedFile.name);
+      formData.append("doctor_name", nameOfDoctor);
+      formData.append("description", description);
+      formData.append("course_id", materialId);
+      formData.append("file", selectedFile);
+      try {
+        setLoading(true);
+        const res = await axios.post(
+          `http://localhost:3000/admin/${type}-create`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("✅ تم الرفع بنجاح:", res.data);
+        Swal.fire({
+          icon: "success",
+          title: "تم رفع الملف بنجاح",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        onClose();
+      } catch (err) {
+        console.error("❌ فشل في الرفع:", err.response?.data || err.message);
+        alert("حدث خطأ أثناء رفع الملف");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      formData.append("upload_name", selectedFile.name);
+      formData.append("doctor_name", nameOfDoctor);
+      formData.append("uploaded_type", type);
+      formData.append("description", description);
+      formData.append("course_id", materialId);
+      formData.append("file", selectedFile);
+
+      try {
+        setLoading(true);
+        const res = await axios.post(
+          "http://localhost:3000/student/upload",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("✅ تم الرفع بنجاح:", res.data);
+        Swal.fire({
+          icon: "success",
+          title: "تم رفع الملف بنجاح",
+          text: "تم إرسال الملف للمشرف وبانتظار الموافقة.",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        onClose();
+      } catch (err) {
+        console.error("❌ فشل في الرفع:", err.response?.data || err.message);
+        alert("حدث خطأ أثناء رفع الملف");
+      } finally {
+        setLoading(false);
+      }
     }
   };
+  if (!showCard) return null;
   return (
     <div className="modal">
       <div className="modal-header">

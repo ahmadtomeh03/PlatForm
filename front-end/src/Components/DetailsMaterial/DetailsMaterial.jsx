@@ -1,9 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-import AccordionUsage from "../Accordion/AccordionUsage";
 import ButtonBack from "../GoBack/ButtonBack";
-import Summaries from "../Summaries/Summaries";
 import Tabs from "../Tabs/Tabs";
-import Vedio from "../Vedio/Vedio";
 import ButtonUpload from "../ButtonUpload/ButtonUpload";
 import { useState } from "react";
 import CardUpload from "../CardUpload/CardUpload";
@@ -41,7 +38,7 @@ export default function DetailsMaterial() {
             className="fixed top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2 w-[30%]"
             style={{ marginTop: "30px" }}
           >
-            <CardUpload />
+            <CardUpload onClose={() => setShowModal(false)} />
           </div>
         </>
       )}

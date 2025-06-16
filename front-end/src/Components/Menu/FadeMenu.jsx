@@ -14,7 +14,7 @@ import Box from "@mui/material/Box";
 
 export default function FadeMenu() {
   const navigate = useNavigate();
-  const { logout, username } = React.useContext(UserContext);
+  const { logout, username, role } = React.useContext(UserContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -92,7 +92,7 @@ export default function FadeMenu() {
               {username}
             </Typography>
             <Typography variant="caption" color="gray">
-              Student Account
+              {role} Account
             </Typography>
           </Box>
         </Box>
