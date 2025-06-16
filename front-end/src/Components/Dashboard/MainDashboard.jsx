@@ -4,6 +4,7 @@ import Admins from "./Admins";
 import Courses from "./Courses";
 import "./MainDashboard.css";
 import Upload from "./Upload";
+import Archive from "./Archive";
 
 function MainDashboard() {
   const [section, setSection] = useState("students");
@@ -17,6 +18,7 @@ function MainDashboard() {
           <button onClick={() => setSection("admins")}>Admins</button>
           <button onClick={() => setSection("courses")}>Courses</button>
           <button onClick={() => setSection("upload")}>Uploaded</button>
+          <button onClick={() => setSection("Archive")}>Archived</button>
         </nav>
       </aside>
       <main className="dashboard-main-content">
@@ -24,6 +26,7 @@ function MainDashboard() {
         {section === "admins" && <Admins />}
         {section === "courses" && <Courses />}
         {section ==="upload" && <Upload />}
+        {section ==="Archive" && <Archive />}
       </main>
     </div>
   );

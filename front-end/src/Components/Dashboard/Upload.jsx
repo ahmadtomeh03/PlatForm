@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./MainDashboard.css";
 
-function UploadedFiles() {
+function Upload() {
   const [files, setFiles] = useState([
     {
       course_id: "CSE101",
@@ -192,4 +192,4 @@ function UploadedFiles() {
   );
 }
 
-export default UploadedFiles;
+export default Upload;
