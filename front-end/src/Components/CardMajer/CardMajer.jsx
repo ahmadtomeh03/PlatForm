@@ -4,15 +4,56 @@ import ButtonDelete from "../ButtonDelete/ButtonDelete";
 import axios from "axios";
 import React from "react";
 import { UserContext } from "../../Context/UserContext";
+import MultiInputAlert from "../MultiInputAlert/MultiInputAlert";
+import Swal from "sweetalert2";
+import { IconButton } from "@mui/material";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+
 export default function CardMajer({
   nameOfMajer,
   decription,
   collegeId,
   majorId,
   onDelete,
+  onEdit,
 }) {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const handleToEdit = async () => {
+    const result = await MultiInputAlert({
+      title: "تعديل بيانات التخصص",
+      inputs: [{ id: "name", placeholder: "اسم التخصص", value: nameOfMajer }],
+      validate: () => null,
+    });
+    if (result) {
+      try {
+        await axios.put(
+          `http://localhost:3000/admin/department-update/${majorId}`,
+          { departments_name: result.name },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        onEdit(majorId, result.name);
+        Swal.fire({
+          icon: "success",
+          title: "تم التعديل بنجاح",
+          text: "تم تحديث بيانات الكلية.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          icon: "error",
+          title: "فشل التعديل",
+          text: "حدث خطأ أثناء تعديل الكلية",
+        });
+      }
+    }
+  };
   const handleToDelete = () => {
     axios
       .delete(`http://localhost:3000/admin/department-delete/${majorId}`, {
@@ -41,6 +82,18 @@ export default function CardMajer({
           {role == "superadmin" && (
             <div onClick={handleToDelete}>
               <ButtonDelete />
+            </div>
+          )}
+          {role == "superadmin" && (
+            <div
+              onClick={(e) => {
+                e.preventDefault();
+                handleToEdit();
+              }}
+            >
+              <IconButton aria-label="delete" size="large">
+                <EditNoteIcon fontSize="inherit" />
+              </IconButton>
             </div>
           )}
           <h2 className="new-card-title">{nameOfMajer}</h2>

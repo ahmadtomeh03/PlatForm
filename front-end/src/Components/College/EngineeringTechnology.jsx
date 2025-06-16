@@ -18,6 +18,14 @@ export default function EngineeringTechnology() {
       prevMajors.filter((major) => major.departments_id !== deletedId)
     );
   };
+  const handleEditMajorInState = (id, newName) => {
+    setMajors((prevMajors) =>
+      prevMajors.map((m) =>
+        m.departments_id === id ? { ...m, departments_name: newName } : m
+      )
+    );
+  };
+
   const handleToAdd = async () => {
     const result = await MultiInputAlert({
       title: "Inter New Department",
@@ -85,6 +93,7 @@ export default function EngineeringTechnology() {
             collegeId={collegeId}
             majorId={major.departments_id}
             onDelete={handleDeleteMajorFromState}
+            onEdit={handleEditMajorInState}
           />
         ))}
       </div>

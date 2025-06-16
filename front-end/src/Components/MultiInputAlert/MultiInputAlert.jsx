@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+
 export default async function MultiInputAlert({
   title = "Enter Details",
   inputs = [],
@@ -9,7 +10,7 @@ export default async function MultiInputAlert({
       (input) =>
         `<input id="${input.id}" class="swal2-input" placeholder="${
           input.placeholder
-        }" type="${input.type || "text"}">`
+        }" type="${input.type || "text"}" value="${input.value || ""}">`
     )
     .join("");
 

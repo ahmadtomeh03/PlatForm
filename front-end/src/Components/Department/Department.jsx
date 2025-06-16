@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -7,10 +7,59 @@ import ButtonDelete from "../ButtonDelete/ButtonDelete";
 import { UserContext } from "../../Context/UserContext";
 import MultiInputAlert from "../MultiInputAlert/MultiInputAlert";
 import Swal from "sweetalert2";
+import IconButton from "@mui/material/IconButton";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+
 const Department = () => {
   const [colleges, setColleges] = useState([]);
   const { role } = useContext(UserContext);
   const token = localStorage.getItem("token");
+  // edit the college
+  const handleToEdit = async (faculty) => {
+    const result = await MultiInputAlert({
+      title: "تعديل بيانات الكلية",
+      inputs: [
+        { id: "name", placeholder: "اسم الكلية", value: faculty.college_name },
+      ],
+      validate: () => null,
+    });
+    console.log(faculty.college_id);
+    if (result) {
+      try {
+        await axios.put(
+          `http://localhost:3000/admin/update-college/${faculty.college_id}`,
+          { college_name: result.name },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        Swal.fire({
+          icon: "success",
+          title: "تم التعديل بنجاح",
+          text: "تم تحديث بيانات الكلية.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        setColleges((prev) =>
+          prev.map((item) =>
+            item.college_id === faculty.college_id
+              ? { ...item, college_name: result.name }
+              : item
+          )
+        );
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          icon: "error",
+          title: "فشل التعديل",
+          text: "حدث خطأ أثناء تعديل الكلية",
+        });
+      }
+    }
+  };
+  // delete the college
   const handleToDelete = (college_id) => {
     axios
       .delete(`http://localhost:3000/admin/college-delete/${college_id}`, {
@@ -110,6 +159,18 @@ const Department = () => {
                   }}
                 >
                   <ButtonDelete />
+                </div>
+              )}
+              {role == "superadmin" && (
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleToEdit(faculty);
+                  }}
+                >
+                  <IconButton aria-label="delete" size="large">
+                    <EditNoteIcon fontSize="inherit" />
+                  </IconButton>
                 </div>
               )}
 
