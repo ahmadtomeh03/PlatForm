@@ -1,22 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
+import axios from "axios";
 
 function Archive() {
-  const [archives, setArchives] = useState([
-    {
-      id: "A001", // added id field
-      content_id: "CNT123",
-      type: "pdf",
-      file_path: "http://example.com/report.pdf",
-      deleted_by: "Admin1",
-      deleted_at: "2024-06-10T15:30",
-      original_data: "Assignment report content",
-    },
-  ]);
+  const [archives, setArchives] = useState([]);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/admin/list-archive", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("get archive successfully", response.data.data);
+        setArchives(response.data.data);
+      })
+      .catch((error) => {
+        console.error("error getting archive", error);
+      });
+  }, []);
 
   const [searchBy, setSearchBy] = useState("content_id");
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // For Restore confirmation
   const [confirmRestoreItem, setConfirmRestoreItem] = useState(null);
   // For Delete confirmation
@@ -30,7 +38,7 @@ function Archive() {
   const fields = [
     "id",
     "content_id",
-    "type",
+    "content_type",
     "file_path",
     "deleted_by",
     "deleted_at",
@@ -38,7 +46,7 @@ function Archive() {
   ];
 
   const filtered = archives.filter((f) =>
-    f[searchBy]?.toLowerCase().includes(searchQuery.toLowerCase())
+    f[searchBy]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Restore handlers

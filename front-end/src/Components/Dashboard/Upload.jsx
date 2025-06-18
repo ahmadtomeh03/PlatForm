@@ -1,24 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
+import axios from "axios";
 
 function Upload() {
-  const [files, setFiles] = useState([
-    {
-      id: "F001",
-      std_id: "S123",
-      admin_id: "A001",
-      uploaded_state: "pending",
-      uploaded_type: "assignment",
-      uploaded_datetime: "2024-06-01T10:00",
-      upload_name: "report.pdf",
-      doctor_name: "Dr. Smith",
-      upload_url: "http://example.com/report.pdf",
-      description: "First assignment",
-    },
-  ]);
-
+  const [files, setFiles] = useState([]);
   const initialForm = {
     id: "",
+    course_Id: "",
     std_id: "",
     admin_id: "",
     uploaded_state: "",
@@ -29,12 +17,26 @@ function Upload() {
     upload_url: "",
     description: "",
   };
-
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/admin/uploads-filter", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("get upload successfully", response.data.data);
+        setFiles(response.data.data);
+      })
+      .catch((error) => {
+        console.error("error getting upload", error);
+      });
+  }, []);
   const [form, setForm] = useState(initialForm);
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("upload_name");
   const [searchQuery, setSearchQuery] = useState("");
-
   const [confirmItem, setConfirmItem] = useState(null);
   const [confirmAcceptItem, setConfirmAcceptItem] = useState(null);
   const [confirmRejectItem, setConfirmRejectItem] = useState(null);
@@ -239,6 +241,5 @@ function Upload() {
     </div>
   );
 }
-
 
 export default Upload;
