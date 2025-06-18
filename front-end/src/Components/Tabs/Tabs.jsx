@@ -7,6 +7,7 @@ import CardSlides from "../CardSlides/CardSlides";
 import SwiperCard from "../SwiperCard/SwiperCard";
 import Progress from "../Progress";
 import Vedio from "../Vedio/Vedio";
+import CardAssigment from "../CardAssigment/CardAssigment";
 
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState("lectures");
@@ -49,6 +50,14 @@ export default function Tabs() {
             type={"slide"}
           />
         );
+      case "assignment":
+        return (
+          <SwiperCard
+            key={selectedTab}
+            CardComponent={CardAssigment}
+            type={"assignment"}
+          />
+        );
       default:
         return null;
     }
@@ -56,7 +65,7 @@ export default function Tabs() {
 
   return (
     <div
-      className="radio "
+      className="radio"
       style={{
         margin: "10px",
       }}
@@ -106,6 +115,15 @@ export default function Tabs() {
             onChange={() => setSelectedTab("slides")}
           />
           <span className="name">Slides</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="value-radio"
+            checked={selectedTab === "assignment"}
+            onChange={() => setSelectedTab("assignment")}
+          />
+          <span className="name">Assignment</span>
         </label>
         <span className="selection"></span>
       </div>

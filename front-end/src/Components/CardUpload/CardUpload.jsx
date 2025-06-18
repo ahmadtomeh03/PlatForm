@@ -49,11 +49,14 @@ export default function CardUpload({ onClose }) {
     console.log(obj);
   }
   const handleUpload = async () => {
-    if (!selectedFile || !nameOfDoctor || !type || !description) {
+    if (!selectedFile || !nameOfDoctor || !type) {
       alert("يرجى تعبئة جميع الحقول واختيار ملف.");
       return;
     }
-    if (!token || (role !== "student" && role !== "superadmin")) {
+    if (
+      !token ||
+      (role !== "student" && role !== "superadmin" && role !== "admin")
+    ) {
       alert("غير مصرح لك برفع الملفات. الرجاء تسجيل الدخول بحساب صالح.");
       return;
     }

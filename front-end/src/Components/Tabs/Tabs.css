@@ -15,7 +15,7 @@
 }
 
 .radio-input label {
-  width: 20%;
+  width: 16.666%;
   padding: 10px;
   cursor: pointer;
   display: flex;
@@ -31,7 +31,7 @@
   display: none;
   position: absolute;
   height: 100%;
-  width: 20%;
+  width: 16.666%;
   z-index: 0;
   left: 0;
   top: 0;
@@ -63,6 +63,9 @@
 
 .radio-input label:nth-of-type(5):has(input:checked) ~ .selection {
   transform: translateX(400%);
+}
+.radio-input label:nth-of-type(6):has(input:checked) ~ .selection {
+  transform: translateX(500%);
 }
 .name {
   font-weight: 100;
