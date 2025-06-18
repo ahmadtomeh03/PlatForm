@@ -1,7 +1,8 @@
 .card-slide {
   position: relative;
   min-width: 250px;
-  min-height: 250px;
+
+  min-height: 300px;
   border-radius: 16px;
   overflow: hidden;
   display: flex;
