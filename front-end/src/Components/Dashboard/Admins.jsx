@@ -1,5 +1,7 @@
-import React, { useState } from "react";
 import "./MainDashboard.css";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
 
 function Admins() {
   const [admins, setAdmins] = useState([
@@ -34,6 +36,7 @@ function Admins() {
     std_id: "",
     dep_id: "",
   });
+  const token = localStorage.getItem("token");
 
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("name");
@@ -70,6 +73,22 @@ function Admins() {
     setInvalidFields({});
   };
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/admins-list-filters", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("get admin successfully", response.data.data);
+        setAdmins(response.data.data);
+      })
+      .catch((error) => {
+        console.error("error getting student", error);
+      });
+  }, []);
+
   const handleDelete = (id) => setConfirmId(id);
   const confirmDelete = () => {
     setAdmins(admins.filter((admin) => admin.id !== confirmId));
@@ -88,7 +107,7 @@ function Admins() {
     promoteId != null
       ? admins.find((admin) => admin.id === promoteId)?.name || ""
       : "";
-
+      
   return (
     <div className="dashboard-section">
       <h1 className="dashboard-title">Admins</h1>
@@ -194,16 +213,16 @@ function Admins() {
           </tr>
         </thead>
         <tbody>
-          {filtered.map((admin) => (
+          {admins.map((admin) => (
             <tr key={admin.id}>
-              <td className="dashboard-td">{admin.id}</td>
-              <td className="dashboard-td">{admin.name}</td>
-              <td className="dashboard-td">{admin.username}</td>
-              <td className="dashboard-td">{admin.email}</td>
-              <td className="dashboard-td">{admin.date}</td>
+              <td className="dashboard-td">{admin.admin_id}</td>
+              <td className="dashboard-td">{admin.admin_name}</td>
+              <td className="dashboard-td">{admin.admin_username}</td>
+              <td className="dashboard-td">{admin.admin_email}</td>
+              <td className="dashboard-td">{admin.date_of_register}</td>
               <td className="dashboard-td">{admin.role}</td>
-              <td className="dashboard-td">{admin.std_id}</td>
-              <td className="dashboard-td">{admin.dep_id}</td>
+              <td className="dashboard-td">{admin.student_id}</td>
+              <td className="dashboard-td">{admin.department_id}</td>
               <td className="dashboard-td">
                 <button
                   className="dashboard-delete-button"

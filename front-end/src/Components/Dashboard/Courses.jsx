@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
+import axios from "axios";
 
 function Courses() {
-  const [materials, setMaterials] = useState([
-    { id: 1, courseId: "CS101", courseName: "AI", notes: "Basics of AI" },
-    { id: 2, courseId: "CS102", courseName: "DS", notes: "Trees and graphs" },
-  ]);
+  const [materials, setMaterials] = useState([]);
+  const token = localStorage.getItem("token");
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/courses-filters", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("get course successfully", response.data.data);
+        setMaterials(response.data.data);
+      })
+      .catch((error) => {
+        console.error("error getting course", error);
+      });
+  }, []);
   const [form, setForm] = useState({ courseId: "", courseName: "", notes: "" });
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("courseName");
@@ -162,7 +176,6 @@ function Courses() {
       <table className="dashboard-table">
         <thead>
           <tr>
-            <th className="dashboard-th">ID</th>
             <th className="dashboard-th">Course ID</th>
             <th className="dashboard-th">Course Name</th>
             <th className="dashboard-th">Notes</th>
@@ -170,19 +183,18 @@ function Courses() {
           </tr>
         </thead>
         <tbody>
-          {filtered.length === 0 ? (
+          {materials.length === 0 ? (
             <tr>
               <td colSpan="5" style={{ textAlign: "center", padding: 20 }}>
                 No courses found.
               </td>
             </tr>
           ) : (
-            filtered.map((mat) => (
-              <tr key={mat.id}>
-                <td className="dashboard-td">{mat.id}</td>
-                <td className="dashboard-td">{mat.courseId}</td>
-                <td className="dashboard-td">{mat.courseName}</td>
-                <td className="dashboard-td">{mat.notes}</td>
+            materials.map((mat) => (
+              <tr key={mat.course_id}>
+                <td className="dashboard-td">{mat.course_id}</td>
+                <td className="dashboard-td">{mat.course_name}</td>
+                <td className="dashboard-td">{mat.course_note}</td>
                 <td className="dashboard-td">
                   <span
                     onClick={() => startEdit(mat)}
