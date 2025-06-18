@@ -146,11 +146,13 @@ const Department = () => {
                 type: "spring",
                 stiffness: 120,
               }}
-              className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] w-[400px] h-[200px] flex flex-col justify-between items-center"
+              className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] w-[400px] h-[200px] flex flex-col justify-evenly items-center"
               style={{ margin: "8px" }}
             >
               {role == "superadmin" && (
-                <div className="w-full flex justify-between gap-2 mb-2">
+                <div
+                  className="w-full flex justify-between gap-2 mb-2"
+                >
                   <IconButton
                     aria-label="edit"
                     size="large"

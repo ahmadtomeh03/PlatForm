@@ -1,6 +1,6 @@
 .card-sum {
-  width: 250px;
-  height: 200px;
+  min-height: 300px;
+  min-height: 250px;
   border-radius: 15px;
   background: rgba(131, 129, 248, 0.1);
   display: flex;
@@ -27,7 +27,6 @@
 }
 
 .subtitle {
-  font-size: 0.75em;
   font-weight: 400;
   color: #6b7280;
   margin-top: 5px;
@@ -58,4 +57,27 @@
 
 .btn:hover {
   background-color: #4f46e5;
+}
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+
+.card-description {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 4px;
+  font-style: italic;
+  word-break: break-word;
+}
+
+.card-doctor {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 400;
+  margin-bottom: 6px;
+  word-break: break-word;
 }

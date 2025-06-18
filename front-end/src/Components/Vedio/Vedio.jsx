@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
 import Checked from "../Checked/Checked";
 import { UserContext } from "../../Context/UserContext";
@@ -8,6 +8,7 @@ import ButtonDelete from "../ButtonDelete/ButtonDelete";
 import MultiInputAlert from "../MultiInputAlert/MultiInputAlert";
 import Swal from "sweetalert2";
 import axios from "axios";
+import "./Vedio.css";
 
 export default function Vedio({
   nameOfMaterial,
@@ -104,10 +105,10 @@ export default function Vedio({
   };
 
   return (
-    <div className="exam-card">
-      <div className="exam-card-details">
+    <div className="vedio-card">
+      <div className="vedio-card-details">
         {role === "superadmin" && (
-          <div className="flex justify-between gap-2 mt-1 mb-2">
+          <div className="vedio-actions">
             <IconButton
               aria-label="edit"
               size="large"
@@ -121,15 +122,14 @@ export default function Vedio({
             <ButtonDelete handleToDelete={handleToDelete} />
           </div>
         )}
-        <div className="flex items-center gap-2">
+        <div className="vedio-header">
           <PlayCircleFilledWhiteIcon />
-          <p className="exam-text-title text-lg">{nameOfMaterial}</p>
+          <p className="vedio-title">{nameOfMaterial}</p>
         </div>
-        <p className="exam-text-body">{midOrFinal}</p>
-        <h3>{nameOfDector}</h3>
-        <Checked />
+        <p className="vedio-description">{midOrFinal}</p>
+        <h3 className="vedio-doctor">{nameOfDector}</h3>
       </div>
-      <button className="exam-card-button" onClick={onToggle}>
+      <button className="vedio-button" onClick={onToggle}>
         {isOpen ? "Hide" : "View"}
       </button>
     </div>

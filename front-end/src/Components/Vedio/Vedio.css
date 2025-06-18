@@ -1,0 +1,64 @@
+
+.vedio-card {
+  background-color: #f9f9f9;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out;
+}
+
+.vedio-card:hover {
+  background-color: #f1f1f1;
+}
+
+.vedio-card-details {
+  margin-bottom: 1rem;
+}
+
+.vedio-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.vedio-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vedio-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.vedio-description {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.vedio-doctor {
+  color: #444;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.vedio-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.vedio-button:hover {
+  background-color: #0056b3;
+}

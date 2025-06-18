@@ -1,5 +1,5 @@
 import axios from "axios";
-// import "./CardBook.css";
+import "./CardBook.css";
 import React from "react";
 import { UserContext } from "../../Context/UserContext";
 import ButtonDelete from "../ButtonDelete/ButtonDelete";
@@ -101,25 +101,26 @@ export default function CardBook({
   };
   return (
     <div className="card-book">
-      {role === "superadmin" && (
-        <div className="flex justify-between gap-2 mt-1 mb-2">
-          <IconButton
-            aria-label="edit"
-            size="large"
-            onClick={(e) => {
-              e.preventDefault();
-              handleToEdit();
-            }}
-          >
-            <EditNoteIcon fontSize="inherit" />
-          </IconButton>
-          <ButtonDelete handleToDelete={handleToDelete} />
-        </div>
-      )}
-      <p class="heading-book">{nameOfMaterial}</p>
-      <p class="para-book">{midOrFinal} </p>
-      <h3>{nameOfDector}</h3>
-      <div class="overlay-book"></div>
+      <div className="exam-card-details">
+        {role === "superadmin" && (
+          <div className="flex justify-between">
+            <IconButton
+              aria-label="edit"
+              size="large"
+              onClick={(e) => {
+                e.preventDefault();
+                handleToEdit();
+              }}
+            >
+              <EditNoteIcon fontSize="inherit" />
+            </IconButton>
+            <ButtonDelete handleToDelete={handleToDelete} />
+          </div>
+        )}
+        <p className="card-title">📄 {nameOfMaterial}</p>
+        <p className="card-description">📝 {midOrFinal} Summary</p>
+        {/* <p className="card-doctor">👨‍🏫 {nameOfDector}</p> */}
+      </div>
       <button class="card-btn-book" onClick={onToggle}>
         {isOpen ? "Hide" : "View"}
       </button>

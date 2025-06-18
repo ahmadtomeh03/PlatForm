@@ -1,120 +1,119 @@
 .card-slide {
   position: relative;
-  width: 200px;
-  height: 300px;
-  border-radius: 14px;
-  z-index: 1111;
+  min-width: 250px;
+  min-height: 250px;
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  background: var(--color4);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-slide:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
 .card-bg-slide {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 190px;
-  height: 240px;
+  inset: 10px;
+  background: white;
+  border-radius: 12px;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(24px);
-  border-radius: 10px;
-  overflow: hidden;
-  outline: 2px solid white;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--color1);
 }
 
 .card-content-slide {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: space-between;
   height: 100%;
-  padding: 15px;
-  text-align: left;
 }
 
 .material-name-slide {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color1);
+  margin-bottom: 0.4rem;
 }
 
 .exam-type-slide {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #666;
-  margin: 5px 0;
+  font-size: 1rem;
+  color: var(--color2);
+  margin-bottom: 0.8rem;
 }
 
 .doctor-info-slide {
-  display: flex;
-  flex-direction: column;
+  font-size: 0.9rem;
+  color: var(--color3);
   margin-top: auto;
-  font-size: 0.85rem;
-  color: #444;
 }
 
 .doctor-label-slide {
   font-size: 0.8rem;
-  color: #777;
+  color: #999;
 }
 
 .doctor-name-slide {
   margin: 0;
-  font-weight: 600;
+  font-weight: 500;
+  color: var(--color2);
 }
 
 .btn-slide {
-  align-self: stretch;
-  padding: 8px 12px;
-  margin-top: 10px;
-  background-color: #007bff;
-  color: white;
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  background-color: var(--color1);
+  color: var(--color4);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 500;
   transition: background 0.3s ease;
 }
 
 .btn-slide:hover {
-  background-color: #0056b3;
+  background-color: #1867a2;
 }
 
 .blob-slide {
   position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  top: 60%;
+  left: 60%;
+  width: 120px;
+  height: 120px;
   background-color: var(--color1);
-  opacity: 1;
-  filter: blur(12px);
-  animation: blob-bounce 5s infinite ease;
+  border-radius: 50%;
+  filter: blur(18px);
+  opacity: 0.4;
+  animation: blob-bounce 6s infinite ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 @keyframes blob-bounce {
   0% {
-    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+    transform: translate(-50%, -50%) translate3d(0, 0, 0);
   }
-
   25% {
-    transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+    transform: translate(-50%, -50%) translate3d(30px, -10px, 0);
   }
-
   50% {
-    transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+    transform: translate(-50%, -50%) translate3d(-20px, 20px, 0);
   }
-
   75% {
-    transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+    transform: translate(-50%, -50%) translate3d(10px, -20px, 0);
   }
-
   100% {
-    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+    transform: translate(-50%, -50%) translate3d(0, 0, 0);
   }
 }

@@ -118,15 +118,11 @@ export default function Summaries({
           </div>
         )}
         <div className="text">
-          <span>{nameOfMaterial}</span>
-          <p className="subtitle">{midOrFinal} Summaries</p>
-          <h1
-            className="text-[10px]"
-            style={{ fontWeight: "normal", marginBottom: "5px" }}
-          >
-            {nameOfDector}
-          </h1>
+          <p className="card-title">📄 {nameOfMaterial}</p>
+          <p className="card-description">📝 {midOrFinal} Summary</p>
+          <p className="card-doctor">👨‍🏫 {nameOfDector}</p>
         </div>
+
         <div className="icons">
           <button className="btn" onClick={onToggle}>
             {isOpen ? "Hide" : "View"}

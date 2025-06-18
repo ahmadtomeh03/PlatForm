@@ -104,7 +104,7 @@ export default function CardExam({
       <div className="exam-card">
         <div className="exam-card-details">
           {role === "superadmin" && (
-            <div className="flex justify-between gap-2 mt-1 mb-2">
+            <div className="flex justify-between">
               <IconButton
                 aria-label="edit"
                 size="large"
@@ -118,9 +118,9 @@ export default function CardExam({
               <ButtonDelete handleToDelete={handleToDelete} />
             </div>
           )}
-          <p className="exam-text-title text-lg ">{nameOfMaterial}</p>
-          <p className="exam-text-body">{midOrFinal}</p>
-          <h3>{nameOfDector}</h3>
+          <p className="card-title">📄 {nameOfMaterial}</p>
+          <p className="card-description">📝 {midOrFinal} Summary</p>
+          <p className="card-doctor">👨‍🏫 {nameOfDector}</p>
         </div>
         <button className="exam-card-button" onClick={onToggle}>
           {isOpen ? "Hide" : "View"}
