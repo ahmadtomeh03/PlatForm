@@ -4,43 +4,73 @@ import "./MainDashboard.css";
 function Archive() {
   const [archives, setArchives] = useState([
     {
+      id: "A001", // added id field
       content_id: "CNT123",
       type: "pdf",
       file_path: "http://example.com/report.pdf",
       deleted_by: "Admin1",
       deleted_at: "2024-06-10T15:30",
-      original_data: "Assignment report content"
-    }
+      original_data: "Assignment report content",
+    },
   ]);
 
   const [searchBy, setSearchBy] = useState("content_id");
   const [searchQuery, setSearchQuery] = useState("");
-  const [confirmItem, setConfirmItem] = useState(null); // لحفظ العنصر اللي نبي نرجعه
+  
+  // For Restore confirmation
+  const [confirmRestoreItem, setConfirmRestoreItem] = useState(null);
+  // For Delete confirmation
+  const [confirmDeleteItem, setConfirmDeleteItem] = useState(null);
 
   const formatDateTime = (value) => {
     const date = new Date(value);
     return isNaN(date) ? "" : date.toLocaleString();
   };
 
+  const fields = [
+    "id",
+    "content_id",
+    "type",
+    "file_path",
+    "deleted_by",
+    "deleted_at",
+    "original_data",
+  ];
+
   const filtered = archives.filter((f) =>
     f[searchBy]?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const fields = ["content_id", "type", "file_path", "deleted_by", "deleted_at", "original_data"];
-
+  // Restore handlers
   const requestRestore = (item) => {
-    setConfirmItem(item); // نفتح المودال مع العنصر الحالي
+    setConfirmRestoreItem(item);
   };
 
   const confirmRestore = () => {
-    if (confirmItem) {
-      setArchives(archives.filter((f) => f !== confirmItem));
-      setConfirmItem(null);
+    if (confirmRestoreItem) {
+      setArchives(archives.filter((f) => f !== confirmRestoreItem));
+      setConfirmRestoreItem(null);
     }
   };
 
   const cancelRestore = () => {
-    setConfirmItem(null);
+    setConfirmRestoreItem(null);
+  };
+
+  // Delete handlers
+  const requestDelete = (item) => {
+    setConfirmDeleteItem(item);
+  };
+
+  const confirmDelete = () => {
+    if (confirmDeleteItem) {
+      setArchives(archives.filter((f) => f !== confirmDeleteItem));
+      setConfirmDeleteItem(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setConfirmDeleteItem(null);
   };
 
   return (
@@ -56,7 +86,9 @@ function Archive() {
           onChange={(e) => setSearchBy(e.target.value)}
         >
           {fields.map((field) => (
-            <option key={field} value={field}>{field}</option>
+            <option key={field} value={field}>
+              {field}
+            </option>
           ))}
         </select>
         <input
@@ -72,7 +104,9 @@ function Archive() {
         <thead>
           <tr>
             {fields.map((field) => (
-              <th key={field} className="dashboard-th">{field}</th>
+              <th key={field} className="dashboard-th">
+                {field}
+              </th>
             ))}
             <th className="dashboard-th">Operation</th>
           </tr>
@@ -93,22 +127,54 @@ function Archive() {
                 >
                   ♻️
                 </button>
+                <button
+                  title="Delete"
+                  className="dashboard-icon-button delete"
+                  onClick={() => requestDelete(item)}
+                >
+                  🗑️
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Confirm Modal */}
-      {confirmItem && (
+      {/* Confirm Restore Modal */}
+      {confirmRestoreItem && (
         <div className="dashboard-modal-overlay">
           <div className="dashboard-modal">
-            <p>Are u sure you want to restore this file <strong>{confirmItem.content_id}</strong>?</p>
-            <button className="dashboard-button" onClick={confirmRestore}>نعم</button>
-            <button className="dashboard-button" onClick={cancelRestore}>لا</button>
+            <p>
+              Are you sure you want to restore this file{" "}
+              <strong>{confirmRestoreItem.content_id}</strong>?
+            </p>
+            <button className="dashboard-button" onClick={confirmRestore}>
+              Yes
+            </button>
+            <button className="dashboard-button" onClick={cancelRestore}>
+              No
+            </button>
           </div>
         </div>
-      )} 
+      )}
+
+      {/* Confirm Delete Modal */}
+      {confirmDeleteItem && (
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal">
+            <p>
+              Are you sure you want to permanently delete this file{" "}
+              <strong>{confirmDeleteItem.content_id}</strong>?
+            </p>
+            <button className="dashboard-button" onClick={confirmDelete}>
+              Yes
+            </button>
+            <button className="dashboard-button" onClick={cancelDelete}>
+              No
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

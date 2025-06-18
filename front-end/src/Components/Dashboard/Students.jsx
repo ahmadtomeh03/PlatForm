@@ -11,13 +11,14 @@ function Students() {
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
-  const [confirmId, setConfirmId] = useState(null);
+  const [confirmId, setConfirmId] = useState(null); // for delete confirmation
+  const [promoteData, setPromoteData] = useState({ id: null, role: "admin" }); // for promote confirmation
 
+  // Form input handling
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedValue = value;
 
-    // Custom input handling per field
     if (name === "name" || name === "username") {
       updatedValue = value.trimStart();
     }
@@ -35,6 +36,7 @@ function Students() {
     setInvalidFields({ ...invalidFields, [name]: false });
   };
 
+  // Add student form submission (not used in UI here)
   const handleSubmit = () => {
     const missing = {};
     Object.keys(form).forEach((key) => {
@@ -55,6 +57,7 @@ function Students() {
     setInvalidFields({});
   };
 
+  // Delete flow
   const handleDelete = (id) => {
     setConfirmId(id);
   };
@@ -68,6 +71,26 @@ function Students() {
     setConfirmId(null);
   };
 
+  // Promote flow
+  const handlePromoteClick = (id) => {
+    setPromoteData({ id, role: "admin" }); // default to admin
+  };
+
+  const confirmPromote = () => {
+    const studentIndex = students.findIndex(s => s.id === promoteData.id);
+    if (studentIndex !== -1) {
+      // Here you can update the student's role in state or send to server
+      // For demo, we just alert and close modal
+      alert(`Student "${students[studentIndex].name}" promoted to ${promoteData.role}!`);
+    }
+    setPromoteData({ id: null, role: "admin" });
+  };
+
+  const cancelPromote = () => {
+    setPromoteData({ id: null, role: "admin" });
+  };
+
+  // Filtering students
   const filtered = students.filter((s) =>
     s[searchBy].toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -75,27 +98,6 @@ function Students() {
   return (
     <div className="dashboard-section">
       <h1 className="dashboard-title">Students</h1>
-
-      <div className="dashboard-form">
-        {["name", "username", "email", "date"].map((field) => (
-          <div key={field}>
-            <input
-              className={`dashboard-input ${invalidFields[field] ? "dashboard-input-error" : ""}`}
-              name={field}
-              type={field === "date" ? "date" : "text"}
-              value={form[field]}
-              onChange={handleChange}
-              placeholder={field[0].toUpperCase() + field.slice(1)}
-            />
-            {invalidFields[field] && (
-              <div className="dashboard-error-text">
-                {field === "email" ? "Please enter a valid email" : `Please fill in the ${field}`}
-              </div>
-            )}
-          </div>
-        ))}
-        <button className="dashboard-button" onClick={handleSubmit}>Add Student</button>
-      </div>
 
       <div className="dashboard-filter-group">
         <label className="dashboard-filter-label">Search students by:</label>
@@ -125,7 +127,7 @@ function Students() {
             <th className="dashboard-th">Username</th>
             <th className="dashboard-th">Email</th>
             <th className="dashboard-th">Date</th>
-            <th className="dashboard-th">Delete</th>
+            <th className="dashboard-th">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -138,18 +140,70 @@ function Students() {
               <td className="dashboard-td">{s.date}</td>
               <td className="dashboard-td">
                 <button className="dashboard-delete-button" onClick={() => handleDelete(s.id)}>✖</button>
+                <span
+                  className="promote-icon"
+                  title="Promote"
+                  onClick={() => handlePromoteClick(s.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handlePromoteClick(s.id); }}
+                >
+                  🔼
+                </span>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
+      {/* Delete Confirmation Modal */}
       {confirmId && (
         <div className="dashboard-modal-overlay">
-          <div className="dashboard-modal">
-            <p>Are you sure you want to delete this student?</p>
-            <button className="dashboard-button" onClick={confirmDelete}>Yes</button>
-            <button className="dashboard-button" onClick={cancelDelete}>No</button>
+          <div className="dashboard-modal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+            <p id="deleteTitle">Are you sure you want to delete this student?</p>
+            <div className="dashboard-modal-buttons">
+              <button className="dashboard-button confirm" onClick={confirmDelete}>Yes</button>
+              <button className="dashboard-button cancel" onClick={cancelDelete}>No</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Promote Confirmation Modal */}
+      {promoteData.id !== null && (
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal" role="dialog" aria-modal="true" aria-labelledby="promoteTitle">
+            <p id="promoteTitle">
+              Promote <strong>{students.find(s => s.id === promoteData.id)?.name}</strong> to role:
+            </p>
+
+            <div className="role-options">
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="admin"
+                  checked={promoteData.role === "admin"}
+                  onChange={(e) => setPromoteData({ ...promoteData, role: e.target.value })}
+                />
+                Admin
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="super admin"
+                  checked={promoteData.role === "super admin"}
+                  onChange={(e) => setPromoteData({ ...promoteData, role: e.target.value })}
+                />
+                Super Admin
+              </label>
+            </div>
+
+            <div className="dashboard-modal-buttons">
+              <button className="dashboard-button confirm" onClick={confirmPromote}>Yes</button>
+              <button className="dashboard-button cancel" onClick={cancelPromote}>No</button>
+            </div>
           </div>
         </div>
       )}

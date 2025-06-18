@@ -4,33 +4,40 @@ import "./MainDashboard.css";
 function Upload() {
   const [files, setFiles] = useState([
     {
-      course_id: "CSE101",
+      id: "F001",
+      std_id: "S123",
+      admin_id: "A001",
       uploaded_state: "pending",
       uploaded_type: "assignment",
       uploaded_datetime: "2024-06-01T10:00",
       upload_name: "report.pdf",
       doctor_name: "Dr. Smith",
       upload_url: "http://example.com/report.pdf",
-      description: "First assignment"
-    }
+      description: "First assignment",
+    },
   ]);
 
   const initialForm = {
-    course_id: "",
+    id: "",
+    std_id: "",
+    admin_id: "",
     uploaded_state: "",
     uploaded_type: "",
     uploaded_datetime: "",
     upload_name: "",
     doctor_name: "",
     upload_url: "",
-    description: ""
+    description: "",
   };
 
   const [form, setForm] = useState(initialForm);
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("upload_name");
   const [searchQuery, setSearchQuery] = useState("");
+
   const [confirmItem, setConfirmItem] = useState(null);
+  const [confirmAcceptItem, setConfirmAcceptItem] = useState(null);
+  const [confirmRejectItem, setConfirmRejectItem] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,11 +77,34 @@ function Upload() {
   };
 
   const handleAccept = (item) => {
-    setFiles(files.map((f) => f === item ? { ...f, uploaded_state: "accepted" } : f));
+    setConfirmAcceptItem(item);
+  };
+
+  const confirmAccept = () => {
+    setFiles(
+      files.map((f) =>
+        f === confirmAcceptItem ? { ...f, uploaded_state: "accepted" } : f
+      )
+    );
+    setConfirmAcceptItem(null);
   };
 
   const handleReject = (item) => {
-    setFiles(files.map((f) => f === item ? { ...f, uploaded_state: "rejected" } : f));
+    setConfirmRejectItem(item);
+  };
+
+  const confirmReject = () => {
+    setFiles(
+      files.map((f) =>
+        f === confirmRejectItem ? { ...f, uploaded_state: "rejected" } : f
+      )
+    );
+    setConfirmRejectItem(null);
+  };
+
+  const cancelAcceptReject = () => {
+    setConfirmAcceptItem(null);
+    setConfirmRejectItem(null);
   };
 
   const formatDateTime = (value) => {
@@ -90,26 +120,6 @@ function Upload() {
     <div className="dashboard-section">
       <h1 className="dashboard-title">Uploaded Files</h1>
 
-      {/* Form */}
-      <div className="dashboard-form">
-        {Object.keys(initialForm).map((field) => (
-          <div key={field}>
-            <input
-              className={`dashboard-input ${invalidFields[field] ? "dashboard-input-error" : ""}`}
-              name={field}
-              type={field.includes("datetime") ? "datetime-local" : "text"}
-              value={form[field]}
-              onChange={handleChange}
-              placeholder={field.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
-            />
-            {invalidFields[field] && (
-              <div className="dashboard-error-text">Please fill in {field}</div>
-            )}
-          </div>
-        ))}
-        <button className="dashboard-button" onClick={handleSubmit}>Add File</button>
-      </div>
-
       {/* Search Filter */}
       <div className="dashboard-filter-group">
         <label className="dashboard-filter-label">Search by:</label>
@@ -119,7 +129,9 @@ function Upload() {
           onChange={(e) => setSearchBy(e.target.value)}
         >
           {Object.keys(initialForm).map((field) => (
-            <option key={field} value={field}>{field}</option>
+            <option key={field} value={field}>
+              {field}
+            </option>
           ))}
         </select>
         <input
@@ -135,7 +147,9 @@ function Upload() {
         <thead>
           <tr>
             {Object.keys(initialForm).map((field) => (
-              <th key={field} className="dashboard-th">{field}</th>
+              <th key={field} className="dashboard-th">
+                {field}
+              </th>
             ))}
             <th className="dashboard-th">Operation</th>
           </tr>
@@ -178,18 +192,53 @@ function Upload() {
         </tbody>
       </table>
 
-      {/* Confirm Modal */}
+      {/* Confirm Delete Modal */}
       {confirmItem && (
         <div className="dashboard-modal-overlay">
           <div className="dashboard-modal">
             <p>Are you sure you want to delete this file?</p>
-            <button className="dashboard-button" onClick={confirmDelete}>Yes</button>
-            <button className="dashboard-button" onClick={cancelDelete}>No</button>
+            <button className="dashboard-button" onClick={confirmDelete}>
+              Yes
+            </button>
+            <button className="dashboard-button" onClick={cancelDelete}>
+              No
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Accept Modal */}
+      {confirmAcceptItem && (
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal">
+            <p>Are you sure you want to accept this file?</p>
+            <button className="dashboard-button" onClick={confirmAccept}>
+              Yes
+            </button>
+            <button className="dashboard-button" onClick={cancelAcceptReject}>
+              No
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Reject Modal */}
+      {confirmRejectItem && (
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal">
+            <p>Are you sure you want to reject this file?</p>
+            <button className="dashboard-button" onClick={confirmReject}>
+              Yes
+            </button>
+            <button className="dashboard-button" onClick={cancelAcceptReject}>
+              No
+            </button>
           </div>
         </div>
       )}
     </div>
   );
 }
+
 
 export default Upload;

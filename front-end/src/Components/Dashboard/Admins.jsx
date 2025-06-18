@@ -10,6 +10,8 @@ function Admins() {
       email: "alice@example.com",
       date: "2024-01-01",
       role: "superadmin",
+      std_id: "STD001",
+      dep_id: "DEP-A",
     },
     {
       id: 2,
@@ -18,6 +20,8 @@ function Admins() {
       email: "bob@example.com",
       date: "2024-02-15",
       role: "moderator",
+      std_id: "STD002",
+      dep_id: "DEP-B",
     },
   ]);
 
@@ -27,12 +31,16 @@ function Admins() {
     email: "",
     date: "",
     role: "",
+    std_id: "",
+    dep_id: "",
   });
 
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
+
   const [confirmId, setConfirmId] = useState(null);
+  const [promoteId, setPromoteId] = useState(null);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -50,56 +58,98 @@ function Admins() {
     }
 
     setAdmins([...admins, { ...form, id: admins.length + 1 }]);
-    setForm({ name: "", username: "", email: "", date: "", role: "" });
+    setForm({
+      name: "",
+      username: "",
+      email: "",
+      date: "",
+      role: "",
+      std_id: "",
+      dep_id: "",
+    });
     setInvalidFields({});
   };
 
-  const handleDelete = (id) => {
-    setConfirmId(id);
-  };
-
+  const handleDelete = (id) => setConfirmId(id);
   const confirmDelete = () => {
     setAdmins(admins.filter((admin) => admin.id !== confirmId));
     setConfirmId(null);
   };
+  const cancelDelete = () => setConfirmId(null);
 
-  const cancelDelete = () => {
-    setConfirmId(null);
-  };
+  const handlePromoteClick = (id) => setPromoteId(id);
+  const cancelPromote = () => setPromoteId(null);
 
   const filtered = admins.filter((admin) =>
     admin[searchBy]?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const promoteAdminName =
+    promoteId != null
+      ? admins.find((admin) => admin.id === promoteId)?.name || ""
+      : "";
+
   return (
     <div className="dashboard-section">
       <h1 className="dashboard-title">Admins</h1>
 
-      {/* Add Admin Form */}
-      <div className="dashboard-form">
-        {["name", "username", "email", "date", "role"].map((field) => (
-          <div key={field} style={{ marginBottom: 10 }}>
-            <input
-              type={field === "date" ? "date" : "text"}
-              name={field}
-              placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-              value={form[field]}
-              onChange={handleChange}
-              className={`dashboard-input ${
-                invalidFields[field] ? "dashboard-input-error" : ""
-              }`}
-            />
-            {invalidFields[field] && (
-              <div className="dashboard-error-text">Please enter {field}</div>
-            )}
-          </div>
-        ))}
+      {/* Form for Adding Admin */}
+      {/* <div className="dashboard-form">
+        <input
+          className="dashboard-input"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Name"
+        />
+        <input
+          className="dashboard-input"
+          name="username"
+          value={form.username}
+          onChange={handleChange}
+          placeholder="Username"
+        />
+        <input
+          className="dashboard-input"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        <input
+          className="dashboard-input"
+          name="date"
+          value={form.date}
+          onChange={handleChange}
+          type="date"
+        />
+        <input
+          className="dashboard-input"
+          name="role"
+          value={form.role}
+          onChange={handleChange}
+          placeholder="Role"
+        />
+        <input
+          className="dashboard-input"
+          name="std_id"
+          value={form.std_id}
+          onChange={handleChange}
+          placeholder="Student ID"
+        />
+        <input
+          className="dashboard-input"
+          name="dep_id"
+          value={form.dep_id}
+          onChange={handleChange}
+          placeholder="Department ID"
+        />
         <button className="dashboard-button" onClick={addAdmin}>
           Add Admin
         </button>
-      </div>
+      </div> */}
 
-      {/* Search */}
+      {/* Search Filter */}
       <div className="dashboard-filter-group" style={{ marginTop: 20 }}>
         <label className="dashboard-filter-label" htmlFor="searchBy">
           Search Admin by:
@@ -116,6 +166,8 @@ function Admins() {
           <option value="email">Email</option>
           <option value="date">Date</option>
           <option value="role">Role</option>
+          <option value="std_id">Student ID</option>
+          <option value="dep_id">Department ID</option>
         </select>
         <input
           className="dashboard-input"
@@ -126,7 +178,7 @@ function Admins() {
         />
       </div>
 
-      {/* Admins Table */}
+      {/* Admin Table */}
       <table className="dashboard-table" style={{ marginTop: 20 }}>
         <thead>
           <tr>
@@ -136,7 +188,9 @@ function Admins() {
             <th className="dashboard-th">Email</th>
             <th className="dashboard-th">Date</th>
             <th className="dashboard-th">Role</th>
-            <th className="dashboard-th">Delete</th>
+            <th className="dashboard-th">Student ID</th>
+            <th className="dashboard-th">Department ID</th>
+            <th className="dashboard-th">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -148,14 +202,28 @@ function Admins() {
               <td className="dashboard-td">{admin.email}</td>
               <td className="dashboard-td">{admin.date}</td>
               <td className="dashboard-td">{admin.role}</td>
+              <td className="dashboard-td">{admin.std_id}</td>
+              <td className="dashboard-td">{admin.dep_id}</td>
               <td className="dashboard-td">
                 <button
                   className="dashboard-delete-button"
                   onClick={() => handleDelete(admin.id)}
-                  aria-label={`Delete ${admin.name}`}
+                  title="Delete"
                 >
                   ✖
                 </button>
+                <span
+                  onClick={() => handlePromoteClick(admin.id)}
+                  className="promote-icon"
+                  role="button"
+                  tabIndex={0}
+                  title="Promote"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handlePromoteClick(admin.id);
+                  }}
+                >
+                  🔼
+                </span>
               </td>
             </tr>
           ))}
@@ -167,14 +235,38 @@ function Admins() {
         <div className="dashboard-modal-overlay" role="dialog" aria-modal="true">
           <div className="dashboard-modal">
             <p>Are you sure you want to delete this admin?</p>
+            <button className="dashboard-button confirm" onClick={confirmDelete}>
+              Yes
+            </button>
+            <button className="dashboard-button cancel" onClick={cancelDelete}>
+              No
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Promote Confirmation Modal */}
+      {promoteId && (
+        <div className="dashboard-modal-overlay" role="dialog" aria-modal="true">
+          <div className="dashboard-modal">
+            <p>
+              Promote <strong>{promoteAdminName}</strong> to{" "}
+              <strong>superadmin</strong>?
+            </p>
             <button
-              className="dashboard-button"
-              onClick={confirmDelete}
-              style={{ marginRight: 10 }}
+              className="dashboard-button confirm"
+              onClick={() => {
+                setAdmins(
+                  admins.map((admin) =>
+                    admin.id === promoteId ? { ...admin, role: "superadmin" } : admin
+                  )
+                );
+                setPromoteId(null);
+              }}
             >
               Yes
             </button>
-            <button className="dashboard-button" onClick={cancelDelete}>
+            <button className="dashboard-button cancel" onClick={cancelPromote}>
               No
             </button>
           </div>

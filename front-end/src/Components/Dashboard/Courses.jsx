@@ -12,27 +12,31 @@ function Courses() {
   const [searchBy, setSearchBy] = useState("courseName");
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmId, setConfirmId] = useState(null);
+  const [editItem, setEditItem] = useState(null); // object to edit
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setInvalidFields({ ...invalidFields, [e.target.name]: false });
   };
 
-  const addMaterial = () => {
+  const validateForm = () => {
     const missing = {};
     if (!form.courseId.trim()) missing.courseId = true;
     if (!form.courseName.trim()) missing.courseName = true;
     if (!form.notes.trim()) missing.notes = true;
 
-    if (Object.keys(missing).length) {
+    if (Object.keys(missing).length > 0) {
       setInvalidFields(missing);
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const addMaterial = () => {
+    if (!validateForm()) return;
 
     const nextId =
-      materials.length > 0
-        ? materials[materials.length - 1].id + 1
-        : 1;
+      materials.length > 0 ? materials[materials.length - 1].id + 1 : 1;
 
     const newMaterial = {
       id: nextId,
@@ -44,6 +48,31 @@ function Courses() {
     setMaterials([...materials, newMaterial]);
     setForm({ courseId: "", courseName: "", notes: "" });
     setInvalidFields({});
+  };
+
+  const startEdit = (mat) => {
+    setForm({
+      courseId: mat.courseId,
+      courseName: mat.courseName,
+      notes: mat.notes,
+    });
+    setEditItem(mat);
+  };
+
+  const cancelEdit = () => {
+    setForm({ courseId: "", courseName: "", notes: "" });
+    setInvalidFields({});
+    setEditItem(null);
+  };
+
+  const updateMaterial = () => {
+    if (!validateForm()) return;
+
+    const updatedList = materials.map((mat) =>
+      mat.id === editItem.id ? { ...mat, ...form } : mat
+    );
+    setMaterials(updatedList);
+    cancelEdit();
   };
 
   const handleDelete = (id) => setConfirmId(id);
@@ -63,8 +92,8 @@ function Courses() {
     <div className="dashboard-section">
       <h1 className="dashboard-title">Courses</h1>
 
-      {/* Add Material Form */}
-      <div className="dashboard-form">
+      {/* Add Course Form */}
+      {/* <div className="dashboard-form">
         <div>
           <input
             name="courseId"
@@ -107,7 +136,7 @@ function Courses() {
         <button className="dashboard-button" onClick={addMaterial}>
           Add Course
         </button>
-      </div>
+      </div> */}
 
       {/* Search */}
       <div className="dashboard-filter-group">
@@ -137,7 +166,7 @@ function Courses() {
             <th className="dashboard-th">Course ID</th>
             <th className="dashboard-th">Course Name</th>
             <th className="dashboard-th">Notes</th>
-            <th className="dashboard-th">Delete</th>
+            <th className="dashboard-th">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -155,6 +184,18 @@ function Courses() {
                 <td className="dashboard-td">{mat.courseName}</td>
                 <td className="dashboard-td">{mat.notes}</td>
                 <td className="dashboard-td">
+                  <span
+                    onClick={() => startEdit(mat)}
+                    style={{ marginRight: 50 }}
+                    className="promote-icon"
+                  title="Promote"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handlePromoteClick(s.id); }}
+                    
+                  >
+                    ✎
+                  </span>
                   <button
                     className="dashboard-delete-button"
                     onClick={() => handleDelete(mat.id)}
@@ -168,13 +209,55 @@ function Courses() {
         </tbody>
       </table>
 
-      {/* Confirmation Modal */}
+      {/* Delete Confirmation Modal */}
       {confirmId && (
         <div className="dashboard-modal-overlay">
           <div className="dashboard-modal">
             <p>Are you sure you want to delete this course?</p>
-            <button className="dashboard-button" onClick={confirmDelete}>Yes</button>
-            <button className="dashboard-button" onClick={cancelDelete}>No</button>
+            <button className="dashboard-button" onClick={confirmDelete}>
+              Yes
+            </button>
+            <button className="dashboard-button" onClick={cancelDelete}>
+              No
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Confirmation Modal */}
+      {editItem && (
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal">
+            <h3>Edit Course</h3>
+            <input
+              name="courseId"
+              className={`dashboard-input ${invalidFields.courseId ? "dashboard-input-error" : ""}`}
+              placeholder="Course ID"
+              value={form.courseId}
+              onChange={handleChange}
+            />
+            <input
+              name="courseName"
+              className={`dashboard-input ${invalidFields.courseName ? "dashboard-input-error" : ""}`}
+              placeholder="Course Name"
+              value={form.courseName}
+              onChange={handleChange}
+            />
+            <input
+              name="notes"
+              className={`dashboard-input ${invalidFields.notes ? "dashboard-input-error" : ""}`}
+              placeholder="Notes"
+              value={form.notes}
+              onChange={handleChange}
+            />
+            <div style={{ marginTop: "10px" }}>
+              <button className="dashboard-button" onClick={updateMaterial}>
+                Save Changes
+              </button>
+              <button className="dashboard-button" onClick={cancelEdit}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
