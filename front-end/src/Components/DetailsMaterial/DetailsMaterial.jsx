@@ -19,7 +19,7 @@ export default function DetailsMaterial() {
             navigate(`/college/${collegeId}/${majorId}`);
           }}
         >
-          <ButtonBack to={"Back To Course"} />
+          <ButtonBack to={"Back To Courses"} />
         </div>
         <div onClick={() => setShowModal(true)}>
           <ButtonUpload />

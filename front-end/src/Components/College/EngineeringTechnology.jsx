@@ -72,24 +72,28 @@ export default function EngineeringTechnology() {
   }, [collegeId]);
   return (
     <div className="p-4 relative">
-      <div
-        onClick={() => {
-          navigate("/college");
-        }}
-        style={{ marginLeft: "20px", marginTop: "20px" }}
-      >
-        <ButtonBack to={"Back To College"} />
-      </div>
+      <div className="flex flex-row justify-between items-center">
+        <div
+          onClick={() => {
+            navigate("/college");
+          }}
+          style={{ marginLeft: "20px", marginTop: "20px" }}
+        >
+          <ButtonBack to={"Back To College"} />
+        </div>
 
-      {role == "superadmin" && (
-        <ButtonAdd handleToAdd={handleToAdd} type={"College"} />
-      )}
-      <div className="flex flex-row items-center justify-center gap-5 flex-wrap">
+        {role == "superadmin" && (
+          <ButtonAdd handleToAdd={handleToAdd} type={"Department"} />
+        )}
+      </div>
+      <div
+        className="flex flex-row items-center justify-center gap-5 flex-wrap"
+        style={{ marginTop: "10px" }}
+      >
         {majors.map((major) => (
           <CardMajer
             key={major.departments_id}
             nameOfMajer={major.departments_name}
-            decription={"decription"}
             collegeId={collegeId}
             majorId={major.departments_id}
             onDelete={handleDeleteMajorFromState}

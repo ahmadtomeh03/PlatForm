@@ -265,16 +265,6 @@ export default function CardMatirial({
 
       <div className="card__title">{nameOfCourse}</div>
       <div className="card__subtitle">{description}</div>
-      <div className="card__indicator">
-        <span className="card__indicator-percentage">45%</span>
-      </div>
-      <div className="card__progress">
-        <progress
-          max="100"
-          value="45"
-          aria-label="Progress of works completed"
-        ></progress>
-      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import "./ButtonAdd.css";
 
 export default function ButtonAdd({ type, handleToAdd }) {
   return (
-    <div>
+    <div style={{ marginRight: "20px", marginTop: "20px" }}>
       <button className="button" type="button" onClick={handleToAdd}>
         <span className="button__text">Add {type}</span>
         <span className="button__icon">

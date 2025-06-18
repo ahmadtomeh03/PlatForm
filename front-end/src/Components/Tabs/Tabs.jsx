@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./Tabs.css";
-import Vedio from "../Vedio/Vedio";
 import Summaries from "../Summaries/Summaries";
 import CardExam from "../CardExam/CardExam";
 import CardBook from "../CardBook/CardBook";
 import CardSlides from "../CardSlides/CardSlides";
 import SwiperCard from "../SwiperCard/SwiperCard";
+import Progress from "../Progress";
+import Vedio from "../Vedio/Vedio";
 
 export default function Tabs() {
   const [selectedTab, setSelectedTab] = useState("lectures");
@@ -14,11 +15,7 @@ export default function Tabs() {
     switch (selectedTab) {
       case "lectures":
         return (
-          <SwiperCard
-            key={selectedTab}
-            CardComponent={Summaries}
-            type={"video"}
-          />
+          <SwiperCard key={selectedTab} CardComponent={Vedio} type={"video"} />
         );
       case "summaries":
         return (

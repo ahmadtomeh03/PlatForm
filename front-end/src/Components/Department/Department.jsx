@@ -126,14 +126,14 @@ const Department = () => {
     }
   };
   return (
-    <div>
+    <div style={{ margin: "20px" }}>
+      {role == "superadmin" && (
+        <ButtonAdd handleToAdd={handleToAdd} type={"College"} />
+      )}
       <div
         className="flex flex-row flex-wrap justify-evenly items-center"
         style={{ marginTop: "8px" }}
       >
-        {role == "superadmin" && (
-          <ButtonAdd handleToAdd={handleToAdd} type={"College"} />
-        )}
         {colleges.map((faculty, index) => (
           <Link key={faculty.college_id} to={`/college/${faculty.college_id}`}>
             <motion.div
@@ -146,35 +146,36 @@ const Department = () => {
                 type: "spring",
                 stiffness: 120,
               }}
-              className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] w-[400px] h-[200px] flex flex-col justify-center items-center"
+              className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] w-[400px] h-[200px] flex flex-col justify-between items-center"
               style={{ margin: "8px" }}
             >
               {role == "superadmin" && (
-                <div
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (window.confirm("هل أنت متأكد من حذف الكلية؟")) {
-                      handleToDelete(faculty.college_id);
-                    }
-                  }}
-                >
-                  <ButtonDelete />
-                </div>
-              )}
-              {role == "superadmin" && (
-                <div
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleToEdit(faculty);
-                  }}
-                >
-                  <IconButton aria-label="delete" size="large">
+                <div className="w-full flex justify-between gap-2 mb-2">
+                  <IconButton
+                    aria-label="edit"
+                    size="large"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleToEdit(faculty);
+                    }}
+                  >
                     <EditNoteIcon fontSize="inherit" />
                   </IconButton>
+                  <div
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (window.confirm("هل أنت متأكد من حذف الكلية؟")) {
+                        handleToDelete(faculty.college_id);
+                      }
+                    }}
+                    style={{ margin: "10px" }}
+                  >
+                    <ButtonDelete />
+                  </div>
                 </div>
               )}
 
-              <h3 className="text-xl font-semibold text-center">
+              <h3 className="text-xl font-semibold text-center mb-4">
                 {faculty.college_name}
               </h3>
               <div>

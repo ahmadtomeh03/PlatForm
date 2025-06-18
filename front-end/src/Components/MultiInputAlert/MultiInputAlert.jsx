@@ -7,10 +7,22 @@ export default async function MultiInputAlert({
 }) {
   const html = inputs
     .map(
-      (input) =>
-        `<input id="${input.id}" class="swal2-input" placeholder="${
-          input.placeholder
-        }" type="${input.type || "text"}" value="${input.value || ""}">`
+      (input) => `
+        <div style="text-align: right; margin-bottom: 10px;">
+          ${
+            input.label
+              ? `<label for="${input.id}" style="display: block; margin-bottom: 4px; font-weight: bold;">${input.label}</label>`
+              : ""
+          }
+          <input 
+            id="${input.id}" 
+            class="swal2-input" 
+            placeholder="${input.placeholder}" 
+            type="${input.type || "text"}" 
+            value="${input.value || ""}"
+          >
+        </div>
+      `
     )
     .join("");
 

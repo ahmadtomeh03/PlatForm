@@ -11,6 +11,20 @@ function SwiperCard({ CardComponent, type }) {
   const [materialDetails, setMaterialDetails] = useState([]);
   const { materialId } = useParams();
   const BASE_URL = "http://localhost:3000";
+  const updateMaterialDetails = (id, updatedData) => {
+    setMaterialDetails((prev) =>
+      prev.map((el) =>
+        getId(el) === id
+          ? {
+              ...el,
+              [`${type}_name`]: updatedData.nameOfMaterial,
+              doctor_name: updatedData.nameOfDector,
+              description: updatedData.midOrFinal,
+            }
+          : el
+      )
+    );
+  };
 
   useEffect(() => {
     axios
@@ -59,6 +73,9 @@ function SwiperCard({ CardComponent, type }) {
               isOpen={openPdfIndex === i}
               onToggle={() => setOpenPdfIndex(openPdfIndex === i ? null : i)}
               onDelete={() => handleDelete(getId(item))}
+              onEdit={(updatedData) =>
+                updateMaterialDetails(getId(item), updatedData)
+              }
             />
           </SwiperSlide>
         ))}

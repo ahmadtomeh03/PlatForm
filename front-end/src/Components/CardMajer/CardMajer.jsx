@@ -11,7 +11,6 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 
 export default function CardMajer({
   nameOfMajer,
-  decription,
   collegeId,
   majorId,
   onDelete,
@@ -76,30 +75,28 @@ export default function CardMajer({
   const { role } = React.useContext(UserContext);
 
   return (
-    <div className="new-card">
-      <div className="new-card-content">
-        <div className="new-card-body">
-          {role == "superadmin" && (
-            <div onClick={handleToDelete}>
-              <ButtonDelete />
-            </div>
-          )}
-          {role == "superadmin" && (
-            <div
-              onClick={(e) => {
-                e.preventDefault();
-                handleToEdit();
-              }}
-            >
-              <IconButton aria-label="delete" size="large">
-                <EditNoteIcon fontSize="inherit" />
-              </IconButton>
-            </div>
-          )}
-          <h2 className="new-card-title">{nameOfMajer}</h2>
-          <p className="new-card-description">{decription}</p>
+    <div className="new-card w-full h-full flex flex-col justify-between">
+      {role === "superadmin" && (
+        <div className="flex justify-between gap-2 mt-1 mb-2">
+          <IconButton
+            aria-label="edit"
+            size="large"
+            onClick={(e) => {
+              e.preventDefault();
+              handleToEdit();
+            }}
+          >
+            <EditNoteIcon fontSize="inherit" />
+          </IconButton>
+          <ButtonDelete handleToDelete={handleToDelete} />
         </div>
+      )}
 
+      <div className="flex justify-center items-center flex-1">
+        <h2 className="new-card-title text-center">{nameOfMajer}</h2>
+      </div>
+
+      <div className="flex justify-center mt-4">
         <button
           type="submit"
           className="explore-btn group"

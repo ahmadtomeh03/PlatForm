@@ -3,7 +3,10 @@ import "./CardSlides.css";
 import React from "react";
 import { UserContext } from "../../Context/UserContext";
 import ButtonDelete from "../ButtonDelete/ButtonDelete";
-
+import Swal from "sweetalert2";
+import MultiInputAlert from "../MultiInputAlert/MultiInputAlert";
+import { IconButton } from "@mui/material";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 export default function CardSlides({
   nameOfMaterial,
   nameOfDector,
@@ -12,9 +15,74 @@ export default function CardSlides({
   onToggle,
   id_type,
   onDelete,
+  onEdit,
 }) {
   const token = localStorage.getItem("token");
   const { role } = React.useContext(UserContext);
+  const handleToEdit = async () => {
+    const result = await MultiInputAlert({
+      title: "تعديل بيانات الامتحان",
+      inputs: [
+        {
+          id: "nameOfMaterial",
+          label: "اسم المادة",
+          placeholder: "اسم المادة",
+          value: nameOfMaterial,
+        },
+        {
+          id: "nameOfDector",
+          label: "اسم الدكتور",
+          placeholder: "اسم الدكتور",
+          value: nameOfDector,
+        },
+        {
+          id: "midOrFinal",
+          label: "وصف عن الملف ",
+          placeholder: "description",
+          value: midOrFinal,
+        },
+      ],
+      validate: () => null,
+    });
+
+    if (result) {
+      try {
+        await axios.put(
+          `http://localhost:3000/admin/slide-update/${id_type}`,
+          {
+            slide_name: result.nameOfMaterial,
+            doctor_name: result.nameOfDector,
+            description: result.midOrFinal,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        onEdit({
+          nameOfMaterial: result.nameOfMaterial,
+          nameOfDector: result.nameOfDector,
+          midOrFinal: result.midOrFinal,
+        });
+
+        Swal.fire({
+          icon: "success",
+          title: "تم التعديل بنجاح",
+          text: "تم تحديث بيانات الامتحان.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          icon: "error",
+          title: "فشل التعديل",
+          text: "حدث خطأ أثناء تعديل الامتحان",
+        });
+      }
+    }
+  };
 
   const handleToDelete = () => {
     axios
@@ -34,8 +102,20 @@ export default function CardSlides({
   return (
     <div className="card-slide">
       <div className="card-bg-slide">
-        {role == "superadmin" && (
-          <ButtonDelete handleToDelete={handleToDelete} />
+        {role === "superadmin" && (
+          <div className="flex justify-between gap-2 mt-1 mb-2">
+            <IconButton
+              aria-label="edit"
+              size="large"
+              onClick={(e) => {
+                e.preventDefault();
+                handleToEdit();
+              }}
+            >
+              <EditNoteIcon fontSize="inherit" />
+            </IconButton>
+            <ButtonDelete handleToDelete={handleToDelete} />
+          </div>
         )}
         <div className="card-content-slide">
           <h1 className="material-name-slide">{nameOfMaterial}</h1>

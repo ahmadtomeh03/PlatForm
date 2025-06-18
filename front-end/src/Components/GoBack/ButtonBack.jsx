@@ -26,7 +26,12 @@ export default function ButtonBack({ to }) {
             ></path>
           </svg>
         </div>
-        <p className="translate-x-2 text-sm text-black">{to}</p>
+        <p
+          className="translate-x-2 text-sm text-black text-center text-[12px] "
+          style={{ marginLeft: "15px" }}
+        >
+          {to}
+        </p>
       </button>
     </div>
   );

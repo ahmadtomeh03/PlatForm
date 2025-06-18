@@ -139,24 +139,26 @@ export default function Material() {
   });
 
   return (
-    <>
-      <div
-        onClick={() => {
-          navigate(`/college/${collegeId}`);
-        }}
-        style={{ margin: "20px" }}
-      >
-        <ButtonBack to={`Back To Courses`} />
+    <div className="p-4 relative">
+      <div className="flex flex-row justify-between items-center">
+        <div
+          onClick={() => {
+            navigate(`/college/${collegeId}`);
+          }}
+          style={{ marginLeft: "20px", marginTop: "20px" }}
+        >
+          <ButtonBack to={`Back To Department`} />
+        </div>
+        {role === "superadmin" && (
+          <ButtonAdd handleToAdd={handleToAdd} type={"Courses"} />
+        )}
       </div>
-      {role === "superadmin" && (
-        <ButtonAdd handleToAdd={handleToAdd} type={"College"} />
-      )}
       <div
         className="flex flex-row flex-wrap items-center justify-center gap-5"
         style={{ margin: "20px" }}
       >
         {listOfMaterial}
       </div>
-    </>
+    </div>
   );
 }

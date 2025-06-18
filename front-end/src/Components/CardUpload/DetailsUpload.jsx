@@ -30,6 +30,7 @@ export default function DetailsUpload({
           <option value="book">Book</option>
           <option value="slide">Slides</option>
           <option value="assignment">Assignment</option>
+          <option value="video">video</option>
         </select>
       </div>
       <textarea
