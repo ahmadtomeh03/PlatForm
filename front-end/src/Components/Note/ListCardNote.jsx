@@ -1,8 +1,31 @@
+import { useState } from "react";
 import Search from "../Search/Search";
 import CardNote from "./CardNote";
+import NoteForm from "./NoteForm";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
 export default function ListCardNote() {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newNoteTitle, setNewNoteTitle] = useState("");
+  const [newNoteDescription, setNewNoteDescription] = useState("");
+  const [notes, setNotes] = useState([]);
+
+  const handleAddNote = () => {
+    if (!newNoteTitle.trim() || !newNoteDescription.trim()) return;
+
+    const newNote = {
+      id: Date.now(),
+      title: newNoteTitle,
+      description: newNoteDescription,
+      createdAt: new Date(),
+    };
+
+    setNotes([newNote, ...notes]);
+    setNewNoteTitle("");
+    setNewNoteDescription("");
+    setShowAddForm(false);
+  };
+
   return (
     <div className="containers min-h-screen" style={{ padding: "20px" }}>
       <div
@@ -10,9 +33,10 @@ export default function ListCardNote() {
           backgroundColor: "#ffffff",
           borderRadius: "16px",
           padding: "24px",
-          height: "100%",
+          height: "650px",
           display: "flex",
           flexDirection: "column",
+          minHeight: "730px",
         }}
       >
         <div style={{ marginBottom: "10px" }}>
@@ -23,13 +47,17 @@ export default function ListCardNote() {
             <Search />
             <button
               className="flex items-center gap-1"
+              onClick={() => setShowAddForm(!showAddForm)}
               style={{
-                padding: "5px",
+                padding: "5px 10px",
                 background: "var(--color1)",
                 borderRadius: "8px",
               }}
             >
               <AddBoxIcon style={{ color: "white" }} />
+              <span style={{ color: "white", fontWeight: "bold" }}>
+                {showAddForm ? "Cancel" : "Add Note"}
+              </span>
             </button>
           </div>
 
@@ -41,6 +69,16 @@ export default function ListCardNote() {
           </h1>
         </div>
 
+        {showAddForm && (
+          <NoteForm
+            title={newNoteTitle}
+            description={newNoteDescription}
+            onTitleChange={(e) => setNewNoteTitle(e.target.value)}
+            onDescriptionChange={(e) => setNewNoteDescription(e.target.value)}
+            onSave={handleAddNote}
+          />
+        )}
+
         <div
           style={{
             overflowY: "auto",
@@ -49,10 +87,14 @@ export default function ListCardNote() {
           }}
         >
           <div className="grid grid-cols-1 gap-4">
-            <CardNote />
-            <CardNote />
-            <CardNote />
-            <CardNote />
+            {notes.map((note) => (
+              <CardNote
+                key={note.id}
+                title={note.title}
+                description={note.description}
+                date={note.createdAt}
+              />
+            ))}
           </div>
         </div>
       </div>

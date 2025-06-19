@@ -40,7 +40,6 @@ function SwiperCard({ CardComponent, type }) {
       });
   }, [materialId]);
 
-  // Dynamically get ID, name, path
   const getId = (item) => {
     return item[`${type}_id`];
   };

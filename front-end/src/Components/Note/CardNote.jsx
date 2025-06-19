@@ -2,9 +2,18 @@ import { IconButton } from "@mui/material";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import ButtonDelete from "../ButtonDelete/ButtonDelete";
 
-export default function CardNote() {
+export default function CardNote({ title, description, date }) {
   const handleToEdit = () => {};
   const handleToDelete = () => {};
+
+  const formatDate = (d) =>
+    new Date(d).toLocaleString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
   return (
     <div
@@ -42,10 +51,10 @@ export default function CardNote() {
               margin: 0,
             }}
           >
-            The Title Of Note
+            {title}
           </h2>
           <p style={{ fontSize: "0.875rem", color: "#4B5563", margin: 0 }}>
-            The description of title
+            {description}
           </p>
         </div>
       </div>
@@ -63,7 +72,7 @@ export default function CardNote() {
         }}
       >
         <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-          ✍️ 5, Dec 2023 - 4:58PM
+          ✍️ {formatDate(date)}
         </span>
 
         <IconButton
@@ -74,7 +83,7 @@ export default function CardNote() {
             "&:hover": { color: "#374151" },
           }}
         >
-          <EditNoteIcon fontSize="small" />
+          <EditNoteIcon fontSize="medium" />
         </IconButton>
 
         <ButtonDelete handleToDelete={handleToDelete} />
