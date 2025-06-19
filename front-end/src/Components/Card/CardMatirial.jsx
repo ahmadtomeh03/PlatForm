@@ -17,103 +17,78 @@ export default function CardMatirial({
   onDeleteSuccess,
   onEdit,
   dc_type,
-  studentCourseId,
-  onBookmarkToggle,
 }) {
   const navigate = useNavigate();
   const { isLogin, role } = useContext(UserContext);
   const studentId = localStorage.getItem("student_id");
   const token = localStorage.getItem("token");
-
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [studentCourse, setStudentCourse] = useState({
-    student_id: null,
-    course_id: null,
-  });
-  const [studentCourseIdState, setStudentCourseIdState] = useState(
-    studentCourseId || null
-  );
-
+  const [saveId, setSaveId] = useState(null);
   useEffect(() => {
-    if (studentId && courseId) {
-      setStudentCourse({
-        student_id: parseInt(studentId),
-        course_id: parseInt(courseId),
+    axios
+      .get("http://localhost:3000/student-course-list", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        const match = response.data.data.find((fav) => fav.course_id === dc_id);
+        console.log(match);
+        if (match) {
+          setSaveId(match.SC_id);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching favorites:", err);
       });
-
-      const savedCourses =
-        JSON.parse(localStorage.getItem("bookmarkedCourses")) || [];
-      setIsBookmarked(savedCourses.includes(courseId));
-      setStudentCourseIdState(studentCourseId);
-    }
-  }, [studentId, courseId, studentCourseId]);
-
+  }, [dc_id, token]);
   const handleClick = () => {
     navigate("details");
   };
 
   const handleToToggleBookmark = async (e) => {
     e.stopPropagation();
-
-    if (!isBookmarked) {
+    if (!saveId) {
       try {
         const res = await axios.post(
           "http://localhost:3000/student-course-create",
-          studentCourse,
+          {
+            course_id: courseId,
+          },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
-        setIsBookmarked(true);
-
-        const returnedId = res?.data?.data?.SC_id || res?.data?.SC_id;
-        if (returnedId) setStudentCourseIdState(returnedId);
-
-        const savedCourses =
-          JSON.parse(localStorage.getItem("bookmarkedCourses")) || [];
-        if (!savedCourses.includes(courseId)) {
-          savedCourses.push(courseId);
-          localStorage.setItem(
-            "bookmarkedCourses",
-            JSON.stringify(savedCourses)
-          );
-        }
-
-        if (onBookmarkToggle) {
-          onBookmarkToggle(courseId, true, returnedId);
-        }
+        setSaveId(res.data.data);
+        console.log(res.data.data);
+        Swal.fire({
+          icon: "success",
+          title: "تمت الإضافة للمفضلة",
+          timer: 1000,
+          showConfirmButton: false,
+        });
       } catch (err) {
         console.error(err.response?.data || err.message);
       }
     } else {
-      if (!studentCourseIdState) {
+      if (!saveId) {
         console.warn("studentCourseId غير موجود، لا يمكن الحذف.");
         return;
       }
-
       try {
         await axios.delete(
-          `http://localhost:3000/student-course-delete/${studentCourseIdState}`,
+          `http://localhost:3000/student-course-delete/${saveId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
-        setIsBookmarked(false);
-        setStudentCourseIdState(null);
-
-        const savedCourses =
-          JSON.parse(localStorage.getItem("bookmarkedCourses")) || [];
-        const updatedCourses = savedCourses.filter((id) => id !== courseId);
-        localStorage.setItem(
-          "bookmarkedCourses",
-          JSON.stringify(updatedCourses)
-        );
-
-        if (onBookmarkToggle) {
-          onBookmarkToggle(courseId, false, studentCourseIdState);
-        }
+        setSaveId(null);
+        Swal.fire({
+          icon: "success",
+          title: "تم الحذف من المفضلة",
+          timer: 1000,
+          showConfirmButton: false,
+        });
       } catch (err) {
         console.error(err.response?.data || err.message);
       }
@@ -236,15 +211,13 @@ export default function CardMatirial({
           <div className="card__menu-buttons">
             <button
               className="btn-save"
-              title={isBookmarked ? "إلغاء الحفظ" : "حفظ المادة"}
+              title={saveId ? "إلغاء الحفظ" : "حفظ المادة"}
               onClick={handleToToggleBookmark}
               style={{
-                backgroundColor: isBookmarked ? "#4caf50" : "var(--menu-bg)",
+                backgroundColor: saveId ? "#4caf50" : "var(--menu-bg)",
               }}
             >
-              <BookmarkAddIcon
-                style={{ color: isBookmarked ? "white" : "var(--bg-color)" }}
-              />
+              <BookmarkAddIcon style={{ color: "white" }} />
             </button>
           </div>
         )}

@@ -6,7 +6,7 @@ import { UserContext } from "../../Context/UserContext";
 import FadeMenu from "../Menu/FadeMenu";
 
 export default function Navbar() {
-  const { isLogin, login, logout } = React.useContext(UserContext);
+  const { isLogin, login, logout, role } = React.useContext(UserContext);
   const navigate = useNavigate();
   return (
     <nav className="navbar" style={{ fontFamily: "Amiri" }}>
@@ -31,9 +31,11 @@ export default function Navbar() {
         <Link to="/help">
           <li>Help</li>
         </Link>
-        <Link to="/dashboard">
-          <li>Dashboard</li>
-        </Link>
+        {(role === "superadmin" || role === "admin") && (
+          <Link to="/dashboard">
+            <li>Dashboard</li>
+          </Link>
+        )}
       </ul>
       {!isLogin && (
         <>
