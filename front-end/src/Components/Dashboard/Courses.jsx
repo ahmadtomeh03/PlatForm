@@ -156,6 +156,27 @@ function Courses() {
   return (
     <div className="dashboard-section">
       <h1 className="dashboard-title">Courses</h1>
+      {/* Add New Course Form */}
+<div className="dashboard-form">
+  
+    <div><input
+      name="course_name"
+      className={`dashboard-input ${invalidFields.course_name ? "dashboard-input-error" : ""}`}
+      placeholder="Course Name"
+      value={form.course_name}
+      onChange={handleChange}
+    /></div>
+    <div><input
+      name="course_note"
+      className={`dashboard-input ${invalidFields.course_note ? "dashboard-input-error" : ""}`}
+      placeholder="Notes"
+      value={form.course_note}
+      onChange={handleChange}
+    /></div>
+    <div><button className="dashboard-button" onClick={addMaterial}>
+      Add Course
+    </button></div>
+  </div>
 
       
 
