@@ -162,19 +162,43 @@ export default function CardExam({
   };
 
   const handleToDelete = () => {
-    axios
-      .delete(`http://localhost:3000/admin/exam-delete/${id_type}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log("Exam deleted successfully", response.data);
-        onDelete();
-      })
-      .catch((error) => {
-        console.error("Error deleting exam", error);
-      });
+    Swal.fire({
+      title: "هل أنت متأكد من حذف الامتحان؟",
+      text: "لا يمكن التراجع عن هذه العملية!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "نعم، احذفه",
+      cancelButtonText: "إلغاء",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/admin/exam-delete/${id_type}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            console.log("Exam deleted successfully", response.data);
+            onDelete();
+            Swal.fire({
+              icon: "success",
+              title: "تم حذف الامتحان بنجاح",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          })
+          .catch((error) => {
+            console.error("Error deleting exam", error);
+            Swal.fire({
+              icon: "error",
+              title: "حدث خطأ أثناء الحذف",
+              text: error.response?.data?.message || "حاول مرة أخرى لاحقًا",
+            });
+          });
+      }
+    });
   };
 
   return (

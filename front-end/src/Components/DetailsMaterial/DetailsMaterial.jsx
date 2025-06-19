@@ -2,15 +2,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import ButtonBack from "../GoBack/ButtonBack";
 import Tabs from "../Tabs/Tabs";
 import ButtonUpload from "../ButtonUpload/ButtonUpload";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CardUpload from "../CardUpload/CardUpload";
+import Swal from "sweetalert2";
+import { UserContext } from "../../Context/UserContext";
 
 export default function DetailsMaterial() {
   const { collegeId } = useParams();
   const { majorId } = useParams();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-
+  const { isLogin } = useContext(UserContext);
   return (
     <div style={{ margin: "20px" }}>
       <div className="flex flex-row justify-between items-center">
@@ -21,7 +23,26 @@ export default function DetailsMaterial() {
         >
           <ButtonBack to={"Back To Courses"} />
         </div>
-        <div onClick={() => setShowModal(true)}>
+        <div
+          onClick={() => {
+            if (isLogin) {
+              setShowModal(true);
+            } else {
+              Swal.fire({
+                icon: "warning",
+                title: "لا يمكن رفع أي من الملفات ",
+                text: "لتتمكن من الإضافة قم بتسجيل الدخول إلى الموقع",
+                confirmButtonText: "الذهاب لتسجيل الدخول",
+                showCancelButton: true,
+                cancelButtonText: "إلغاء",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  navigate(`/acount/${"login"}`);
+                }
+              });
+            }
+          }}
+        >
           <ButtonUpload />
         </div>
       </div>

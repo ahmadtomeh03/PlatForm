@@ -172,22 +172,35 @@ export default function CardMatirial({
 
   const handleToDelete = (e) => {
     e.stopPropagation();
-    axios
-      .delete(`http://localhost:3000/admin/deleteDC/${dc_id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        if (onDeleteSuccess) {
-          onDeleteSuccess(dc_id);
-        }
-      })
-      .catch(() => {
-        Swal.fire({
-          icon: "error",
-          title: "خطأ",
-          text: "حدث خطأ أثناء الحذف",
-        });
-      });
+    Swal.fire({
+      title: "هل أنت متأكد من حذف المادة؟",
+      text: "لا يمكنك التراجع عن هذه العملية!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "نعم، احذفها",
+      cancelButtonText: "إلغاء",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/admin/deleteDC/${dc_id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(() => {
+            if (onDeleteSuccess) {
+              onDeleteSuccess(dc_id);
+            }
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "خطأ",
+              text: "حدث خطأ أثناء الحذف",
+            });
+          });
+      }
+    });
   };
 
   return (

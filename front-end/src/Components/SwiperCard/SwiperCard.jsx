@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -7,11 +7,13 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import CardNote from "../Note/CardNote";
 import ListCardNote from "../Note/ListCardNote";
+import { UserContext } from "../../Context/UserContext";
 
 function SwiperCard({ CardComponent, type }) {
   const [openPdfIndex, setOpenPdfIndex] = useState(null);
   const [materialDetails, setMaterialDetails] = useState([]);
   const { materialId } = useParams();
+  const [selectedId, setSelectedId] = useState(null);
   const BASE_URL = "http://localhost:3000";
   const updateMaterialDetails = (id, updatedData) => {
     setMaterialDetails((prev) =>
@@ -72,7 +74,15 @@ function SwiperCard({ CardComponent, type }) {
               nameOfDector={item.doctor_name}
               midOrFinal={item.description}
               isOpen={openPdfIndex === i}
-              onToggle={() => setOpenPdfIndex(openPdfIndex === i ? null : i)}
+              onToggle={() => {
+                const newIndex = openPdfIndex === i ? null : i;
+                setOpenPdfIndex(newIndex);
+                if (newIndex !== null) {
+                  setSelectedId(getId(item));
+                } else {
+                  setSelectedId(null);
+                }
+              }}
               onDelete={() => handleDelete(getId(item))}
               onEdit={(updatedData) =>
                 updateMaterialDetails(getId(item), updatedData)
@@ -101,7 +111,7 @@ function SwiperCard({ CardComponent, type }) {
           </div>
 
           <div className="w-full lg:w-[500px]">
-            <ListCardNote />
+            <ListCardNote type={type} selectedId={selectedId} />
           </div>
         </div>
       )}

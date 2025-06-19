@@ -61,21 +61,47 @@ const Department = () => {
   };
   // delete the college
   const handleToDelete = (college_id) => {
-    axios
-      .delete(`http://localhost:3000/admin/college-delete/${college_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log("College deleted successfully", response.data);
-        setColleges((prevColleges) =>
-          prevColleges.filter((college) => college.college_id !== college_id)
-        );
-      })
-      .catch((error) => {
-        console.error("Error deleting college", error);
-      });
+    Swal.fire({
+      title: "هل أنت متأكد من حذف الكلية؟",
+      text: "لا يمكنك التراجع عن هذه العملية!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "نعم، احذفها",
+      cancelButtonText: "إلغاء",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/admin/college-delete/${college_id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            console.log("College deleted successfully", response.data);
+            setColleges((prevColleges) =>
+              prevColleges.filter(
+                (college) => college.college_id !== college_id
+              )
+            );
+            Swal.fire({
+              icon: "success",
+              title: "تم حذف الكلية بنجاح",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          })
+          .catch((error) => {
+            console.error("Error deleting college", error);
+            Swal.fire({
+              icon: "error",
+              title: "حدث خطأ أثناء الحذف",
+              text: error.response?.data?.message || "حاول مرة أخرى لاحقًا",
+            });
+          });
+      }
+    });
   };
 
   useEffect(() => {
@@ -150,9 +176,7 @@ const Department = () => {
               style={{ margin: "8px" }}
             >
               {role == "superadmin" && (
-                <div
-                  className="w-full flex justify-between gap-2 mb-2"
-                >
+                <div className="w-full flex justify-between gap-2 mb-2">
                   <IconButton
                     aria-label="edit"
                     size="large"

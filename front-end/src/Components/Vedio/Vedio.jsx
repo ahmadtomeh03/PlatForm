@@ -167,18 +167,42 @@ export default function Vedio({
   };
 
   const handleToDelete = () => {
-    axios
-      .delete(`http://localhost:3000/admin/video-delete/${id_type}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => {
-        onDelete();
-      })
-      .catch((error) => {
-        console.error("Error deleting video", error);
-      });
+    Swal.fire({
+      title: "هل أنت متأكد من حذف الفيديو؟",
+      text: "لا يمكن التراجع عن هذه العملية!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "نعم، احذفه",
+      cancelButtonText: "إلغاء",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/admin/video-delete/${id_type}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(() => {
+            onDelete();
+            Swal.fire({
+              icon: "success",
+              title: "تم حذف الفيديو بنجاح",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          })
+          .catch((error) => {
+            console.error("Error deleting video", error);
+            Swal.fire({
+              icon: "error",
+              title: "حدث خطأ أثناء الحذف",
+              text: error.response?.data?.message || "حاول مرة أخرى لاحقًا",
+            });
+          });
+      }
+    });
   };
 
   return (

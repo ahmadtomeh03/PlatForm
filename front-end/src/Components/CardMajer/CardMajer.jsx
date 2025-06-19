@@ -54,19 +54,43 @@ export default function CardMajer({
     }
   };
   const handleToDelete = () => {
-    axios
-      .delete(`http://localhost:3000/admin/department-delete/${majorId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log("College deleted successfully", response.data);
-        onDelete(majorId);
-      })
-      .catch((error) => {
-        console.error("Error deleting college", error);
-      });
+    Swal.fire({
+      title: "هل أنت متأكد من حذف القسم؟",
+      text: "لا يمكنك التراجع عن هذه العملية!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "نعم، احذفه",
+      cancelButtonText: "إلغاء",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/admin/department-delete/${majorId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            console.log("College deleted successfully", response.data);
+            onDelete(majorId);
+            Swal.fire({
+              icon: "success",
+              title: "تم حذف القسم بنجاح",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          })
+          .catch((error) => {
+            console.error("Error deleting college", error);
+            Swal.fire({
+              icon: "error",
+              title: "حدث خطأ أثناء الحذف",
+              text: error.response?.data?.message || "حاول مرة أخرى لاحقًا",
+            });
+          });
+      }
+    });
   };
 
   const handleToCourse = () => {
