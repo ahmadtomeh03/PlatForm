@@ -88,9 +88,10 @@ function SwiperCard({ CardComponent, type }) {
             <iframe
               src={`${BASE_URL}/${getPath(materialDetails[openPdfIndex])}`}
               width="100%"
-              height="500px"
+              height="730px"
               className="rounded border border-gray-300"
               title={`PDF Preview Material ${openPdfIndex + 1}`}
+              style={{ marginTop: "20px" }}
             />
             <button
               className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
@@ -100,7 +101,7 @@ function SwiperCard({ CardComponent, type }) {
             </button>
           </div>
 
-          <div className="w-full lg:w-[400px]">
+          <div className="w-full lg:w-[500px]">
             <ListCardNote />
           </div>
         </div>
