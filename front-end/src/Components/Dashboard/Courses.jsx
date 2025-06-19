@@ -21,12 +21,12 @@ function Courses() {
         console.error("error getting course", error);
       });
   }, []);
-  const [form, setForm] = useState({ courseId: "", courseName: "", notes: "" });
+  const [form, setForm] = useState({ course_id: "", course_name: "", course_note: "" });
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("courseName");
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmId, setConfirmId] = useState(null);
-  const [editItem, setEditItem] = useState(null); // object to edit
+  const [editItem, setEditItem] = useState(null); 
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,16 +35,17 @@ function Courses() {
 
   const validateForm = () => {
     const missing = {};
-    if (!form.courseId.trim()) missing.courseId = true;
-    if (!form.courseName.trim()) missing.courseName = true;
-    if (!form.notes.trim()) missing.notes = true;
-
+    if (!form.course_id) missing.course_id = true;
+    if (!form.course_name) missing.course_name = true;
+    if (!form.course_note) missing.course_note = true;
+  
     if (Object.keys(missing).length > 0) {
       setInvalidFields(missing);
       return false;
     }
     return true;
   };
+  
 
   const addMaterial = () => {
     if (!validateForm()) return;
@@ -54,45 +55,95 @@ function Courses() {
 
     const newMaterial = {
       id: nextId,
-      courseId: form.courseId.trim(),
-      courseName: form.courseName.trim(),
+      courseId: form.course_id.trim(),
+      courseName: form.course_name.trim(),
       notes: form.notes.trim(),
     };
 
     setMaterials([...materials, newMaterial]);
-    setForm({ courseId: "", courseName: "", notes: "" });
+    setForm({ course_id: "", course_name: "", course_note: "" });
     setInvalidFields({});
   };
-
+  const handleEditClick = (course) => {
+    setEditItem(course);
+    setForm({
+      course_id: course.course_id,      
+      course_name: course.course_name,
+      course_note: course.course_note
+    });
+  };
+  
   const startEdit = (mat) => {
     setForm({
-      courseId: mat.courseId,
-      courseName: mat.courseName,
-      notes: mat.notes,
+      course_id: mat.course_id,
+      course_name: mat.course_name,
+      course_note: mat.course_note,
     });
     setEditItem(mat);
   };
 
   const cancelEdit = () => {
-    setForm({ courseId: "", courseName: "", notes: "" });
+    setForm({ course_id: "", course_name: "", course_note: "" });
     setInvalidFields({});
     setEditItem(null);
   };
 
   const updateMaterial = () => {
     if (!validateForm()) return;
-
-    const updatedList = materials.map((mat) =>
-      mat.id === editItem.id ? { ...mat, ...form } : mat
-    );
-    setMaterials(updatedList);
-    cancelEdit();
+  
+    axios
+      .put(
+        `http://localhost:3000/admin/course/update/${editItem.course_id}`,
+        {
+          course_name: form.course_name,
+          course_note: form.course_note,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Course updated successfully", response.data);
+  
+        const updatedList = materials.map((mat) =>
+          mat.course_id === editItem.course_id
+            ? { ...mat, course_name: form.course_name, course_note: form.course_note }
+            : mat
+        );
+        setMaterials(updatedList);
+        cancelEdit();
+      })
+      .catch((error) => {
+        console.error("Failed to update course", error);
+        alert("Failed to save changes.");
+      });
   };
+  
 
   const handleDelete = (id) => setConfirmId(id);
   const confirmDelete = () => {
-    setMaterials(materials.filter((mat) => mat.id !== confirmId));
-    setConfirmId(null);
+
+    
+    axios
+    .delete(`http://localhost:3000/admin/course/delete/${confirmId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log("Courses deleted successfully", response.data);
+      setMaterials(materials.filter((s) => s.course_id !== confirmId));
+      setConfirmId(null);
+    })
+    .catch((error) => {
+    
+      console.error("Error deleting admin", error);
+      alert(error.response.data.message);
+    });
+
+
   };
   const cancelDelete = () => setConfirmId(null);
 
@@ -106,51 +157,7 @@ function Courses() {
     <div className="dashboard-section">
       <h1 className="dashboard-title">Courses</h1>
 
-      {/* Add Course Form */}
-      {/* <div className="dashboard-form">
-        <div>
-          <input
-            name="courseId"
-            className={`dashboard-input ${invalidFields.courseId ? "dashboard-input-error" : ""}`}
-            placeholder="Course ID"
-            value={form.courseId}
-            onChange={handleChange}
-          />
-          {invalidFields.courseId && (
-            <div style={{ color: "#e74c3c" }}>Course ID is required</div>
-          )}
-        </div>
-
-        <div>
-          <input
-            name="courseName"
-            className={`dashboard-input ${invalidFields.courseName ? "dashboard-input-error" : ""}`}
-            placeholder="Course Name"
-            value={form.courseName}
-            onChange={handleChange}
-          />
-          {invalidFields.courseName && (
-            <div style={{ color: "#e74c3c" }}>Course Name is required</div>
-          )}
-        </div>
-
-        <div>
-          <input
-            name="notes"
-            className={`dashboard-input ${invalidFields.notes ? "dashboard-input-error" : ""}`}
-            placeholder="Notes"
-            value={form.notes}
-            onChange={handleChange}
-          />
-          {invalidFields.notes && (
-            <div style={{ color: "#e74c3c" }}>Notes are required</div>
-          )}
-        </div>
-
-        <button className="dashboard-button" onClick={addMaterial}>
-          Add Course
-        </button>
-      </div> */}
+      
 
       {/* Search */}
       <div className="dashboard-filter-group">
@@ -160,9 +167,9 @@ function Courses() {
           value={searchBy}
           onChange={(e) => setSearchBy(e.target.value)}
         >
-          <option value="courseId">Course ID</option>
-          <option value="courseName">Course Name</option>
-          <option value="notes">Notes</option>
+          <option value="course_id">Course ID</option>
+          <option value="course_name">Course Name</option>
+          <option value="course_note">Notes</option>
         </select>
         <input
           className="dashboard-input"
@@ -203,14 +210,13 @@ function Courses() {
                   title="Promote"
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter') handlePromoteClick(s.id); }}
                     
                   >
                     ✎
                   </span>
                   <button
                     className="dashboard-delete-button"
-                    onClick={() => handleDelete(mat.id)}
+                    onClick={() => handleDelete(mat.course_id)}
                   >
                     ✖
                   </button>
@@ -242,24 +248,25 @@ function Courses() {
           <div className="dashboard-modal">
             <h3>Edit Course</h3>
             <input
-              name="courseId"
-              className={`dashboard-input ${invalidFields.courseId ? "dashboard-input-error" : ""}`}
+              name="course_id"
+              className={`dashboard-input ${invalidFields.course_id ? "dashboard-input-error" : ""}`}
               placeholder="Course ID"
-              value={form.courseId}
-              onChange={handleChange}
+              value={form.course_id}
+              readOnly
+
             />
             <input
-              name="courseName"
-              className={`dashboard-input ${invalidFields.courseName ? "dashboard-input-error" : ""}`}
+              name="course_name"
+              className={`dashboard-input ${invalidFields.course_name ? "dashboard-input-error" : ""}`}
               placeholder="Course Name"
-              value={form.courseName}
+              value={form.course_name}
               onChange={handleChange}
             />
             <input
-              name="notes"
-              className={`dashboard-input ${invalidFields.notes ? "dashboard-input-error" : ""}`}
+              name="course_note"
+              className={`dashboard-input ${invalidFields.course_note ? "dashboard-input-error" : ""}`}
               placeholder="Notes"
-              value={form.notes}
+              value={form.course_note}
               onChange={handleChange}
             />
             <div style={{ marginTop: "10px" }}>

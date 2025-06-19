@@ -67,10 +67,29 @@ function Archive() {
 
   // Delete handlers
   const requestDelete = (item) => {
+    console.log(item);
+    
     setConfirmDeleteItem(item);
   };
 
   const confirmDelete = () => {
+    console.log(confirmDeleteItem.id)
+    axios
+    .delete(`http://localhost:3000/admin/delete-archive/${confirmDeleteItem.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log("Archive deleted successfully", response.data);
+      setArchives(archives.filter((s) => s.id !== confirmDeleteItem.id));
+      setConfirmDeleteItem(null);
+      alert("Archive deleted successfully");
+    })
+    .catch((error) => {
+      console.error("Error deleting Archive", error);
+      alert("Failed to delete Archive.");
+    });
     if (confirmDeleteItem) {
       setArchives(archives.filter((f) => f !== confirmDeleteItem));
       setConfirmDeleteItem(null);

@@ -4,28 +4,9 @@ import React, { useEffect, useState } from "react";
 
 
 function Admins() {
-  const [admins, setAdmins] = useState([
-    {
-      id: 1,
-      name: "Alice",
-      username: "alice123",
-      email: "alice@example.com",
-      date: "2024-01-01",
-      role: "superadmin",
-      std_id: "STD001",
-      dep_id: "DEP-A",
-    },
-    {
-      id: 2,
-      name: "Bob",
-      username: "bobster",
-      email: "bob@example.com",
-      date: "2024-02-15",
-      role: "moderator",
-      std_id: "STD002",
-      dep_id: "DEP-B",
-    },
-  ]);
+  const [admins, setAdmins] = useState([]);
+  const [promoteRole, setPromoteRole] = useState("admin");
+
 
   const [form, setForm] = useState({
     name: "",
@@ -38,6 +19,7 @@ function Admins() {
   });
   const token = localStorage.getItem("token");
 
+
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,6 +31,17 @@ function Admins() {
     setForm({ ...form, [e.target.name]: e.target.value });
     setInvalidFields({ ...invalidFields, [e.target.name]: false });
   };
+  const confirmPromote = () => {
+    setAdmins(
+      admins.map((admin) =>
+        admin.id === promoteId ? { ...admin, role: promoteRole } : admin
+      )
+    );
+    setPromoteId(null);
+    setPromoteRole("admin"); 
+  };
+  
+  
 
   const addAdmin = () => {
     const missing = {};
@@ -90,83 +83,48 @@ function Admins() {
   }, []);
 
   const handleDelete = (id) => setConfirmId(id);
+  console.log(confirmId)
   const confirmDelete = () => {
-    setAdmins(admins.filter((admin) => admin.id !== confirmId));
-    setConfirmId(null);
+    axios
+    .delete(`http://localhost:3000/admins-delete/${confirmId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log("Student deleted successfully", response.data);
+      setAdmins(admins.filter((s) => s.admin_id !== confirmId));
+      setConfirmId(null);
+    })
+    .catch((error) => {
+      console.error("Error deleting admin", error);
+      alert("Failed to delete admin.");
+    });
+    
   };
   const cancelDelete = () => setConfirmId(null);
 
   const handlePromoteClick = (id) => setPromoteId(id);
-  const cancelPromote = () => setPromoteId(null);
+  const cancelPromote = () => {
+    setPromoteId(null);
+    setPromoteRole("admin");
+  };
 
   const filtered = admins.filter((admin) =>
     admin[searchBy]?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const promoteAdminName =
-    promoteId != null
-      ? admins.find((admin) => admin.id === promoteId)?.name || ""
-      : "";
+  promoteId != null
+    ? admins.find((admin) => admin.id === promoteId || admin.admin_id === promoteId)?.admin_username || ""
+    : "";
+
       
   return (
     <div className="dashboard-section">
       <h1 className="dashboard-title">Admins</h1>
 
-      {/* Form for Adding Admin */}
-      {/* <div className="dashboard-form">
-        <input
-          className="dashboard-input"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Name"
-        />
-        <input
-          className="dashboard-input"
-          name="username"
-          value={form.username}
-          onChange={handleChange}
-          placeholder="Username"
-        />
-        <input
-          className="dashboard-input"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Email"
-        />
-        <input
-          className="dashboard-input"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          type="date"
-        />
-        <input
-          className="dashboard-input"
-          name="role"
-          value={form.role}
-          onChange={handleChange}
-          placeholder="Role"
-        />
-        <input
-          className="dashboard-input"
-          name="std_id"
-          value={form.std_id}
-          onChange={handleChange}
-          placeholder="Student ID"
-        />
-        <input
-          className="dashboard-input"
-          name="dep_id"
-          value={form.dep_id}
-          onChange={handleChange}
-          placeholder="Department ID"
-        />
-        <button className="dashboard-button" onClick={addAdmin}>
-          Add Admin
-        </button>
-      </div> */}
+      
 
       {/* Search Filter */}
       <div className="dashboard-filter-group" style={{ marginTop: 20 }}>
@@ -226,19 +184,19 @@ function Admins() {
               <td className="dashboard-td">
                 <button
                   className="dashboard-delete-button"
-                  onClick={() => handleDelete(admin.id)}
+                  onClick={() => handleDelete(admin.admin_id)}
                   title="Delete"
                 >
                   ✖
                 </button>
                 <span
-                  onClick={() => handlePromoteClick(admin.id)}
+                  onClick={() => handlePromoteClick(admin.admin_id)}
                   className="promote-icon"
                   role="button"
                   tabIndex={0}
                   title="Promote"
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") handlePromoteClick(admin.id);
+                    if (e.key === "Enter") handlePromoteClick(admin.admin_id);
                   }}
                 >
                   🔼
@@ -250,39 +208,38 @@ function Admins() {
       </table>
 
       {/* Delete Confirmation Modal */}
-      {confirmId && (
-        <div className="dashboard-modal-overlay" role="dialog" aria-modal="true">
-          <div className="dashboard-modal">
-            <p>Are you sure you want to delete this admin?</p>
-            <button className="dashboard-button confirm" onClick={confirmDelete}>
-              Yes
-            </button>
-            <button className="dashboard-button cancel" onClick={cancelDelete}>
-              No
-            </button>
-          </div>
+          {confirmId && (
+      <div className="dashboard-modal-overlay" role="dialog" aria-modal="true">
+        <div className="dashboard-modal">
+          <p>Are you sure you want to delete this admin?</p>
+          <button className="dashboard-button confirm" onClick={confirmDelete}>
+            Yes
+          </button>
+          <button className="dashboard-button cancel" onClick={cancelDelete}>
+            No
+          </button>
         </div>
-      )}
+      </div>
+    )}
 
       {/* Promote Confirmation Modal */}
-      {promoteId && (
+      {promoteId !== null && (
         <div className="dashboard-modal-overlay" role="dialog" aria-modal="true">
           <div className="dashboard-modal">
             <p>
-              Promote <strong>{promoteAdminName}</strong> to{" "}
-              <strong>superadmin</strong>?
+              Promote <strong>{promoteAdminName}</strong> to <strong>?</strong>
             </p>
-            <button
-              className="dashboard-button confirm"
-              onClick={() => {
-                setAdmins(
-                  admins.map((admin) =>
-                    admin.id === promoteId ? { ...admin, role: "superadmin" } : admin
-                  )
-                );
-                setPromoteId(null);
-              }}
-            >
+                  <select
+                value={promoteRole}
+                onChange={(e) => setPromoteRole(e.target.value)}
+                className="dashboard-input"
+                style={{ margin: "10px 0" }}
+      >
+        <option value="admin">Admin</option>
+        <option value="superadmin">Superadmin</option>
+      </select>
+
+            <button className="dashboard-button confirm" onClick={confirmPromote}>
               Yes
             </button>
             <button className="dashboard-button cancel" onClick={cancelPromote}>

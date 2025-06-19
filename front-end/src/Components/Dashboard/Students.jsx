@@ -8,9 +8,9 @@ function Students() {
   const [searchBy, setSearchBy] = useState("id");
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmId, setConfirmId] = useState(null);
-  const [promoteData, setPromoteData] = useState({ id: null, role: "admin" });
+  const [promoteData, setPromoteData] = useState({ id: null, role: "admin", department_id: "1" });
   const token = localStorage.getItem("token");
-
+  console.log(promoteData.department_id)
   useEffect(() => {
     axios
       .get("http://localhost:3000/admin/all-student-filters", {
@@ -57,36 +57,46 @@ function Students() {
   };
 
   const handlePromoteClick = (id) => {
-    setPromoteData({ id, role: "admin" });
+    setPromoteData({ id,department_id: '1' ,role: "admin" });
   };
 
   const confirmPromote = () => {
-    axios
-      .put("http://localhost:3000/admin/all-student-filters", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log("get student successfully", response.data.data);
-        setStudents(response.data.data);
-      })
-      .catch((error) => {
-        console.error("error getting student", error);
-      });
-
-
-
     console.log(promoteData);
 
-    const studentIndex = students.findIndex((s) => s.id === promoteData.id);
-    if (studentIndex !== -1) {
-      alert(
-        `Student "${students[studentIndex].student_name}" promoted to ${promoteData.role}!`
-      );
-    }
-    setPromoteData({ id: null, role: "admin" });
+    axios
+      .post(
+        "http://localhost:3000/admins/create-from-student",
+        {
+          student_id: promoteData.id,
+          department_id: promoteData.department_id,
+          role: promoteData.role,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        // response.data.data ممكن يكون الادمن الجديد
+        console.log("Promoted successfully", response.data.data);
+  
+        const studentIndex = students.findIndex((s) => s.student_id === promoteData.id);
+        if (studentIndex !== -1) {
+          alert(
+            `Student "${students[studentIndex].student_name}" promoted to ${promoteData.role}!`
+          );
+        }
+        // بعد الترقية، يمكن تترك الطلاب بدون تعديل أو تحذف الطالب من القائمة إذا صار أدمن
+        // هنا اخترنا فقط إغلاق الـ modal
+        setPromoteData({ id: null, role: "admin", department_id: "1" });
+      })
+      .catch((error) => {
+        console.error("Error promoting student", error);
+        alert("Failed to promote student.");
+      });
   };
+  
 
   const cancelPromote = () => {
     setPromoteData({ id: null, role: "admin" });
@@ -198,7 +208,8 @@ function Students() {
             <p>
               Promote{" "}
               <strong>
-                {students.find((s) => s.id === promoteData.id)?.student_name}
+                {students.find((s) => s.student_id === promoteData.student_id)?.student_name}
+
               </strong>{" "}
               to role:
             </p>
@@ -219,8 +230,8 @@ function Students() {
                 <input
                   type="radio"
                   name="role"
-                  value="super admin"
-                  checked={promoteData.role === "super admin"}
+                  value="superadmin"
+                  checked={promoteData.role === "superadmin"}
                   onChange={(e) =>
                     setPromoteData({ ...promoteData, role: e.target.value })
                   }
@@ -228,6 +239,15 @@ function Students() {
                 Super Admin
               </label>
             </div>
+            <input
+                type="text"
+                className="dashboard-input"
+                placeholder="Enter Department ID"
+                value={promoteData.department_id}
+                onChange={(e) =>
+                  setPromoteData({ ...promoteData, department_id: e.target.value })
+                }
+      />
             <div className="dashboard-modal-buttons">
               <button className="dashboard-button confirm" onClick={confirmPromote}>
                 Yes

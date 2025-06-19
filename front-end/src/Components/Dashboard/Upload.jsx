@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Upload() {
   const [files, setFiles] = useState([]);
   const initialForm = {
-    id: "",
-    course_Id: "",
+    upload_id: "",
     std_id: "",
     admin_id: "",
+    course_id: "",
     uploaded_state: "",
     uploaded_type: "",
     uploaded_datetime: "",
@@ -18,6 +19,7 @@ function Upload() {
     description: "",
   };
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/admin/uploads-filter", {
@@ -26,13 +28,13 @@ function Upload() {
         },
       })
       .then((response) => {
-        console.log("get upload successfully", response.data.data);
         setFiles(response.data.data);
       })
       .catch((error) => {
-        console.error("error getting upload", error);
+        console.error("Error getting uploads", error);
       });
   }, []);
+
   const [form, setForm] = useState(initialForm);
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("upload_name");
@@ -69,39 +71,145 @@ function Upload() {
     setConfirmItem(item);
   };
 
-  const confirmDelete = () => {
-    setFiles(files.filter((f) => f !== confirmItem));
-    setConfirmItem(null);
+  const confirmDelete = async () => {
+    console.log(confirmRejectItem);
+    try {
+      await axios.put(
+        
+        `http://localhost:3000/admin/approve-upload/${confirmRejectItem.upload_id}`,
+        {
+          
+          action: "rejected"
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setFiles(
+        files.map((f) =>
+          f === confirmRejectItem ? { ...f, uploaded_state: "rejected" } : f
+        )
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "تم القبول بنجاح",
+        text: "تم قبول الملف.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "فشل القبول",
+        text: "حدث خطأ أثناء محاولة قبول الملف.",
+      });
+    } finally {
+      setConfirmRejectItem(null);
+    }
+    
+    
   };
 
   const cancelDelete = () => {
+
     setConfirmItem(null);
   };
 
   const handleAccept = (item) => {
     setConfirmAcceptItem(item);
+    console.log(item);
   };
 
-  const confirmAccept = () => {
-    setFiles(
-      files.map((f) =>
-        f === confirmAcceptItem ? { ...f, uploaded_state: "accepted" } : f
-      )
-    );
-    setConfirmAcceptItem(null);
+  const confirmAccept = async () => {
+    try {
+      await axios.put(
+        `http://localhost:3000/admin/approve-upload/${confirmAcceptItem.upload_id}`,
+        {
+          
+          action: "approved"
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setFiles(
+        files.map((f) =>
+          f === confirmAcceptItem ? { ...f, uploaded_state: "approved" } : f
+        )
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "تم القبول بنجاح",
+        text: "تم قبول الملف.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "فشل القبول",
+        text: "حدث خطأ أثناء محاولة قبول الملف.",
+      });
+    } finally {
+      setConfirmAcceptItem(null);
+    }
   };
 
   const handleReject = (item) => {
     setConfirmRejectItem(item);
   };
 
-  const confirmReject = () => {
-    setFiles(
-      files.map((f) =>
-        f === confirmRejectItem ? { ...f, uploaded_state: "rejected" } : f
-      )
-    );
-    setConfirmRejectItem(null);
+  const confirmReject = async () => {
+    try {
+      await axios.put(
+        
+        `http://localhost:3000/admin/approve-upload/${confirmRejectItem.upload_id}`,
+        {
+          
+          action: "rejected"
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setFiles(
+        files.map((f) =>
+          f === confirmRejectItem ? { ...f, uploaded_state: "rejected" } : f
+        )
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "تم القبول بنجاح",
+        text: "تم قبول الملف.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "فشل القبول",
+        text: "حدث خطأ أثناء محاولة قبول الملف.",
+      });
+    } finally {
+      setConfirmRejectItem(null);
+    }
+    
+    
   };
 
   const cancelAcceptReject = () => {
@@ -181,11 +289,18 @@ function Upload() {
                     ❌
                   </button>
                   <button
-                    title="Delete"
-                    className="dashboard-icon-button delete"
-                    onClick={() => handleDelete(f)}
-                  >
-                    🗑
+                      title="View Material"
+                      className="dashboard-icon-button view"
+                      onClick={() => {
+                        let originalUrl = f.upload_url;
+                        const newUrl = 'http://localhost:3000/'+ originalUrl
+                        console.log("Opening URL:", newUrl);
+                        window.open(newUrl, "_blank");
+                      }}
+                    
+                    
+                    >
+                      👁️
                   </button>
                 </div>
               </td>
