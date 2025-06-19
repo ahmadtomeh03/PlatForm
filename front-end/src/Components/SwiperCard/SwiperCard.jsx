@@ -5,6 +5,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import CardNote from "../Note/CardNote";
+import ListCardNote from "../Note/ListCardNote";
 
 function SwiperCard({ CardComponent, type }) {
   const [openPdfIndex, setOpenPdfIndex] = useState(null);
@@ -80,22 +82,27 @@ function SwiperCard({ CardComponent, type }) {
           </SwiperSlide>
         ))}
       </Swiper>
-
       {openPdfIndex !== null && (
-        <div className="mt-6 w-full px-4">
-          <iframe
-            src={`${BASE_URL}/${getPath(materialDetails[openPdfIndex])}`}
-            width="100%"
-            height="500px"
-            className="rounded border border-gray-300"
-            title={`PDF Preview Material ${openPdfIndex + 1}`}
-          />
-          <button
-            className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
-            onClick={() => setOpenPdfIndex(null)}
-          >
-            Close Preview
-          </button>
+        <div className="mt-6 w-full px-4 flex flex-col lg:flex-row gap-4">
+          <div className="flex-1">
+            <iframe
+              src={`${BASE_URL}/${getPath(materialDetails[openPdfIndex])}`}
+              width="100%"
+              height="500px"
+              className="rounded border border-gray-300"
+              title={`PDF Preview Material ${openPdfIndex + 1}`}
+            />
+            <button
+              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+              onClick={() => setOpenPdfIndex(null)}
+            >
+              Close Preview
+            </button>
+          </div>
+
+          <div className="w-full lg:w-[400px]">
+            <ListCardNote />
+          </div>
         </div>
       )}
     </div>
