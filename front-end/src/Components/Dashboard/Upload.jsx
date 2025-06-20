@@ -268,10 +268,13 @@ function Upload() {
           {filtered.map((f, index) => (
             <tr key={index}>
               {Object.entries(f).map(([key, value]) => (
-                <td key={key} className="dashboard-td">
-                  {key === "uploaded_datetime" ? formatDateTime(value) : value}
-                </td>
-              ))}
+                      <td key={key} className="dashboard-td">
+                        {key === "uploaded_datetime"
+                          ? formatDateTime(value)
+                          : value ?? "N/A"}
+                      </td>
+                    ))}
+
               <td className="dashboard-td">
                 <div className="dashboard-operation-buttons">
                   <button

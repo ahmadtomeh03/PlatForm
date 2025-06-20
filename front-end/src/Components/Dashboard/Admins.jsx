@@ -1,6 +1,7 @@
 import "./MainDashboard.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 
 function Admins() {
@@ -32,15 +33,50 @@ function Admins() {
     setInvalidFields({ ...invalidFields, [e.target.name]: false });
   };
   const confirmPromote = () => {
-    setAdmins(
-      admins.map((admin) =>
-        admin.id === promoteId ? { ...admin, role: promoteRole } : admin
+    axios
+      .put(
+        `http://localhost:3000/admin/change-role/${promoteId}`,
+        {
+          role: promoteRole,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
-    );
-    setPromoteId(null);
-    setPromoteRole("admin"); 
-  };
+      .then((response) => {
+        // Update UI
+        setAdmins(
+          admins.map((admin) =>
+            admin.admin_id === promoteId
+              ? { ...admin, role: promoteRole }
+              : admin
+          )
+        );
+        setPromoteId(null);
+        setPromoteRole("admin");
   
+        // ✅ Show success feedback
+        Swal.fire({
+          icon: "success",
+          title: "تمت الترقية بنجاح",
+          text: `تم تغيير دور المستخدم إلى ${promoteRole}.`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      })
+      .catch((error) => {
+        console.error("Promotion failed:", error);
+  
+        // ❌ Show error feedback
+        Swal.fire({
+          icon: "error",
+          title: "فشل الترقية",
+          text: "حدث خطأ أثناء محاولة ترقية المستخدم.",
+        });
+      });
+  };
   
 
   const addAdmin = () => {

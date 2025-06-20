@@ -206,7 +206,7 @@ function Students() {
         <div className="dashboard-modal-overlay">
           <div className="dashboard-modal" role="dialog" aria-modal="true">
             <p>
-              Promote{" "}
+              Promote
               <strong>
                 {students.find((s) => s.student_id === promoteData.student_id)?.student_name}
 
@@ -239,11 +239,13 @@ function Students() {
                 Super Admin
               </label>
             </div>
+            <p>Enter the <strong>Department ID</strong></p>
             <input
                 type="text"
                 className="dashboard-input"
+                
                 placeholder="Enter Department ID"
-                value={promoteData.department_id}
+              
                 onChange={(e) =>
                   setPromoteData({ ...promoteData, department_id: e.target.value })
                 }

@@ -23,7 +23,7 @@ function Courses() {
   }, []);
   const [form, setForm] = useState({ course_id: "", course_name: "", course_note: "" });
   const [invalidFields, setInvalidFields] = useState({});
-  const [searchBy, setSearchBy] = useState("courseName");
+  const [searchBy, setSearchBy] = useState("course_name");
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmId, setConfirmId] = useState(null);
   const [editItem, setEditItem] = useState(null); 
@@ -35,7 +35,7 @@ function Courses() {
 
   const validateForm = () => {
     const missing = {};
-    if (!form.course_id) missing.course_id = true;
+    
     if (!form.course_name) missing.course_name = true;
     if (!form.course_note) missing.course_note = true;
   
@@ -49,28 +49,35 @@ function Courses() {
 
   const addMaterial = () => {
     if (!validateForm()) return;
-
-    const nextId =
-      materials.length > 0 ? materials[materials.length - 1].id + 1 : 1;
-
-    const newMaterial = {
-      id: nextId,
-      courseId: form.course_id.trim(),
-      courseName: form.course_name.trim(),
-      notes: form.notes.trim(),
-    };
-
-    setMaterials([...materials, newMaterial]);
-    setForm({ course_id: "", course_name: "", course_note: "" });
-    setInvalidFields({});
-  };
-  const handleEditClick = (course) => {
-    setEditItem(course);
-    setForm({
-      course_id: course.course_id,      
-      course_name: course.course_name,
-      course_note: course.course_note
-    });
+  
+    axios
+      .post(
+        "http://localhost:3000/admin/courses/create",
+        {
+          course_id: form.course_id.trim(),
+          course_name: form.course_name.trim(),
+          course_note: form.course_note.trim(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Course added successfully", response.data);
+  
+        // Add the new course to the local list (optional, or you can refetch)
+        setMaterials([...materials, response.data.data]); // assuming response.data.data contains the new course
+  
+        // Clear the form
+        setForm({ course_id: "", course_name: "", course_note: "" });
+        setInvalidFields({});
+      })
+      .catch((error) => {
+        console.error("Failed to add course", error);
+        alert("Failed to add course.");
+      });
   };
   
   const startEdit = (mat) => {
@@ -147,19 +154,31 @@ function Courses() {
   };
   const cancelDelete = () => setConfirmId(null);
 
-  const filtered = materials.filter((mat) => {
-    const field = mat[searchBy];
-    if (!field) return false;
-    return field.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+    const filtered = materials.filter((mat) => {
+      if (!mat || typeof mat[searchBy] !== "string") return false;
+      return mat[searchBy].toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  
 
   return (
     <div className="dashboard-section">
       <h1 className="dashboard-title">Courses</h1>
       {/* Add New Course Form */}
 <div className="dashboard-form">
-  
+    {/* <div>
+      <input
+        name="course_id"
+        className={`dashboard-input ${invalidFields.course_id ? "dashboard-input-error" : ""}`}
+        placeholder="Course ID"
+        value={form.course_id}
+        onChange={handleChange}
+      />
+      {invalidFields.course_id && (
+        <div style={{ color: "#e74c3c" }}>Course ID is required</div>
+      )}
+  </div> */}
     <div><input
+      style={{marginTop: "10px", marginBottom:"20px"}}
       name="course_name"
       className={`dashboard-input ${invalidFields.course_name ? "dashboard-input-error" : ""}`}
       placeholder="Course Name"
@@ -210,28 +229,29 @@ function Courses() {
             <th className="dashboard-th">Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {materials.length === 0 ? (
-            <tr>
-              <td colSpan="5" style={{ textAlign: "center", padding: 20 }}>
-                No courses found.
-              </td>
-            </tr>
-          ) : (
-            materials.map((mat) => (
-              <tr key={mat.course_id}>
+              <tbody>
+        {materials.length === 0 ? (
+          <tr>
+            <td colSpan="5" style={{ textAlign: "center", padding: 20 }}>
+              No courses found.
+            </td>
+          </tr>
+        ) : (
+          materials
+            .filter(mat => mat) // filter out null/undefined entries
+            .map((mat) => (
+              <tr key={mat.course_id || mat.id || Math.random()}>
                 <td className="dashboard-td">{mat.course_id}</td>
                 <td className="dashboard-td">{mat.course_name}</td>
                 <td className="dashboard-td">{mat.course_note}</td>
                 <td className="dashboard-td">
                   <span
                     onClick={() => startEdit(mat)}
-                    style={{ marginRight: 50 }}
+                    style={{ marginRight: 50, cursor: 'pointer' }}
                     className="promote-icon"
-                  title="Promote"
-                  role="button"
-                  tabIndex={0}
-                    
+                    title="Edit"
+                    role="button"
+                    tabIndex={0}
                   >
                     ✎
                   </span>
@@ -244,8 +264,9 @@ function Courses() {
                 </td>
               </tr>
             ))
-          )}
-        </tbody>
+        )}
+      </tbody>
+
       </table>
 
       {/* Delete Confirmation Modal */}
