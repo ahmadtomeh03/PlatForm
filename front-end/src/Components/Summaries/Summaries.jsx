@@ -18,6 +18,8 @@ export default function Summaries({
   id_type,
   onDelete,
   onEdit,
+  onDeleteProfile,
+  showAction = true,
 }) {
   const token = localStorage.getItem("token");
   const { role } = React.useContext(UserContext);
@@ -144,6 +146,8 @@ export default function Summaries({
           }
         );
         setFavoriteId(null);
+        if (onDeleteProfile) onDeleteProfile();
+
         Swal.fire({
           icon: "success",
           title: "تم الحذف من المفضلة",
@@ -205,7 +209,7 @@ export default function Summaries({
     <div className="flex flex-col w-full h-full">
       <div className="card-sum">
         <div className="flex justify-between items-center w-full gap-4">
-          {role === "superadmin" && (
+          {role === "superadmin" && showAction === true && (
             <>
               <div className="flex-1 flex justify-start">
                 <IconButton

@@ -17,7 +17,9 @@ export default function CardBook({
   onToggle,
   id_type,
   onDelete,
+  onDeleteProfile,
   onEdit,
+  showAction = true,
 }) {
   const token = localStorage.getItem("token");
   const { role } = React.useContext(UserContext);
@@ -184,6 +186,8 @@ export default function CardBook({
           }
         );
         setFavoriteId(null);
+        if (onDeleteProfile) onDeleteProfile();
+
         Swal.fire({
           icon: "success",
           title: "تم الحذف من المفضلة",
@@ -205,7 +209,7 @@ export default function CardBook({
     <div className="card-book">
       <div className="exam-card-details">
         <div className="flex justify-between items-center w-full gap-4">
-          {role === "superadmin" && (
+          {role === "superadmin" && showAction === true && (
             <>
               <div className="flex-1 flex justify-start">
                 <IconButton
@@ -237,7 +241,7 @@ export default function CardBook({
 
         <p className="card-title">📄 {nameOfMaterial}</p>
         <p className="card-description">📝 {midOrFinal} Summary</p>
-        {/* <p className="card-doctor">👨‍🏫 {nameOfDector}</p> */}
+        <p className="card-doctor">👨‍🏫 {nameOfDector}</p>
       </div>
       <button class="card-btn-book" onClick={onToggle}>
         {isOpen ? "Hide" : "View"}
