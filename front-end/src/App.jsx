@@ -14,6 +14,9 @@ import { UserProvider } from "./Context/UserProvider";
 import ProfilePage from "./Pages/MyProfile/MyProfile";
 import MainDashboard from "./Components/Dashboard/MainDashboard";
 import Footer from "./Components/Footer/Footer";
+import ForgetPassword from "./ForgetPassword";
+import ResetPassword from "./ResetPassword";
+
 
 export default function App() {
   return (
@@ -41,6 +44,8 @@ export default function App() {
           <Route path="/material/:materialId" element={<DetailsMaterial />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/dashboard" element={<MainDashboard />} />
+          <Route path="/forgot-password" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
         <Footer></Footer>
         {/* <Chatbot></Chatbot> */}
