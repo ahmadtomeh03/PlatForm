@@ -56,6 +56,7 @@ const ProfilePage = () => {
   const [adminInfo, setAdminInfo] = useState({});
   const [studentCourses, setStudentCourses] = useState([]);
   const [studentFav, setStudentFav] = useState([]);
+  const [studentUploads, setStudentUploads] = useState([]);
 
   const token = localStorage.getItem("token");
 
@@ -97,6 +98,20 @@ const ProfilePage = () => {
       }
     )
   );
+  // get requset file
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/student/my-upload", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        setStudentUploads(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch profile data:", error);
+      });
+  }, []);
 
   //get student-courses
   useEffect(() => {
@@ -301,10 +316,48 @@ const ProfilePage = () => {
             <h3 className="profile-heading">Favorite Files</h3>
             <div className="card-container">{listOfFav}</div>
           </div>
-
-          <div className="profile-section">
-            <h3 className="profile-heading">Request File</h3>
-            <ul>{/* Placeholder for future use */}</ul>
+<div className="profile-section">
+            <h3 className="profile-heading">Uploaded Files</h3>
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>State</th>
+                  <th>Date/Time</th>
+                  <th>File Name</th>
+                  <th>Course ID</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                {studentUploads.map((upload, index) => (
+                  <tr key={index}>
+                    <td>{upload.uploaded_type}</td>
+                    <td>{upload.uploaded_state}</td>
+                    <td>
+                      {new Date(upload.uploaded_datetime).toLocaleString(
+                        "en-US",
+                        { timeZone: "Asia/Gaza" }
+                      )}
+                    </td>
+                    <td>{upload.upload_name}</td>
+                    <td>{upload.course_id}</td>
+                    <td>
+                      <button
+                        className="dashboard-icon-button view"
+                        onClick={() => {
+                          const fullUrl = `http://localhost:3000/${upload.upload_url}`;
+                          window.open(fullUrl, "_blank");
+                        }}
+                      >
+                        👁️
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          
           </div>
         </div>
 
