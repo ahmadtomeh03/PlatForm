@@ -17,7 +17,7 @@
 }
 
 .dashboard-sidebar-title {
-  font-size: 20px;
+  font-size: 30px;
   margin-bottom: 1rem;
   font-weight: 600;
   margin-top: 30px;
@@ -149,12 +149,12 @@
 
 .dashboard-input {
   padding: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 1px;
   border: 1.5px solid #ccc;
   border-radius: 6px;
   width: 100%;
   max-width: 300px;
-
+  margin-top:15px;
   margin-left: 10px;
   font-size: 15px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -348,7 +348,7 @@
 .dashboard-modal p {
   font-size: 18px;
   margin-bottom: 20px;
-  /* font-weight: 600; */
+  font-weight: 200;
 }
 
 .role-options {

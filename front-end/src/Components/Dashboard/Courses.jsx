@@ -343,7 +343,7 @@ const confirmDelete = () => {
       {editItem && (
         <div className="dashboard-modal-overlay">
           <div className="dashboard-modal">
-            <h3>Edit Course</h3>
+            <h1>Edit Course</h1>
             <input
               name="course_id"
               className={`dashboard-input ${invalidFields.course_id ? "dashboard-input-error" : ""}`}

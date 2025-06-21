@@ -3,6 +3,7 @@ import "./Help.css";
 import { useState } from "react";
 import axios from "axios";
 import MyProfile from "../MyProfile/MyProfile";
+import Swal from "sweetalert2";
 const Help = () => {
 
 
@@ -22,19 +23,42 @@ const Help = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Sending...");
+  
     try {
       const response = await axios.post("http://localhost:3000/contact", formData);
+  
       if (response.data.success) {
         setStatus("Message sent successfully ✅");
         setFormData({ name: "", phone: "", email: "", message: "" });
+  
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Your message has been sent successfully.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } else {
         setStatus("Failed to send ❌");
+  
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Failed to send your message. Please try again.",
+        });
       }
     } catch (err) {
       console.error(err);
       setStatus("Server error ❌");
+  
+      Swal.fire({
+        icon: "error",
+        title: "Server Error",
+        text: "Something went wrong. Please try again later.",
+      });
     }
   };
+  
   
   
 

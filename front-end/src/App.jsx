@@ -13,6 +13,7 @@ import Chatbot from "./Components/Chatbot/Chatbot";
 import { UserProvider } from "./Context/UserProvider";
 import ProfilePage from "./Pages/MyProfile/MyProfile";
 import MainDashboard from "./Components/Dashboard/MainDashboard";
+import Footer from "./Components/Footer/Footer";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/dashboard" element={<MainDashboard />} />
         </Routes>
+        <Footer></Footer>
         {/* <Chatbot></Chatbot> */}
       </div>
     </UserProvider>

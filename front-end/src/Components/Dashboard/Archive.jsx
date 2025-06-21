@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Archive() {
   const [archives, setArchives] = useState([]);
@@ -60,7 +61,7 @@ function Archive() {
     axios
       .post(
         `http://localhost:3000/admin/restore-archive/${confirmRestoreItem.id}`,
-        {}, 
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,13 +72,26 @@ function Archive() {
         console.log("Archive restored successfully", response.data);
         setArchives(archives.filter((f) => f.id !== confirmRestoreItem.id));
         setConfirmRestoreItem(null);
-        alert("Archive restored successfully");
+  
+        Swal.fire({
+          icon: "success",
+          title: "Restored!",
+          text: "Archive restored successfully.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       })
       .catch((error) => {
         console.error("Error restoring archive", error);
-        alert("Failed to restore archive.");
+  
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Failed to restore archive.",
+        });
       });
   };
+  
   
 
   const cancelRestore = () => {
@@ -92,8 +106,10 @@ function Archive() {
   };
 
   const confirmDelete = () => {
-    console.log(confirmDeleteItem.id)
-    axios
+  if (!confirmDeleteItem) return;
+
+  console.log(confirmDeleteItem.id);
+  axios
     .delete(`http://localhost:3000/admin/delete-archive/${confirmDeleteItem.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -103,17 +119,24 @@ function Archive() {
       console.log("Archive deleted successfully", response.data);
       setArchives(archives.filter((s) => s.id !== confirmDeleteItem.id));
       setConfirmDeleteItem(null);
-      alert("Archive deleted successfully");
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Archive deleted successfully.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     })
     .catch((error) => {
       console.error("Error deleting Archive", error);
-      alert("Failed to delete Archive.");
-    });
-    if (confirmDeleteItem) {
-      setArchives(archives.filter((f) => f !== confirmDeleteItem));
-      setConfirmDeleteItem(null);
-    }
-  };
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Failed to delete Archive.",
+      });
+    });}
 
   const cancelDelete = () => {
     setConfirmDeleteItem(null);
@@ -157,47 +180,50 @@ function Archive() {
             <th className="dashboard-th">Operation</th>
           </tr>
         </thead>
-        <tbody>
-          {filtered.map((item, index) => (
+                <tbody>
+        {filtered.map((item, index) => (
             <tr key={index}>
-              {fields.map((key) => (
+            {fields.map((key) => (
                 <td key={key} className="dashboard-td">
-                  {key === "deleted_at" ? formatDateTime(item[key]) : item[key]}
+                {key === "deleted_at"
+                    ? (item[key] ? formatDateTime(item[key]) : "n/a")
+                    : (item[key] !== null && item[key] !== undefined && item[key] !== "" ? item[key] : "n/a")}
                 </td>
-              ))}
-              <td className="dashboard-td">
-            <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>    
+            ))}
+            <td className="dashboard-td">
+                <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                 <button
-                  title="Restore"
-                  className="dashboard-icon-button accept"
-                  onClick={() => requestRestore(item)}
+                    title="Restore"
+                    className="dashboard-icon-button accept"
+                    onClick={() => requestRestore(item)}
                 >
-                  ♻️
+                    ♻️
                 </button>
                 <button
-                  title="Delete"
-                  className="dashboard-icon-button delete"
-                  onClick={() => requestDelete(item)}
+                    title="Delete"
+                    className="dashboard-icon-button delete"
+                    onClick={() => requestDelete(item)}
                 >
-                  🗑️
+                    🗑️
                 </button>
                 <button
-                        title="View Material"
-                        className="dashboard-icon-button view"
-                        onClick={() => {
-                            const originalUrl = item.file_path || item.upload_url || "";
-                            const newUrl = `http://localhost:3000/uploads/${originalUrl}`;
-                            console.log("Opening URL:", newUrl);
-                            window.open(newUrl, "_blank");
-                        }}
-                        >
-                        👁️
-                    </button>
+                    title="View Material"
+                    className="dashboard-icon-button view"
+                    onClick={() => {
+                    const originalUrl = item.file_path || item.upload_url || "";
+                    const newUrl = `http://localhost:3000/uploads/${originalUrl}`;
+                    console.log("Opening URL:", newUrl);
+                    window.open(newUrl, "_blank");
+                    }}
+                >
+                    👁️
+                </button>
                 </div>
-              </td>
+            </td>
             </tr>
-          ))}
+        ))}
         </tbody>
+
       </table>
 
       {/* Confirm Restore Modal */}
