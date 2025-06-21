@@ -62,7 +62,7 @@ export default function CardUpload({ onClose }) {
     }
 
     const formData = new FormData();
-    if (role == "superadmin") {
+    if (role === "superadmin" || role === "admin") {
       formData.append(`${type}_name`, selectedFile.name);
       formData.append("doctor_name", nameOfDoctor);
       formData.append("description", description);

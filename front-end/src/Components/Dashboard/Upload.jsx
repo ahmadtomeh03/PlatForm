@@ -6,15 +6,15 @@ import Swal from "sweetalert2";
 function Upload() {
   const [files, setFiles] = useState([]);
   const initialForm = {
-    upload_id: "",
-    std_id: "",
-    admin_id: "",
-    course_id: "",
-    uploaded_state: "",
-    uploaded_type: "",
-    uploaded_datetime: "",
-    upload_name: "",
-    doctor_name: "",
+    Id: "",
+    student_id: "",
+    Admin: "",
+    Course: "",
+    State: "",
+    Type: "",
+    DateTime: "",
+    Name: "",
+    Doctor: "",
     upload_url: "",
     description: "",
   };
@@ -78,8 +78,7 @@ function Upload() {
         
         `http://localhost:3000/admin/approve-upload/${confirmRejectItem.upload_id}`,
         {
-          
-          action: "rejected"
+          action: "rejected",
         },
         {
           headers: {
@@ -95,9 +94,9 @@ function Upload() {
       );
 
       Swal.fire({
-        icon: "success",
-        title: "تم القبول بنجاح",
-        text: "تم قبول الملف.",
+        icon: "info",
+        title: "تم الرفض",
+        text: "تم رفض الملف بنجاح.",
         timer: 2000,
         showConfirmButton: false,
       });
@@ -105,8 +104,8 @@ function Upload() {
       console.error(err);
       Swal.fire({
         icon: "error",
-        title: "فشل القبول",
-        text: "حدث خطأ أثناء محاولة قبول الملف.",
+        title: "فشل الرفض",
+        text: "حدث خطأ أثناء محاولة رفض الملف.",
       });
     } finally {
       setConfirmRejectItem(null);
@@ -172,11 +171,9 @@ function Upload() {
   const confirmReject = async () => {
     try {
       await axios.put(
-        
         `http://localhost:3000/admin/approve-upload/${confirmRejectItem.upload_id}`,
         {
-          
-          action: "rejected"
+          action: "rejected",
         },
         {
           headers: {
@@ -192,9 +189,9 @@ function Upload() {
       );
 
       Swal.fire({
-        icon: "success",
-        title: "تم القبول بنجاح",
-        text: "تم قبول الملف.",
+        icon: "info",
+        title: "تم رفض الملف بنجاح",
+        text: "تم رفض الملف.",
         timer: 2000,
         showConfirmButton: false,
       });
@@ -202,8 +199,8 @@ function Upload() {
       console.error(err);
       Swal.fire({
         icon: "error",
-        title: "فشل القبول",
-        text: "حدث خطأ أثناء محاولة قبول الملف.",
+        title: "فشل الرفض",
+        text: "حدث خطأ أثناء محاولة رفض الملف.",
       });
     } finally {
       setConfirmRejectItem(null);
@@ -256,22 +253,30 @@ function Upload() {
       <table className="dashboard-table">
         <thead>
           <tr>
-            {Object.keys(initialForm).map((field) => (
-              <th key={field} className="dashboard-th">
-                {field}
-              </th>
-            ))}
+            {Object.keys(initialForm)
+              .filter((field) => field !== "upload_url") // استبعاد العمود
+              .map((field) => (
+                <th key={field} className="dashboard-th">
+                  {field}
+                </th>
+              ))}
+
             <th className="dashboard-th">Operation</th>
           </tr>
         </thead>
         <tbody>
           {filtered.map((f, index) => (
             <tr key={index}>
-              {Object.entries(f).map(([key, value]) => (
-                <td key={key} className="dashboard-td">
-                  {key === "uploaded_datetime" ? formatDateTime(value) : value}
-                </td>
-              ))}
+              {Object.entries(f)
+                .filter(([key]) => key !== "upload_url") // استبعاد العمود
+                .map(([key, value]) => (
+                  <td key={key} className="dashboard-td">
+                    {key === "uploaded_datetime"
+                      ? formatDateTime(value)
+                      : value ?? "N/A"}
+                  </td>
+                ))}
+
               <td className="dashboard-td">
                 <div className="dashboard-operation-buttons">
                   <button

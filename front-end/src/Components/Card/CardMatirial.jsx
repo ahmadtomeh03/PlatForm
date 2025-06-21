@@ -17,12 +17,15 @@ export default function CardMatirial({
   onDeleteSuccess,
   onEdit,
   dc_type,
+  initialSaveIdFromProps,
+  onRemoveFavorite,
+  showAction = true,
 }) {
   const navigate = useNavigate();
   const { isLogin, role } = useContext(UserContext);
   const studentId = localStorage.getItem("student_id");
   const token = localStorage.getItem("token");
-  const [saveId, setSaveId] = useState(null);
+  const [saveId, setSaveId] = useState(initialSaveIdFromProps || null);
   useEffect(() => {
     axios
       .get("http://localhost:3000/student-course-list", {
@@ -60,7 +63,6 @@ export default function CardMatirial({
           }
         );
         setSaveId(res.data.data);
-        console.log(res.data.data);
         Swal.fire({
           icon: "success",
           title: "تمت الإضافة للمفضلة",
@@ -71,10 +73,6 @@ export default function CardMatirial({
         console.error(err.response?.data || err.message);
       }
     } else {
-      if (!saveId) {
-        console.warn("studentCourseId غير موجود، لا يمكن الحذف.");
-        return;
-      }
       try {
         await axios.delete(
           `http://localhost:3000/student-course-delete/${saveId}`,
@@ -82,13 +80,18 @@ export default function CardMatirial({
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        setSaveId(null);
         Swal.fire({
           icon: "success",
           title: "تم الحذف من المفضلة",
           timer: 1000,
           showConfirmButton: false,
         });
+        if (onRemoveFavorite) {
+          onRemoveFavorite(saveId);
+        }
+        setSaveId(null);
+
+        // استدعاء callback لإزالة المادة من قائمة المفضلة في الصفحة الأب
       } catch (err) {
         console.error(err.response?.data || err.message);
       }
@@ -214,7 +217,7 @@ export default function CardMatirial({
           <div className="card__acounts">{nameOfCourse.charAt(0)}</div>
         </div>
 
-        {role === "superadmin" && (
+        {role === "superadmin" && showAction === true && (
           <div onClick={handleToDelete}>
             <ButtonDelete />
           </div>
@@ -235,7 +238,7 @@ export default function CardMatirial({
           </div>
         )}
 
-        {role === "superadmin" && (
+        {role === "superadmin" && showAction === true && (
           <div
             onClick={(e) => {
               e.stopPropagation();
@@ -250,7 +253,12 @@ export default function CardMatirial({
       </div>
 
       <div className="card__title">{nameOfCourse}</div>
-      <div className="card__subtitle">{description}</div>
+      <div className="card__subtitle">
+        <span style={{ fontWeight: "bold" }}>Description : </span>
+        <span>{description}</span>
+      </div>
+
+      <div className="card__subtitle">{dc_type}</div>
     </div>
   );
 }

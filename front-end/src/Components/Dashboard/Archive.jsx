@@ -39,10 +39,10 @@ function Archive() {
     "id",
     "content_id",
     "content_type",
-    "file_path",
+   // "file_path",
     "deleted_by",
     "deleted_at",
-    "original_data",
+    //"original_data",
   ];
 
   const filtered = archives.filter((f) =>
@@ -55,11 +55,30 @@ function Archive() {
   };
 
   const confirmRestore = () => {
-    if (confirmRestoreItem) {
-      setArchives(archives.filter((f) => f !== confirmRestoreItem));
-      setConfirmRestoreItem(null);
-    }
+    if (!confirmRestoreItem) return;
+  
+    axios
+      .post(
+        `http://localhost:3000/admin/restore-archive/${confirmRestoreItem.id}`,
+        {}, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Archive restored successfully", response.data);
+        setArchives(archives.filter((f) => f.id !== confirmRestoreItem.id));
+        setConfirmRestoreItem(null);
+        alert("Archive restored successfully");
+      })
+      .catch((error) => {
+        console.error("Error restoring archive", error);
+        alert("Failed to restore archive.");
+      });
   };
+  
 
   const cancelRestore = () => {
     setConfirmRestoreItem(null);
@@ -147,6 +166,7 @@ function Archive() {
                 </td>
               ))}
               <td className="dashboard-td">
+            <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>    
                 <button
                   title="Restore"
                   className="dashboard-icon-button accept"
@@ -161,6 +181,19 @@ function Archive() {
                 >
                   🗑️
                 </button>
+                <button
+                        title="View Material"
+                        className="dashboard-icon-button view"
+                        onClick={() => {
+                            const originalUrl = item.file_path || item.upload_url || "";
+                            const newUrl = `http://localhost:3000/uploads/${originalUrl}`;
+                            console.log("Opening URL:", newUrl);
+                            window.open(newUrl, "_blank");
+                        }}
+                        >
+                        👁️
+                    </button>
+                </div>
               </td>
             </tr>
           ))}

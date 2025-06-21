@@ -1,6 +1,7 @@
 import "./MainDashboard.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 
 function Admins() {
@@ -32,15 +33,50 @@ function Admins() {
     setInvalidFields({ ...invalidFields, [e.target.name]: false });
   };
   const confirmPromote = () => {
-    setAdmins(
-      admins.map((admin) =>
-        admin.id === promoteId ? { ...admin, role: promoteRole } : admin
+    axios
+      .put(
+        `http://localhost:3000/admin/change-role/${promoteId}`,
+        {
+          role: promoteRole,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
-    );
-    setPromoteId(null);
-    setPromoteRole("admin"); 
-  };
+      .then((response) => {
+        // Update UI
+        setAdmins(
+          admins.map((admin) =>
+            admin.admin_id === promoteId
+              ? { ...admin, role: promoteRole }
+              : admin
+          )
+        );
+        setPromoteId(null);
+        setPromoteRole("admin");
   
+        // ✅ Show success feedback
+        Swal.fire({
+          icon: "success",
+          title: "تمت الترقية بنجاح",
+          text: `تم تغيير دور المستخدم إلى ${promoteRole}.`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      })
+      .catch((error) => {
+        console.error("Promotion failed:", error);
+  
+        // ❌ Show error feedback
+        Swal.fire({
+          icon: "error",
+          title: "فشل الترقية",
+          text: "حدث خطأ أثناء محاولة ترقية المستخدم.",
+        });
+      });
+  };
   
 
   const addAdmin = () => {
@@ -85,22 +121,45 @@ function Admins() {
   const handleDelete = (id) => setConfirmId(id);
   console.log(confirmId)
   const confirmDelete = () => {
-    axios
-    .delete(`http://localhost:3000/admins-delete/${confirmId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log("Student deleted successfully", response.data);
-      setAdmins(admins.filter((s) => s.admin_id !== confirmId));
-      setConfirmId(null);
-    })
-    .catch((error) => {
-      console.error("Error deleting admin", error);
-      alert("Failed to delete admin.");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/admins-delete/${confirmId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            console.log("Admin deleted successfully", response.data);
+            setAdmins(admins.filter((s) => s.admin_id !== confirmId));
+            setConfirmId(null);
+  
+            Swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: "Admin has been deleted.",
+              confirmButtonColor: "#3085d6",
+            });
+          })
+          .catch((error) => {
+            console.error("Error deleting admin", error);
+            Swal.fire({
+              icon: "error",
+              title: "Failed!",
+              text: "Failed to delete admin.",
+              confirmButtonColor: "#d33",
+            });
+          });
+      }
     });
-    
   };
   const cancelDelete = () => setConfirmId(null);
 

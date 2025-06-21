@@ -20,6 +20,8 @@ export default function Vedio({
   id_type,
   onDelete,
   onEdit,
+  onDeleteProfile,
+  showAction = true,
 }) {
   const token = localStorage.getItem("token");
   const { role } = useContext(UserContext);
@@ -149,6 +151,8 @@ export default function Vedio({
           }
         );
         setFavoriteId(null);
+        if (onDeleteProfile) onDeleteProfile();
+
         Swal.fire({
           icon: "success",
           title: "تم الحذف من المفضلة",
@@ -209,7 +213,7 @@ export default function Vedio({
     <div className="vedio-card">
       <div className="vedio-card-details">
         <div className="flex justify-between items-center w-full gap-4">
-          {role === "superadmin" && (
+          {role === "superadmin" && showAction === true && (
             <>
               <div className="flex-1 flex justify-start">
                 <IconButton

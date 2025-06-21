@@ -10,13 +10,16 @@ function Login() {
   const [values, setValues] = useState({
     emailOrUsername: "",
     password: "",
+    rememberMe: false,
   });
-
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-
+  const handleToRemeber = (e) => {
+    setValues({ ...values, rememberMe: e.target.checked });
+  };
   const onSubmit = () => {
+    console.log(values);
     axios
       .post("http://localhost:3000/login", values)
       .then((res) => {
@@ -65,10 +68,15 @@ function Login() {
 
       <div className="flex justify-between items-center w-full">
         <div>
-          <input type="checkbox" style={{ margin: "5px" }} />
-          <span>Remember me</span>
+          <input
+            type="checkbox"
+            style={{ margin: "5px" }}
+            onClick={handleToRemeber}
+            value={false}
+          />
+          <span>Remember me for month</span>
         </div>
-          <label style={{ margin: "10px" }}>Forget Password?</label>
+        <label style={{ margin: "10px" }}>Forget Password?</label>
       </div>
 
       <button
