@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 
 function Students() {
   const [students, setStudents] = useState([]);
@@ -32,9 +34,9 @@ function Students() {
   };
 
   const confirmDelete = () => {
-    console.log(confirmId)
+    console.log(confirmId);
     if (!confirmId) return;
-
+  
     axios
       .delete(`http://localhost:3000/admin/delete-student/${confirmId}`, {
         headers: {
@@ -43,14 +45,28 @@ function Students() {
       })
       .then((response) => {
         console.log("Student deleted successfully", response.data);
+  
         setStudents(students.filter((s) => s.student_id !== confirmId));
         setConfirmId(null);
+  
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Student has been deleted successfully.",
+          confirmButtonColor: "#3085d6",
+        });
       })
       .catch((error) => {
         console.error("Error deleting student", error);
-        alert("Failed to delete student.");
+        Swal.fire({
+          icon: "error",
+          title: "Deletion Failed",
+          text: "Failed to delete student. Please try again.",
+          confirmButtonColor: "#d33",
+        });
       });
   };
+  
 
   const cancelDelete = () => {
     setConfirmId(null);
@@ -62,7 +78,7 @@ function Students() {
 
   const confirmPromote = () => {
     console.log(promoteData);
-
+  
     axios
       .post(
         "http://localhost:3000/admins/create-from-student",
@@ -78,24 +94,31 @@ function Students() {
         }
       )
       .then((response) => {
-        // response.data.data ممكن يكون الادمن الجديد
         console.log("Promoted successfully", response.data.data);
   
         const studentIndex = students.findIndex((s) => s.student_id === promoteData.id);
         if (studentIndex !== -1) {
-          alert(
-            `Student "${students[studentIndex].student_name}" promoted to ${promoteData.role}!`
-          );
+          Swal.fire({
+            icon: "success",
+            title: "Promoted!",
+            text: `Student "${students[studentIndex].student_name}" promoted to ${promoteData.role}!`,
+            confirmButtonColor: "#3085d6",
+          });
         }
-        // بعد الترقية، يمكن تترك الطلاب بدون تعديل أو تحذف الطالب من القائمة إذا صار أدمن
-        // هنا اخترنا فقط إغلاق الـ modal
+  
         setPromoteData({ id: null, role: "admin", department_id: "1" });
       })
       .catch((error) => {
         console.error("Error promoting student", error);
-        alert("Failed to promote student.");
+        Swal.fire({
+          icon: "error",
+          title: "Promotion Failed",
+          text: "Failed to promote student. Please try again.",
+          confirmButtonColor: "#d33",
+        });
       });
   };
+  
   
 
   const cancelPromote = () => {

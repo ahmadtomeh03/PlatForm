@@ -121,22 +121,45 @@ function Admins() {
   const handleDelete = (id) => setConfirmId(id);
   console.log(confirmId)
   const confirmDelete = () => {
-    axios
-    .delete(`http://localhost:3000/admins-delete/${confirmId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log("Student deleted successfully", response.data);
-      setAdmins(admins.filter((s) => s.admin_id !== confirmId));
-      setConfirmId(null);
-    })
-    .catch((error) => {
-      console.error("Error deleting admin", error);
-      alert("Failed to delete admin.");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/admins-delete/${confirmId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            console.log("Admin deleted successfully", response.data);
+            setAdmins(admins.filter((s) => s.admin_id !== confirmId));
+            setConfirmId(null);
+  
+            Swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: "Admin has been deleted.",
+              confirmButtonColor: "#3085d6",
+            });
+          })
+          .catch((error) => {
+            console.error("Error deleting admin", error);
+            Swal.fire({
+              icon: "error",
+              title: "Failed!",
+              text: "Failed to delete admin.",
+              confirmButtonColor: "#d33",
+            });
+          });
+      }
     });
-    
   };
   const cancelDelete = () => setConfirmId(null);
 

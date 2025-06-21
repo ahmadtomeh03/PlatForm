@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Courses() {
   const [materials, setMaterials] = useState([]);
@@ -47,39 +48,55 @@ function Courses() {
   };
   
 
-  const addMaterial = () => {
-    if (!validateForm()) return;
-  
-    axios
-      .post(
-        "http://localhost:3000/admin/courses/create",
-        {
-          course_id: form.course_id.trim(),
-          course_name: form.course_name.trim(),
-          course_note: form.course_note.trim(),
+
+const addMaterial = () => {
+  if (!validateForm()) return;
+
+  axios
+    .post(
+      "http://localhost:3000/admin/courses/create",
+      {
+        course_id: form.course_id.trim(),
+        course_name: form.course_name.trim(),
+        course_note: form.course_note.trim(),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log("Course added successfully", response.data);
-  
-        // Add the new course to the local list (optional, or you can refetch)
-        setMaterials([...materials, response.data.data]); // assuming response.data.data contains the new course
-  
-        // Clear the form
-        setForm({ course_id: "", course_name: "", course_note: "" });
-        setInvalidFields({});
-      })
-      .catch((error) => {
-        console.error("Failed to add course", error);
-        alert("Failed to add course.");
+      }
+    )
+    .then((response) => {
+      console.log("Course added successfully", response.data);
+
+      // Update local state
+      setMaterials([...materials, response.data.data]);
+
+      // Clear the form
+      setForm({ course_id: "", course_name: "", course_note: "" });
+      setInvalidFields({});
+
+      // Show success alert
+      Swal.fire({
+        icon: "success",
+        title: "Course Added",
+        text: "The course was added successfully!",
+        confirmButtonColor: "#3085d6",
       });
-  };
-  
+    })
+    .catch((error) => {
+      console.error("Failed to add course", error);
+
+      // Show error alert
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add course. Please try again.",
+        confirmButtonColor: "#d33",
+      });
+    });
+};
+
   const startEdit = (mat) => {
     setForm({
       course_id: mat.course_id,
@@ -95,63 +112,101 @@ function Courses() {
     setEditItem(null);
   };
 
-  const updateMaterial = () => {
-    if (!validateForm()) return;
-  
-    axios
-      .put(
-        `http://localhost:3000/admin/course/update/${editItem.course_id}`,
-        {
-          course_name: form.course_name,
-          course_note: form.course_note,
+
+const updateMaterial = () => {
+  if (!validateForm()) return;
+
+  axios
+    .put(
+      `http://localhost:3000/admin/course/update/${editItem.course_id}`,
+      {
+        course_name: form.course_name,
+        course_note: form.course_note,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
+      }
+    )
+    .then((response) => {
+      console.log("Course updated successfully", response.data);
+
+      const updatedList = materials.map((mat) =>
+        mat.course_id === editItem.course_id
+          ? { ...mat, course_name: form.course_name, course_note: form.course_note }
+          : mat
+      );
+      setMaterials(updatedList);
+      cancelEdit();
+
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "Course updated successfully.",
+        confirmButtonColor: "#3085d6",
+      });
+    })
+    .catch((error) => {
+      console.error("Failed to update course", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "Failed to save changes. Please try again.",
+        confirmButtonColor: "#d33",
+      });
+    });
+};
+
+  
+
+const handleDelete = (id) => setConfirmId(id);
+
+
+
+const confirmDelete = () => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This course will be permanently deleted.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      axios
+        .delete(`http://localhost:3000/admin/course/delete/${confirmId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      )
-      .then((response) => {
-        console.log("Course updated successfully", response.data);
-  
-        const updatedList = materials.map((mat) =>
-          mat.course_id === editItem.course_id
-            ? { ...mat, course_name: form.course_name, course_note: form.course_note }
-            : mat
-        );
-        setMaterials(updatedList);
-        cancelEdit();
-      })
-      .catch((error) => {
-        console.error("Failed to update course", error);
-        alert("Failed to save changes.");
-      });
-  };
-  
+        })
+        .then((response) => {
+          console.log("Course deleted successfully", response.data);
+          setMaterials(materials.filter((s) => s.course_id !== confirmId));
+          setConfirmId(null);
 
-  const handleDelete = (id) => setConfirmId(id);
-  const confirmDelete = () => {
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "Course has been deleted successfully.",
+            confirmButtonColor: "#3085d6",
+          });
+        })
+        .catch((error) => {
+          console.error("Error deleting course", error);
+          Swal.fire({
+            icon: "error",
+            title: "Delete Failed",
+            text: error?.response?.data?.message || "Failed to delete course.",
+            confirmButtonColor: "#d33",
+          });
+        });
+    }
+  });
+};
 
-    
-    axios
-    .delete(`http://localhost:3000/admin/course/delete/${confirmId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log("Courses deleted successfully", response.data);
-      setMaterials(materials.filter((s) => s.course_id !== confirmId));
-      setConfirmId(null);
-    })
-    .catch((error) => {
-    
-      console.error("Error deleting admin", error);
-      alert(error.response.data.message);
-    });
-
-
-  };
   const cancelDelete = () => setConfirmId(null);
 
     const filtered = materials.filter((mat) => {

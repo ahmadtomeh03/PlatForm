@@ -186,7 +186,7 @@ function Archive() {
                         className="dashboard-icon-button view"
                         onClick={() => {
                             const originalUrl = item.file_path || item.upload_url || "";
-                            const newUrl = `http://localhost:3000/${originalUrl}`;
+                            const newUrl = `http://localhost:3000/uploads/${originalUrl}`;
                             console.log("Opening URL:", newUrl);
                             window.open(newUrl, "_blank");
                         }}

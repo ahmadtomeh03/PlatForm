@@ -95,9 +95,9 @@ function Upload() {
       );
 
       Swal.fire({
-        icon: "success",
-        title: "تم القبول بنجاح",
-        text: "تم قبول الملف.",
+        icon: "info",
+        title: "تم الرفض",
+        text: "تم رفض الملف بنجاح.",
         timer: 2000,
         showConfirmButton: false,
       });
@@ -105,8 +105,8 @@ function Upload() {
       console.error(err);
       Swal.fire({
         icon: "error",
-        title: "فشل القبول",
-        text: "حدث خطأ أثناء محاولة قبول الملف.",
+        title: "فشل الرفض",
+        text: "حدث خطأ أثناء محاولة رفض الملف.",
       });
     } finally {
       setConfirmRejectItem(null);
@@ -192,9 +192,9 @@ function Upload() {
       );
 
       Swal.fire({
-        icon: "success",
-        title: "تم القبول بنجاح",
-        text: "تم قبول الملف.",
+        icon: "info",
+        title: "تم رفض الملف بنجاح",
+        text: "تم رفض الملف.",
         timer: 2000,
         showConfirmButton: false,
       });
@@ -202,8 +202,8 @@ function Upload() {
       console.error(err);
       Swal.fire({
         icon: "error",
-        title: "فشل القبول",
-        text: "حدث خطأ أثناء محاولة قبول الملف.",
+        title: "فشل الرفض",
+        text: "حدث خطأ أثناء محاولة رفض الملف.",
       });
     } finally {
       setConfirmRejectItem(null);

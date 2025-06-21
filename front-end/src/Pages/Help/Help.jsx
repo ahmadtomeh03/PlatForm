@@ -1,7 +1,44 @@
 import React from "react";
 import "./Help.css";
+import { useState } from "react";
+import axios from "axios";
 import MyProfile from "../MyProfile/MyProfile";
 const Help = () => {
+
+
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+  });
+  
+  const [status, setStatus] = useState("");
+  
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("Sending...");
+    try {
+      const response = await axios.post("http://localhost:3000/contact", formData);
+      if (response.data.success) {
+        setStatus("Message sent successfully ✅");
+        setFormData({ name: "", phone: "", email: "", message: "" });
+      } else {
+        setStatus("Failed to send ❌");
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus("Server error ❌");
+    }
+  };
+  
+  
+
+
   return (
     <div className="help-page">
       <div id="root" className="contact-container">
@@ -14,16 +51,45 @@ const Help = () => {
         <div className="contact-main">
           <div className="contact-form">
             <h2>GET IN TOUCH</h2>
-            <form>
-              <input type="text" placeholder="Enter your name*" required />
-              <input
-                type="text"
-                placeholder="Enter your phone number*"
-                required
-              />
-              <input type="email" placeholder="Enter your email*" required />
-              <textarea placeholder="Your message" required></textarea>
+            <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your name*"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="text"
+              name="phone"
+              placeholder="Enter your phone number*"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email*"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+
+            <textarea
+              name="message"
+              placeholder="Your message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            ></textarea>
+
               <button type="submit">SEND MESSAGE</button>
+              <p style={{ marginTop: "10px", color: "green" }}>{status}</p>
+
             </form>
           </div>
 
