@@ -298,12 +298,12 @@ const ProfilePage = () => {
           </div>
 
           <div className="profile-section">
-            <h3 className="profile-heading">Favorite Courses</h3>
+            <h3 className="profile-heading">Favorite Files</h3>
             <div className="card-container">{listOfFav}</div>
           </div>
 
           <div className="profile-section">
-            <h3 className="profile-heading">Latest Used</h3>
+            <h3 className="profile-heading">Request File</h3>
             <ul>{/* Placeholder for future use */}</ul>
           </div>
         </div>

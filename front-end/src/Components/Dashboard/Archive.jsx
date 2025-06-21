@@ -39,10 +39,10 @@ function Archive() {
     "id",
     "content_id",
     "content_type",
-    "file_path",
+   // "file_path",
     "deleted_by",
     "deleted_at",
-    "original_data",
+    //"original_data",
   ];
 
   const filtered = archives.filter((f) =>

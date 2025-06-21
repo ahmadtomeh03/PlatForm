@@ -1,32 +1,52 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Students from "./Students";
 import Admins from "./Admins";
 import Courses from "./Courses";
 import "./MainDashboard.css";
 import Upload from "./Upload";
 import Archive from "./Archive";
+import { UserContext } from "../../Context/UserContext";
 
 function MainDashboard() {
-  const [section, setSection] = useState("students");
+  const { role } = useContext(UserContext);
+  const defaultSelection = role === "admin" ? "upload" : "students";
+  const [section, setSection] = useState(defaultSelection);
 
   return (
     <div className="dashboard-container">
       <aside className="dashboard-sidebar">
-        <h2 className="dashboard-sidebar-title">Admin Panel</h2>
+        {role === "admin" ? (
+          <h2 className="dashboard-sidebar-title">Admin Panel</h2>
+        ) : (
+          <h2 className="dashboard-sidebar-title">Super Admin Panel</h2>
+        )}
+
         <nav className="dashboard-nav">
-          <button onClick={() => setSection("students")}>Students</button>
-          <button onClick={() => setSection("admins")}>Admins</button>
-          <button onClick={() => setSection("courses")}>Courses</button>
-          <button onClick={() => setSection("upload")}>Uploaded</button>
-          <button onClick={() => setSection("Archive")}>Archived</button>
+          {role === "admin" ? (
+            <button onClick={() => setSection("upload")}>Uploaded</button>
+          ) : (
+            <div>
+              <button onClick={() => setSection("students")}>Students</button>
+              <button onClick={() => setSection("admins")}>Admins</button>
+              <button onClick={() => setSection("courses")}>Courses</button>
+              <button onClick={() => setSection("upload")}>Uploaded</button>
+              <button onClick={() => setSection("Archive")}>Archived</button>
+            </div>
+          )}
         </nav>
       </aside>
       <main className="dashboard-main-content">
-        {section === "students" && <Students />}
-        {section === "admins" && <Admins />}
-        {section === "courses" && <Courses />}
-        {section ==="upload" && <Upload />}
-        {section ==="Archive" && <Archive />}
+        {role === "admin" ? (
+          <div>{section === "upload" && <Upload />}</div>
+        ) : (
+          <div>
+            {section === "students" && <Students />}
+            {section === "admins" && <Admins />}
+            {section === "courses" && <Courses />}
+            {section === "upload" && <Upload />}
+            {section === "Archive" && <Archive />}
+          </div>
+        )}
       </main>
     </div>
   );
