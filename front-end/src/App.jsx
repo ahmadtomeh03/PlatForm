@@ -37,6 +37,7 @@ export default function App() {
           <Route path="/aboutSite" element={<About />} />
           <Route path="/help" element={<Help />} />
           <Route path="acount/:type" element={<LoginRegisterPage />} />
+          <Route path="/material/:materialId" element={<DetailsMaterial />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/dashboard" element={<MainDashboard />} />
         </Routes>

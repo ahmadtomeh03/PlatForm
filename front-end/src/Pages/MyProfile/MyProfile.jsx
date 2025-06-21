@@ -9,6 +9,7 @@ import CardSlides from "../../Components/CardSlides/CardSlides";
 import CardBook from "../../Components/CardBook/CardBook";
 import CardAssigment from "../../Components/CardAssigment/CardAssigment";
 import Vedio from "../../Components/Vedio/Vedio";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (dateStr) =>
   new Date(dateStr).toLocaleDateString("en-US", { timeZone: "Asia/Gaza" });
@@ -19,7 +20,8 @@ const renderFavComponent = (
   type,
   data,
   index,
-  onRemoveFavorite
+  onRemoveFavorite,
+  onOpenDetails
 ) => {
   const commonProps = {
     id_type: data?.[`${type}_id`] || "",
@@ -30,6 +32,7 @@ const renderFavComponent = (
     onDeleteProfile: () => {
       onRemoveFavorite(favorite_id);
     },
+      onClick: () => onOpenDetails(type, data),
   };
 
   const componentsMap = {
@@ -46,6 +49,7 @@ const renderFavComponent = (
 
 const ProfilePage = () => {
   const { role } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const [editMode, setEditMode] = useState(false);
   const [studentInfo, setStudentInfo] = useState({});
@@ -59,18 +63,24 @@ const ProfilePage = () => {
   const localDateAdm = formatDate(adminInfo.date_of_register);
 
   const listOfStudentCourses = studentCourses.map((course) => (
-    <CardMatirial
+    <div
       key={course.course_id}
-      nameOfCourse={course.course_name}
-      description={course.course_note}
-      courseId={course.course_id}
-      dc_id={course.dc_id}
-      initialSaveIdFromProps={course.SC_id}
-      showAction={false}
-      onRemoveFavorite={(sc_id) => {
-        setStudentCourses((prev) => prev.filter((c) => c.SC_id !== sc_id));
+      onClick={() => {
+        navigate(`/material/${course.course_id}`);
       }}
-    />
+    >
+      <CardMatirial
+        nameOfCourse={course.course_name}
+        description={course.course_note}
+        courseId={course.course_id}
+        dc_id={course.dc_id}
+        initialSaveIdFromProps={course.SC_id}
+        showAction={false}
+        onRemoveFavorite={(sc_id) => {
+          setStudentCourses((prev) => prev.filter((c) => c.SC_id !== sc_id));
+        }}
+      />
+    </div>
   ));
 
   // edit
@@ -81,7 +91,6 @@ const ProfilePage = () => {
       item.content_data,
       index,
       (favId) => {
-        // حذف العنصر من state
         setStudentFav((prev) => prev.filter((f) => f.favorite_id !== favId));
       }
     )
@@ -219,7 +228,6 @@ const ProfilePage = () => {
   return (
     <div>
       <div className="profile-container">
-        {/* Left Panel */}
         <div className="left-panel">
           <img
             src="https://t4.ftcdn.net/jpg/00/65/77/27/240_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
@@ -281,7 +289,6 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Right Panel */}
         <div className="right-panel">
           <div className="profile-section">
             <h3 className="profile-heading">{role} Schedule</h3>
@@ -299,7 +306,6 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Edit Modal */}
         {editMode && (
           <>
             <div className="overlay" />
