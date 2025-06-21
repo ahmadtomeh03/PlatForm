@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import CardUpload from "../CardUpload/CardUpload";
 import Swal from "sweetalert2";
 import { UserContext } from "../../Context/UserContext";
+import { useLocation } from "react-router-dom";
 
 export default function DetailsMaterial() {
   const { collegeId } = useParams();
@@ -13,16 +14,26 @@ export default function DetailsMaterial() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const { isLogin } = useContext(UserContext);
+  const location = useLocation();
+  const from = location.state?.from;
+
   return (
     <div style={{ margin: "20px" }}>
       <div className="flex flex-row justify-between items-center">
         <div
           onClick={() => {
-            navigate(`/college/${collegeId}/${majorId}`);
+            if (from === "profile") {
+              navigate("/profile");
+            } else {
+              navigate(`/college/${collegeId}/${majorId}`);
+            }
           }}
         >
-          <ButtonBack to={"Back To Courses"} />
+          <ButtonBack
+            to={from === "profile" ? "Back to Profile" : "Back to Courses"}
+          />
         </div>
+
         <div
           onClick={() => {
             if (isLogin) {

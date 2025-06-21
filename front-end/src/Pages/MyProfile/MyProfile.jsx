@@ -32,7 +32,7 @@ const renderFavComponent = (
     onDeleteProfile: () => {
       onRemoveFavorite(favorite_id);
     },
-      onClick: () => onOpenDetails(type, data),
+    onClick: () => onOpenDetails(type, data),
   };
 
   const componentsMap = {
@@ -66,7 +66,9 @@ const ProfilePage = () => {
     <div
       key={course.course_id}
       onClick={() => {
-        navigate(`/material/${course.course_id}`);
+        navigate(`/material/${course.course_id}`, {
+          state: { from: "profile" },
+        });
       }}
     >
       <CardMatirial
