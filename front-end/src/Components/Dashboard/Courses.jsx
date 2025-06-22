@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import ClearIcon from '@mui/icons-material/Clear';
+import ModeSharpIcon from '@mui/icons-material/ModeSharp';
 
 function Courses() {
   const [materials, setMaterials] = useState([]);
@@ -303,18 +305,18 @@ const confirmDelete = () => {
                   <span
                     onClick={() => startEdit(mat)}
                     style={{ marginRight: 50, cursor: 'pointer' }}
-                    className="promote-icon"
+                    className="edit-icon"
                     title="Edit"
                     role="button"
                     tabIndex={0}
                   >
-                    ✎
+                    <ModeSharpIcon/>
                   </span>
                   <button
                     className="dashboard-delete-button"
                     onClick={() => handleDelete(mat.course_id)}
                   >
-                    ✖
+                    <ClearIcon className="dashboard-icon-button reject"/>
                   </button>
                 </td>
               </tr>

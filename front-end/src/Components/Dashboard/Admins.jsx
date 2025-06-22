@@ -2,6 +2,8 @@ import "./MainDashboard.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import ClearIcon from '@mui/icons-material/Clear';
+import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
 
 
 function Admins() {
@@ -246,7 +248,8 @@ function Admins() {
                   onClick={() => handleDelete(admin.admin_id)}
                   title="Delete"
                 >
-                  ✖
+                  <ClearIcon className="dashboard-icon-button reject"/>
+
                 </button>
                 <span
                   onClick={() => handlePromoteClick(admin.admin_id)}
@@ -258,7 +261,7 @@ function Admins() {
                     if (e.key === "Enter") handlePromoteClick(admin.admin_id);
                   }}
                 >
-                  🔼
+                  <ArrowUpwardSharpIcon/>
                 </span>
               </td>
             </tr>

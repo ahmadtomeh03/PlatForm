@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import ClearIcon from '@mui/icons-material/Clear';
+import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
 
 
 function Students() {
@@ -187,7 +189,8 @@ function Students() {
                   className="dashboard-delete-button"
                   onClick={() => handleDelete(s.student_id)}
                 >
-                  ✖
+                  <ClearIcon className="dashboard-icon-button reject"/>
+
                 </button>
                 <span
                   className="promote-icon"
@@ -199,7 +202,7 @@ function Students() {
                     if (e.key === "Enter") handlePromoteClick(s.student_id);
                   }}
                 >
-                  🔼
+                  <ArrowUpwardSharpIcon/>
                 </span>
               </td>
             </tr>

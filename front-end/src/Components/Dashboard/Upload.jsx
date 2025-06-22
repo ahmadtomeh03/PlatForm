@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
+
 
 function Upload() {
   const [files, setFiles] = useState([]);
@@ -284,14 +288,14 @@ function Upload() {
                     className="dashboard-icon-button accept"
                     onClick={() => handleAccept(f)}
                   >
-                    ✅
+                    <DoneIcon className ="dashboard-icon-button accept"/>
                   </button>
                   <button
                     title="Reject"
                     className="dashboard-icon-button reject"
                     onClick={() => handleReject(f)}
                   >
-                    ❌
+                    <ClearIcon className="dashboard-icon-button reject"/>
                   </button>
                   <button
                       title="View Material"
@@ -305,7 +309,8 @@ function Upload() {
                     
                     
                     >
-                      👁️
+                      <VisibilityIcon className="custom-visibility-icon" />
+
                   </button>
                 </div>
               </td>

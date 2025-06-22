@@ -277,7 +277,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .dashboard-icon-button {
@@ -302,11 +302,11 @@
 }
 
 .dashboard-icon-button.delete {
-  color: gray;
+  color: red;
 }
 .promote-icon {
   cursor: pointer;
-  color: #28a745; /* soft green */
+  color: #1255b9; /* soft green */
   font-size: 18px;
   margin-left: 39px;
   transition: all 0.25s ease-in-out;
@@ -315,7 +315,7 @@
 
 .promote-icon:hover {
   transform: scale(1.4) rotate(5deg);
-  color: #1e7e34; /* darker green on hover */
+  color: #0f4ca7; /* darker green on hover */
   text-shadow: 0 0 4px rgba(40, 167, 69, 0.4);
 }
 /* Modal Overlay */
@@ -407,3 +407,42 @@
   background-color: #ddd;
   color: #555;
 }
+.dashboard-icon-button.view {
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.dashboard-icon-button.view:hover {
+  background: none;
+}
+.dashboard-icon-button.view svg {
+  transition: transform 0.2s ease-in-out;
+}
+
+.dashboard-icon-button.view:hover svg {
+  transform: scale(1.15);
+ }
+.custom-visibility-icon {
+    color: #000000; /* or any color you like */
+  }
+  
+  .edit-icon {
+    cursor: pointer;
+    color: #2aaa0e; /* soft green */
+    font-size: 18px;
+    margin-left: 39px;
+    transition: all 0.25s ease-in-out;
+    display: inline-block;
+  }
+  
+  .edit-icon:hover {
+    transform: scale(1.4) rotate(5deg);
+    color: #2ca10f; /* darker green on hover */
+    text-shadow: 0 0 4px rgba(40, 167, 69, 0.4);
+  }

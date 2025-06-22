@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import RecyclingSharpIcon from '@mui/icons-material/RecyclingSharp';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import DeleteForeverSharpIcon from '@mui/icons-material/DeleteForeverSharp';
+
 
 function Archive() {
   const [archives, setArchives] = useState([]);
@@ -191,20 +195,20 @@ function Archive() {
                 </td>
             ))}
             <td className="dashboard-td">
-                <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                <div style={{ display: "flex", gap: "30px", justifyContent: "center" }}>
                 <button
                     title="Restore"
                     className="dashboard-icon-button accept"
                     onClick={() => requestRestore(item)}
                 >
-                    ♻️
+                    <RecyclingSharpIcon/>
                 </button>
                 <button
                     title="Delete"
                     className="dashboard-icon-button delete"
                     onClick={() => requestDelete(item)}
                 >
-                    🗑️
+                    <DeleteForeverSharpIcon/>
                 </button>
                 <button
                     title="View Material"
@@ -216,7 +220,8 @@ function Archive() {
                     window.open(newUrl, "_blank");
                     }}
                 >
-                    👁️
+                  <VisibilityIcon className="custom-visibility-icon" />
+
                 </button>
                 </div>
             </td>
