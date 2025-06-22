@@ -51,53 +51,60 @@ function Courses() {
   
 
 
-const addMaterial = () => {
-  if (!validateForm()) return;
-
-  axios
-    .post(
-      "http://localhost:3000/admin/courses/create",
-      {
-        course_id: form.course_id.trim(),
-        course_name: form.course_name.trim(),
-        course_note: form.course_note.trim(),
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+  const addMaterial = () => {
+    if (!validateForm()) return;
+  
+    axios
+      .post(
+        "http://localhost:3000/admin/courses/create",
+        {
+          course_name: form.course_name.trim(),
+          course_note: form.course_note.trim(),
         },
-      }
-    )
-    .then((response) => {
-      console.log("Course added successfully", response.data);
-
-      // Update local state
-      setMaterials([...materials, response.data.data]);
-
-      // Clear the form
-      setForm({ course_id: "", course_name: "", course_note: "" });
-      setInvalidFields({});
-
-      // Show success alert
-      Swal.fire({
-        icon: "success",
-        title: "Course Added",
-        text: "The course was added successfully!",
-        confirmButtonColor: "#3085d6",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Course added successfully", response.data);
+  
+        // Clear the form
+        setForm({ course_id: "", course_name: "", course_note: "" });
+        setInvalidFields({});
+  
+        // ✅ Re-fetch the updated list with the new course and auto-generated course_id
+        axios
+          .get("http://localhost:3000/courses-filters", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            setMaterials(res.data.data);
+          })
+          .catch((err) => console.error("Failed to refresh courses", err));
+  
+        Swal.fire({
+          icon: "success",
+          title: "Course Added",
+          text: "The course was added successfully!",
+          confirmButtonColor: "#3085d6",
+        });
+      })
+      .catch((error) => {
+        console.error("Failed to add course", error);
+  
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to add course. Please try again.",
+          confirmButtonColor: "#d33",
+        });
       });
-    })
-    .catch((error) => {
-      console.error("Failed to add course", error);
-
-      // Show error alert
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to add course. Please try again.",
-        confirmButtonColor: "#d33",
-      });
-    });
-};
+  };
+  
 
   const startEdit = (mat) => {
     setForm({
