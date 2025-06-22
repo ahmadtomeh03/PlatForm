@@ -16,40 +16,42 @@ import MainDashboard from "./Components/Dashboard/MainDashboard";
 import Footer from "./Components/Footer/Footer";
 import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "./ResetPassword";
-
+import { SnackbarProvider } from "./Context/SnackbarContext";
 
 export default function App() {
   return (
     <UserProvider>
-      <div className="containers">
-        <Navbar />
+      <SnackbarProvider>
+        <div className="containers">
+          <Navbar />
 
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/college">
-            <Route index element={<College />} />
-            <Route path=":collegeId">
-              <Route index element={<EngineeringTechnology />} />
-              <Route path=":majorId">
-                <Route index element={<Material />} />
-                <Route path=":materialId" element={<DetailsMaterial />} />
+          {/* Routes */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/college">
+              <Route index element={<College />} />
+              <Route path=":collegeId">
+                <Route index element={<EngineeringTechnology />} />
+                <Route path=":majorId">
+                  <Route index element={<Material />} />
+                  <Route path=":materialId" element={<DetailsMaterial />} />
+                </Route>
               </Route>
             </Route>
-          </Route>
-          <Route path="/aboutSite" element={<About />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="acount/:type" element={<LoginRegisterPage />} />
-          <Route path="/material/:materialId" element={<DetailsMaterial />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/dashboard" element={<MainDashboard />} />
-          <Route path="/forgot-password" element={<ForgetPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        </Routes>
-        <Footer></Footer>
-        {/* <Chatbot></Chatbot> */}
-      </div>
+            <Route path="/aboutSite" element={<About />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="acount/:type" element={<LoginRegisterPage />} />
+            <Route path="/material/:materialId" element={<DetailsMaterial />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/dashboard" element={<MainDashboard />} />
+            <Route path="/forgot-password" element={<ForgetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Routes>
+          <Footer></Footer>
+          {/* <Chatbot></Chatbot> */}
+        </div>
+      </SnackbarProvider>
     </UserProvider>
   );
 }

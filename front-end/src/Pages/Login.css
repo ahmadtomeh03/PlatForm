@@ -11,3 +11,7 @@
 .register-login:hover {
   background-color: var(--color1);
 }
+.forget:hover {
+  cursor: pointer;
+
+}

@@ -1,12 +1,15 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import  { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../Context/UserContext";
 import "./Login.css";
+import { useSnackbar } from "../Context/SnackbarContext";
 
 function Login() {
   const { login } = useContext(UserContext);
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbar();
+
   const [values, setValues] = useState({
     emailOrUsername: "",
     password: "",
@@ -18,24 +21,27 @@ function Login() {
   const handleToRemeber = (e) => {
     setValues({ ...values, rememberMe: e.target.checked });
   };
+
   const onSubmit = () => {
-    console.log(values);
     axios
       .post("http://localhost:3000/login", values)
       .then((res) => {
         const { token, user, role } = res.data.data;
         const { username, id } = user;
-        console.log(res.data.data);
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("student_id", id);
         login(token, username, role);
+        showSnackbar(res.data.message || "Login successful!", "success"); 
         navigate("/");
       })
       .catch((error) => {
-        console.log(error.response?.data || error);
+        const message = error.response?.data?.message || "Login failed.";
+        showSnackbar(message, "error"); 
       });
   };
-
+  const handleForgetPassword = () => {
+    navigate("/forgot-password");
+  };
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 style={{ margin: "5px", textAlign: "center" }}>
@@ -76,7 +82,18 @@ function Login() {
           />
           <span>Remember me for month</span>
         </div>
-        <label style={{ margin: "10px" }}>Forget Password?</label>
+        <button
+          className="forget"
+          onClick={handleForgetPassword}
+          style={{
+            background: "none",
+            cursor: "pointer",
+            margin: "10px",
+            color: "black",
+          }}
+        >
+          Forget Password?
+        </button>
       </div>
 
       <button

@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
+import { useSnackbar } from "../Context/SnackbarContext";
 
 function Register() {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
+  const { showSnackbar } = useSnackbar();
 
   const [values, setValues] = useState({
     student_name: "",
@@ -26,10 +28,16 @@ function Register() {
         const { username, role } = user;
 
         login(token, username, role);
+        showSnackbar(
+          res.data.message || "Account created successfully!",
+          "success"
+        );
         navigate("/");
       })
       .catch((error) => {
-        console.log(error.response?.data || error);
+        const message = error.response?.data?.message || "Registration failed.";
+        showSnackbar(message, "error");
+        console.log(message);
       });
   };
 

@@ -11,12 +11,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useSnackbar } from "../../Context/SnackbarContext";
 
 export default function FadeMenu() {
   const navigate = useNavigate();
   const { logout, username, role } = React.useContext(UserContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const { showSnackbar } = useSnackbar();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +30,7 @@ export default function FadeMenu() {
 
   const handleLogout = () => {
     logout();
+    showSnackbar("You have been logged out successfully", "info");
     navigate("/home");
   };
 
