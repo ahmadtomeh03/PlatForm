@@ -23,7 +23,6 @@ export default function CardMatirial({
 }) {
   const navigate = useNavigate();
   const { isLogin, role } = useContext(UserContext);
-  const studentId = localStorage.getItem("student_id");
   const token = localStorage.getItem("token");
   const [saveId, setSaveId] = useState(initialSaveIdFromProps || null);
   useEffect(() => {
@@ -35,7 +34,9 @@ export default function CardMatirial({
       })
       .then((response) => {
         console.log(response.data.data);
-        const match = response.data.data.find((fav) => fav.course_id === dc_id);
+        const match = response.data.data.find(
+          (fav) => fav.course_id === courseId
+        );
         console.log(match);
         if (match) {
           setSaveId(match.SC_id);
@@ -44,7 +45,7 @@ export default function CardMatirial({
       .catch((err) => {
         console.error("Error fetching favorites:", err);
       });
-  }, [dc_id, token]);
+  }, []);
   const handleClick = () => {
     navigate("details");
   };
