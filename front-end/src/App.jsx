@@ -17,6 +17,7 @@ import Footer from "./Components/Footer/Footer";
 import ForgetPassword from "./ForgetPassword";
 import ResetPassword from "./ResetPassword";
 import { SnackbarProvider } from "./Context/SnackbarContext";
+import ChangePassword from "./Components/ChangePassword/ChangePassword";
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="/dashboard" element={<MainDashboard />} />
             <Route path="/forgot-password" element={<ForgetPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
           </Routes>
           <Footer></Footer>
           {/* <Chatbot></Chatbot> */}

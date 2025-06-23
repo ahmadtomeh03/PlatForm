@@ -336,7 +336,7 @@ const ProfilePage = () => {
                     <th>State</th>
                     <th>Date/Time</th>
                     <th>File Name</th>
-                    <th>Course ID</th>
+                    <th>Course Name</th>
                     <th>View</th>
                   </tr>
                 </thead>

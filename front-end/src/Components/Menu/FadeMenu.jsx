@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useSnackbar } from "../../Context/SnackbarContext";
+import LockResetIcon from "@mui/icons-material/LockReset";
 
 export default function FadeMenu() {
   const navigate = useNavigate();
@@ -37,6 +38,10 @@ export default function FadeMenu() {
   const handleProfile = () => {
     setAnchorEl(null);
     navigate("/profile");
+  };
+  const handleChangePassword = () => {
+    setAnchorEl(null);
+    navigate("/change-password");
   };
 
   return (
@@ -106,7 +111,10 @@ export default function FadeMenu() {
           <AccountCircleIcon sx={{ fontSize: 20, mr: 1 }} />
           Profile
         </MenuItem>
-
+        <MenuItem onClick={handleChangePassword}>
+          <LockResetIcon sx={{ fontSize: 20, mr: 1 }} />
+          Change Password
+        </MenuItem>
         <MenuItem onClick={handleLogout}>
           <LogoutIcon sx={{ fontSize: 20, mr: 1 }} />
           Logout

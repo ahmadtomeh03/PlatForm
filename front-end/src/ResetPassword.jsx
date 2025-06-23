@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./ForgetReset.css";
 import { useLocation } from "react-router-dom";
+import { useSnackbar } from "./Context/SnackbarContext";
 
 export default function ResetPassword() {
   const [new_password, setNewPassword] = useState("");
@@ -9,6 +10,7 @@ export default function ResetPassword() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const location = useLocation();
+  const { showSnackbar } = useSnackbar();
 
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
@@ -26,11 +28,23 @@ export default function ResetPassword() {
       const res = await axios.post("http://localhost:3000/reset-password", {
         token,
         new_password,
-        confirmPassword
+        confirmPassword,
       });
+      showSnackbar(
+        res.data.message || "Account created successfully!",
+        "success"
+      );
       setMessage(res.data.message);
-    } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+    } catch (error) {
+      const errors = error.response?.data?.errors;
+
+      if (Array.isArray(errors)) {
+        errors.forEach((e) => showSnackbar(e.msg, "error"));
+      } else {
+        const message = error.response?.data?.message || "Registration failed.";
+        showSnackbar(message, "error");
+      }
+      console.log(error);
     }
   };
 
