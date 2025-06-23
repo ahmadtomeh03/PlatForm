@@ -10,18 +10,20 @@ import ClearIcon from '@mui/icons-material/Clear';
 function Upload() {
   const [files, setFiles] = useState([]);
   const initialForm = {
-    Id: "",
+    upload_id: "",
     student_id: "",
-    Admin: "",
-    Course: "",
-    State: "",
-    Type: "",
-    DateTime: "",
-    Name: "",
-    Doctor: "",
+    admin_id: "",
+    course_id: "",
+    uploaded_state: "",
+    uploaded_type: "",
+    uploaded_datetime: "",
+    upload_name: "",
+    doctor_name: "",
     upload_url: "",
     description: "",
   };
+  
+  
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -223,9 +225,20 @@ function Upload() {
     return isNaN(date) ? "" : date.toLocaleString();
   };
 
-  const filtered = files.filter((f) =>
-    f[searchBy]?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filtered = files.filter((f) => {
+    const value = f?.[searchBy];
+  
+    if (typeof value === "number") {
+      return value.toString().includes(searchQuery.trim());
+    }
+  
+    if (typeof value === "string") {
+      return value.toLowerCase().includes(searchQuery.trim().toLowerCase());
+    }
+  
+    return false;
+  });
+  
 
   return (
     <div className="dashboard-section">
@@ -235,16 +248,22 @@ function Upload() {
       <div className="dashboard-filter-group">
         <label className="dashboard-filter-label">Search by:</label>
         <select
-          className="dashboard-input"
-          value={searchBy}
-          onChange={(e) => setSearchBy(e.target.value)}
-        >
-          {Object.keys(initialForm).map((field) => (
-            <option key={field} value={field}>
-              {field}
-            </option>
-          ))}
-        </select>
+            className="dashboard-input"
+            value={searchBy}
+            onChange={(e) => setSearchBy(e.target.value)}
+          >
+            <option value="upload_id">Upload ID</option>
+            <option value="upload_name">File Name</option>
+            <option value="student_id">Student ID</option>
+            <option value="admin_id">Admin</option>
+            <option value="course_id">Course</option>
+            <option value="uploaded_state">Status</option>
+            <option value="uploaded_type">Type</option>
+            <option value="uploaded_datetime">Upload Date</option>
+            <option value="doctor_name">Doctor</option>
+            <option value="description">Description</option>
+          </select>
+
         <input
           className="dashboard-input"
           value={searchQuery}

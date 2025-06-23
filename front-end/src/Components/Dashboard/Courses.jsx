@@ -218,10 +218,17 @@ const confirmDelete = () => {
 
   const cancelDelete = () => setConfirmId(null);
 
-    const filtered = materials.filter((mat) => {
-      if (!mat || typeof mat[searchBy] !== "string") return false;
-      return mat[searchBy].toLowerCase().includes(searchQuery.toLowerCase());
-    });
+  const filteredCourses = materials.filter((mat) => {
+    const fieldMap = {
+      course_id: mat.course_id?.toString(),
+      course_name: mat.course_name?.toLowerCase(),
+      course_note: mat.course_note?.toLowerCase(),
+    };
+  
+    const fieldValue = fieldMap[searchBy] || "";
+    return fieldValue.includes(searchQuery.toLowerCase());
+  });
+  
   
 
   return (
@@ -294,16 +301,16 @@ const confirmDelete = () => {
           </tr>
         </thead>
               <tbody>
-        {materials.length === 0 ? (
+        {filteredCourses.length === 0 ? (
           <tr>
             <td colSpan="5" style={{ textAlign: "center", padding: 20 }}>
               No courses found.
             </td>
           </tr>
         ) : (
-          materials
-            .filter(mat => mat) // filter out null/undefined entries
-            .map((mat) => (
+           // filter out null/undefined entries
+           filteredCourses.map((mat) => (
+            
               <tr key={mat.course_id || mat.id || Math.random()}>
                 <td className="dashboard-td">{mat.course_id}</td>
                 <td className="dashboard-td">{mat.course_name}</td>

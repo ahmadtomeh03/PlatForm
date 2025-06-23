@@ -171,9 +171,21 @@ function Admins() {
     setPromoteRole("admin");
   };
 
-  const filtered = admins.filter((admin) =>
-    admin[searchBy]?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredAdmins = admins.filter((admin) => {
+    const fieldMap = {
+      name: admin.admin_name?.toLowerCase(),
+      username: admin.admin_username?.toLowerCase(),
+      email: admin.admin_email?.toLowerCase(),
+      date: admin.date_of_register?.toLowerCase(),
+      role: admin.role?.toLowerCase(),
+      std_id: admin.student_id?.toString(),
+      dep_id: admin.department_id?.toString(),
+    };
+  
+    const fieldValue = fieldMap[searchBy] || "";
+    return fieldValue.includes(searchQuery.toLowerCase());
+  });
+  
 
   const promoteAdminName =
   promoteId != null
@@ -232,7 +244,7 @@ function Admins() {
           </tr>
         </thead>
         <tbody>
-          {admins.map((admin) => (
+          {filteredAdmins.map((admin) => (
             <tr key={admin.id}>
               <td className="dashboard-td">{admin.admin_id}</td>
               <td className="dashboard-td">{admin.admin_name}</td>
