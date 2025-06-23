@@ -47,8 +47,8 @@ export function SnackbarProvider({ children }) {
               display: "flex",
               alignItems: "center",
               backgroundColor:
-                snack.severity === "error" ? "#DA6C6C" : undefined, 
-              color: snack.severity === "error" ? "#fff" : undefined, 
+                snack.severity === "error" ? "#FF8282" : undefined,
+              color: snack.severity === "error" ? "#fff" : undefined,
             }}
           >
             {snack.message}
