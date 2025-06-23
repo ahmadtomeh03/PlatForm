@@ -35,9 +35,17 @@ function Register() {
         navigate("/");
       })
       .catch((error) => {
-        const message = error.response?.data?.message || "Registration failed.";
-        showSnackbar(message, "error");
-        console.log(message);
+        const errors = error.response?.data?.errors;
+
+        if (Array.isArray(errors)) {
+          errors.forEach((e) => showSnackbar(e.msg, "error"));
+        } else {
+          const message =
+            error.response?.data?.message || "Registration failed.";
+          showSnackbar(message, "error");
+        }
+
+        console.log(error);
       });
   };
 

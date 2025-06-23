@@ -3,43 +3,58 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 const SnackbarContext = createContext();
-
 export const useSnackbar = () => useContext(SnackbarContext);
 
 export function SnackbarProvider({ children }) {
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "info",
-  });
+  const [snackbars, setSnackbars] = useState([]);
 
   const showSnackbar = (message, severity = "info") => {
-    setSnackbar({ open: true, message, severity });
+    const id = Date.now() + Math.random();
+    setSnackbars((prev) => [...prev, { id, message, severity, open: true }]);
+    setTimeout(() => {
+      setSnackbars((prev) => prev.filter((snack) => snack.id !== id));
+    }, 3000);
   };
 
-  const handleClose = () => {
-    setSnackbar({ ...snackbar, open: false });
+  const handleClose = (id) => {
+    setSnackbars((prev) =>
+      prev.map((snack) => (snack.id === id ? { ...snack, open: false } : snack))
+    );
   };
 
   return (
     <SnackbarContext.Provider value={{ showSnackbar }}>
       {children}
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        sx={{ zIndex: 9999 }}
-        style={{ marginTop: "50px" }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={snackbar.severity}
-          sx={{ width: "100%" }}
+
+      {snackbars.map((snack, index) => (
+        <Snackbar
+          key={snack.id}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={snack.open}
+          onClose={() => handleClose(snack.id)}
+          sx={{ zIndex: 9999 }}
+          style={{
+            top: `${100 + index * 70}px`,
+            right: "20px",
+            position: "fixed",
+          }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={() => handleClose(snack.id)}
+            severity={snack.severity}
+            sx={{
+              width: "300px",
+              display: "flex",
+              alignItems: "center",
+              backgroundColor:
+                snack.severity === "error" ? "#DA6C6C" : undefined, 
+              color: snack.severity === "error" ? "#fff" : undefined, 
+            }}
+          >
+            {snack.message}
+          </Alert>
+        </Snackbar>
+      ))}
     </SnackbarContext.Provider>
   );
 }

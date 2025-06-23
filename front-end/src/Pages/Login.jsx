@@ -1,4 +1,4 @@
-import  { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../Context/UserContext";
@@ -31,12 +31,21 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("student_id", id);
         login(token, username, role);
-        showSnackbar(res.data.message || "Login successful!", "success"); 
+        showSnackbar(res.data.message || "Login successful!", "success");
         navigate("/");
       })
       .catch((error) => {
-        const message = error.response?.data?.message || "Login failed.";
-        showSnackbar(message, "error"); 
+        const errors = error.response?.data?.errors;
+
+        if (Array.isArray(errors)) {
+          errors.forEach((e) => showSnackbar(e.msg, "error"));
+        } else {
+          const message =
+            error.response?.data?.message || "Registration failed.";
+          showSnackbar(message, "error");
+        }
+
+        console.log(error);
       });
   };
   const handleForgetPassword = () => {
