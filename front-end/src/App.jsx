@@ -51,7 +51,7 @@ export default function App() {
             <Route path="/change-password" element={<ChangePassword />} />
           </Routes>
           <Footer></Footer>
-          {/* <Chatbot></Chatbot> */}
+           <Chatbot></Chatbot>
         </div>
       </SnackbarProvider>
     </UserProvider>
