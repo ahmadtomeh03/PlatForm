@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./MainDashboard.css";
 import axios from "axios";
 import Swal from "sweetalert2";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DoneIcon from '@mui/icons-material/Done';
-import ClearIcon from '@mui/icons-material/Clear';
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from "@mui/icons-material/Clear";
 
 function Upload() {
   const [files, setFiles] = useState([]);
@@ -13,7 +12,7 @@ function Upload() {
     upload_id: "",
     student_id: "",
     admin_id: "",
-    course_id: "",
+    course: "",
     uploaded_state: "",
     uploaded_type: "",
     uploaded_datetime: "",
@@ -22,10 +21,18 @@ function Upload() {
     upload_url: "",
     description: "",
   };
-  
-  
-  const token = localStorage.getItem("token");
 
+  const token = localStorage.getItem("token");
+  const [allCourses, setAllCourses] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/courses-filters")
+      .then((res) => {
+        setAllCourses(res.data.data);
+      })
+      .catch(() => {});
+  }, []);
   useEffect(() => {
     axios
       .get("http://localhost:3000/admin/uploads-filter", {
@@ -81,7 +88,6 @@ function Upload() {
     console.log(confirmRejectItem);
     try {
       await axios.put(
-        
         `http://localhost:3000/admin/approve-upload/${confirmRejectItem.upload_id}`,
         {
           action: "rejected",
@@ -111,17 +117,14 @@ function Upload() {
       Swal.fire({
         icon: "error",
         title: "فشل الرفض",
-        text: "حدث خطأ أثناء محاولة رفض الملف.",
+        text: err.response.data.message,
       });
     } finally {
       setConfirmRejectItem(null);
     }
-    
-    
   };
 
   const cancelDelete = () => {
-
     setConfirmItem(null);
   };
 
@@ -135,8 +138,7 @@ function Upload() {
       await axios.put(
         `http://localhost:3000/admin/approve-upload/${confirmAcceptItem.upload_id}`,
         {
-          
-          action: "approved"
+          action: "approved",
         },
         {
           headers: {
@@ -163,7 +165,7 @@ function Upload() {
       Swal.fire({
         icon: "error",
         title: "فشل القبول",
-        text: "حدث خطأ أثناء محاولة قبول الملف.",
+        text: err.response.data.message,
       });
     } finally {
       setConfirmAcceptItem(null);
@@ -206,13 +208,11 @@ function Upload() {
       Swal.fire({
         icon: "error",
         title: "فشل الرفض",
-        text: "حدث خطأ أثناء محاولة رفض الملف.",
+        text: err.response.data.message,
       });
     } finally {
       setConfirmRejectItem(null);
     }
-    
-    
   };
 
   const cancelAcceptReject = () => {
@@ -227,18 +227,17 @@ function Upload() {
 
   const filtered = files.filter((f) => {
     const value = f?.[searchBy];
-  
+
     if (typeof value === "number") {
       return value.toString().includes(searchQuery.trim());
     }
-  
+
     if (typeof value === "string") {
       return value.toLowerCase().includes(searchQuery.trim().toLowerCase());
     }
-  
+
     return false;
   });
-  
 
   return (
     <div className="dashboard-section">
@@ -248,21 +247,21 @@ function Upload() {
       <div className="dashboard-filter-group">
         <label className="dashboard-filter-label">Search by:</label>
         <select
-            className="dashboard-input"
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <option value="upload_id">Upload ID</option>
-            <option value="upload_name">File Name</option>
-            <option value="student_id">Student ID</option>
-            <option value="admin_id">Admin</option>
-            <option value="course_id">Course</option>
-            <option value="uploaded_state">Status</option>
-            <option value="uploaded_type">Type</option>
-            <option value="uploaded_datetime">Upload Date</option>
-            <option value="doctor_name">Doctor</option>
-            <option value="description">Description</option>
-          </select>
+          className="dashboard-input"
+          value={searchBy}
+          onChange={(e) => setSearchBy(e.target.value)}
+        >
+          <option value="upload_id">Upload ID</option>
+          <option value="upload_name">File Name</option>
+          <option value="student_id">Student ID</option>
+          <option value="admin_id">Admin</option>
+          <option value="course_id">Course</option>
+          <option value="uploaded_state">Status</option>
+          <option value="uploaded_type">Type</option>
+          <option value="uploaded_datetime">Upload Date</option>
+          <option value="doctor_name">Doctor</option>
+          <option value="description">Description</option>
+        </select>
 
         <input
           className="dashboard-input"
@@ -291,14 +290,33 @@ function Upload() {
           {filtered.map((f, index) => (
             <tr key={index}>
               {Object.entries(f)
-                .filter(([key]) => key !== "upload_url") // استبعاد العمود
-                .map(([key, value]) => (
-                  <td key={key} className="dashboard-td">
-                    {key === "uploaded_datetime"
-                      ? formatDateTime(value)
-                      : value ?? "N/A"}
-                  </td>
-                ))}
+                .filter(([key]) => key !== "upload_url")
+                .map(([key, value]) => {
+                  if (key === "uploaded_datetime") {
+                    return (
+                      <td key={key} className="dashboard-td">
+                        {formatDateTime(value)}
+                      </td>
+                    );
+                  }
+
+                  if (key === "course_id") {
+                    const matchedCourse = allCourses.find(
+                      (course) => course.course_id === value
+                    );
+                    return (
+                      <td key={key} className="dashboard-td">
+                        {matchedCourse?.course_name || value}
+                      </td>
+                    );
+                  }
+
+                  return (
+                    <td key={key} className="dashboard-td">
+                      {value ?? "N/A"}
+                    </td>
+                  );
+                })}
 
               <td className="dashboard-td">
                 <div className="dashboard-operation-buttons">
@@ -307,29 +325,26 @@ function Upload() {
                     className="dashboard-icon-button accept"
                     onClick={() => handleAccept(f)}
                   >
-                    <DoneIcon className ="dashboard-icon-button accept"/>
+                    <DoneIcon className="dashboard-icon-button accept" />
                   </button>
                   <button
                     title="Reject"
                     className="dashboard-icon-button reject"
                     onClick={() => handleReject(f)}
                   >
-                    <ClearIcon className="dashboard-icon-button reject"/>
+                    <ClearIcon className="dashboard-icon-button reject" />
                   </button>
                   <button
-                      title="View Material"
-                      className="dashboard-icon-button view"
-                      onClick={() => {
-                        let originalUrl = f.upload_url;
-                        const newUrl = 'http://localhost:3000/'+ originalUrl
-                        console.log("Opening URL:", newUrl);
-                        window.open(newUrl, "_blank");
-                      }}
-                    
-                    
-                    >
-                      <VisibilityIcon className="custom-visibility-icon" />
-
+                    title="View Material"
+                    className="dashboard-icon-button view"
+                    onClick={() => {
+                      let originalUrl = f.upload_url;
+                      const newUrl = "http://localhost:3000/" + originalUrl;
+                      console.log("Opening URL:", newUrl);
+                      window.open(newUrl, "_blank");
+                    }}
+                  >
+                    <VisibilityIcon className="custom-visibility-icon" />
                   </button>
                 </div>
               </td>

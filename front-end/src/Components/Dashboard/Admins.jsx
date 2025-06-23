@@ -245,6 +245,7 @@ function Admins() {
         </thead>
         <tbody>
           {filteredAdmins.map((admin) => (
+           
             <tr key={admin.id}>
               <td className="dashboard-td">{admin.admin_id}</td>
               <td className="dashboard-td">{admin.admin_name}</td>
