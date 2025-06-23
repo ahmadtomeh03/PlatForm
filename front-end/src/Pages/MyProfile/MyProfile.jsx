@@ -57,6 +57,7 @@ const ProfilePage = () => {
   const [studentCourses, setStudentCourses] = useState([]);
   const [studentFav, setStudentFav] = useState([]);
   const [studentUploads, setStudentUploads] = useState([]);
+  const [allCourses, setAllCourses] = useState([]);
 
   const token = localStorage.getItem("token");
 
@@ -98,6 +99,15 @@ const ProfilePage = () => {
       }
     )
   );
+  // get all courses
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/courses-filters")
+      .then((res) => {
+        setAllCourses(res.data.data);
+      })
+      .catch(() => {});
+  }, []);
   // get requset file
   useEffect(() => {
     axios
@@ -331,31 +341,41 @@ const ProfilePage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {studentUploads.map((upload, index) => (
-                    <tr key={index}>
-                      <td>{upload.uploaded_type}</td>
-                      <td>{upload.uploaded_state}</td>
-                      <td>
-                        {new Date(upload.uploaded_datetime).toLocaleString(
-                          "en-US",
-                          { timeZone: "Asia/Gaza" }
-                        )}
-                      </td>
-                      <td>{upload.upload_name}</td>
-                      <td>{upload.course_id}</td>
-                      <td>
-                        <button
-                          className="dashboard-icon-button view"
-                          onClick={() => {
-                            const fullUrl = `http://localhost:3000/${upload.upload_url}`;
-                            window.open(fullUrl, "_blank");
-                          }}
-                        >
-                          👁️
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {studentUploads.map((upload, index) => {
+                    const matchedCourse = allCourses.find(
+                      (course) => course.course_id === upload.course_id
+                    );
+
+                    return (
+                      <tr key={index}>
+                        <td>{upload.uploaded_type}</td>
+                        <td>{upload.uploaded_state}</td>
+                        <td>
+                          {new Date(upload.uploaded_datetime).toLocaleString(
+                            "en-US",
+                            {
+                              timeZone: "Asia/Gaza",
+                            }
+                          )}
+                        </td>
+                        <td>{upload.upload_name}</td>
+                        <td>
+                          {matchedCourse?.course_name || upload.course_id}
+                        </td>
+                        <td>
+                          <button
+                            className="dashboard-icon-button view"
+                            onClick={() => {
+                              const fullUrl = `http://localhost:3000/${upload.upload_url}`;
+                              window.open(fullUrl, "_blank");
+                            }}
+                          >
+                            👁️
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
