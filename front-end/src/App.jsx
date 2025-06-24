@@ -23,7 +23,7 @@ export default function App() {
   return (
     <UserProvider>
       <SnackbarProvider>
-        <div className="containers">
+        <div className="container">
           <Navbar />
 
           {/* Routes */}

@@ -1,162 +1,165 @@
 .footer {
-    background: #303841;
-    color: #ffffff;
-    padding: 60px 30px 30px;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  
-  
+  background: #303841;
+  color: #ffffff;
+  padding: 25px 15px 15px; /* قللنا البادينغ لتصغير الفوتر */
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px; /* تصغير الخط الأساسي */
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 25px; /* قللنا الفجوة بين الأقسام */
+  margin-bottom: 20px; /* قللنا المسافة السفلية */
+}
+
+.footer-section h3 {
+  font-size: 20px; /* صغرنا العنوان */
+  margin-bottom: 12px;
+  color: #00bcd4;
+  position: relative;
+}
+
+.footer-section h3::after {
+  content: "";
+  display: block;
+  width: 100px;  /* صغرنا خط التسطير */
+  height: 2px;
+  background: #00bcd4;
+  margin-top: 5px;
+  border-radius: 3px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px; /* تقليل الفجوة */
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links a {
+  margin: 5px 0;
+  font-size: 18px; /* تصغير الخط */
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+
+
+}
+
+.footer-links a:hover {
+  color: #e0e0e0	;
+}
+
+.footer-center {
+  text-align: center;
+  flex: 1;
+  max-width: 250px; /* تقليل العرض */
+}
+
+.footer-center .logo {
+  font-size: 26px; /* تصغير حجم اللوجو */
+  font-weight: bold;
+  color: #00bcd4;
+  margin-top: 25px;
+  margin-bottom: 8px;
+}
+
+.footer-center .logo span {
+  color: #ffffff;
+}
+
+.est {
+  margin: 5px 0 12px;
+  letter-spacing: 1.5px;
+  font-size: 12px; /* تصغير الخط */
+  color: #bbb;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.social-icons i {
+  font-size: 18px; /* تصغير حجم الأيقونات */
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.social-icons i:hover {
+  background: #252f3a;
+  color: #303841;
+  transform: translateY(-2px);
+}
+
+.footer-section p {
+  margin: 6px 0;
+  line-height: 1.4;
+  font-size: 14px; /* تصغير الخط */
+  color: #ccc;
+}
+
+.footer-section p strong {
+  color: #00bcd4;
+}
+
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding-top: 12px;
+  font-size: 14px; /* تصغير الخط */
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  color: #aaa;
+}
+
+.footer-bottom a {
+  color: #00bcd4;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: color 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .footer-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 50px;
-    margin-bottom: 40px;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
   }
-  
-  .footer-section h3 {
-    font-size: 30px; /* كبرنا من 24px إلى 30px */
-    margin-bottom: 20px;
-    color: #00bcd4; /* blue */
-    position: relative;
-  }
-  
-  .footer-section h3::after {
-    content: "";
-    display: block;
-    width: 40px;
-    height: 3px;
-    background: #00bcd4; /* blue underline */
-    margin-top: 8px;
-    border-radius: 3px;
-  }
-  
+
+  .footer-section,
   .footer-links {
-    display: flex;
-    gap: 40px;
-  }
-  
-  .footer-links ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-links li {
-    margin: 8px 0;
-    color: #ccc;
-    font-size: 18px; /* كبرنا من 15px إلى 18px */
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-links li:hover {
-    color: #00bcd4;
-  }
-  
-  .footer-center {
-    text-align: center;
-    flex: 1;
-    max-width: 300px;
-  }
-  
-  .footer-center .logo {
-    font-size: 32px; /* كبرنا من 32px إلى 38px */
-    font-weight: bold;
-    color: #00bcd4;
-    margin-bottom: 10px;
-  }
-  
-  .footer-center .logo span {
-    color: #ffffff;
-  }
-  
-  .est {
-    margin: 8px 0 20px;
-    letter-spacing: 2px;
-    font-size: 16px; /* كبرنا من 14px إلى 16px */
-    color: #bbb;
-  }
-  
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .social-icons i {
-    font-size: 22px; /* كبرنا من 18px إلى 22px */
-    color: #fff;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
-  
-  .social-icons i:hover {
-    background: #252f3a;
-    color: #303841;
-    transform: translateY(-2px);
-  }
-  
-  .footer-section p {
-    margin: 10px 0;
-    line-height: 1.6;
-    font-size: 18px; /* كبرنا من 15px إلى 18px */
-    color: #ccc;
-  }
-  
-  .footer-section p strong {
-    color: #00bcd4;
-  }
-  
-  .footer-bottom {
-    border-top: 1px solid #444;
-    padding-top: 20px;
-    font-size: 16px; /* كبرنا من 14px إلى 16px */
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    color: #aaa;
-  }
-  
-  .footer-bottom a {
-    color: #00bcd4;
-    text-decoration: none;
-    margin-left: 10px;
-    transition: color 0.3s ease;
-    font-size: 16px; /* كبرنا من 14px إلى 16px */
-  }
-  
-  .footer-bottom a:hover {
-    text-decoration: underline;
-    color: #fff;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .footer-container {
       flex-direction: column;
       align-items: center;
-      text-align: center;
-    }
-  
-    .footer-section,
-    .footer-links {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .footer-links {
-      gap: 20px;
-    }
-  
-    .footer-bottom {
-      flex-direction: column;
-      text-align: center;
+  }
+
+  .footer-links {
       gap: 10px;
-    }
   }
-  
+
+  .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+      gap: 6px;
+  }
+}
+ 
