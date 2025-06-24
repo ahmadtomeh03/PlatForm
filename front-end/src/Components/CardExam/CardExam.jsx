@@ -14,7 +14,8 @@ export default function CardExam({
   nameOfDector,
   midOrFinal,
   isOpen,
-  onToggle,
+  onToggle, // to View file
+  onClick, // to navigate the file from profile
   id_type,
   onDelete,
   onDeleteProfile,
@@ -245,7 +246,17 @@ export default function CardExam({
           <p className="card-description">📝 {midOrFinal} Summary</p>
           <p className="card-doctor">👨‍🏫 {nameOfDector}</p>
         </div>
-        <button className="exam-card-button" onClick={onToggle}>
+        <button
+          className="exam-card-button"
+          onClick={(e) => {
+            e.preventDefault();
+            if (onClick) {
+              onClick(); // navigate when from profile
+            } else if (onToggle) {
+              onToggle(); //  toggle preview if from swiper
+            }
+          }}
+        >
           {isOpen ? "Hide" : "View"}
         </button>
       </div>

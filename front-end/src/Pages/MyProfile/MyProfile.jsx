@@ -32,7 +32,11 @@ const renderFavComponent = (
     onDeleteProfile: () => {
       onRemoveFavorite(favorite_id);
     },
-    onClick: () => onOpenDetails(type, data),
+    onClick: () => {
+      const materialId = data?.course_id;
+      const typeId = data?.[`${type}_id`];
+      onOpenDetails(materialId, type, typeId);
+    },
   };
 
   const componentsMap = {
@@ -96,9 +100,13 @@ const ProfilePage = () => {
       index,
       (favId) => {
         setStudentFav((prev) => prev.filter((f) => f.favorite_id !== favId));
+      },
+      (materialId, type, typeId) => {
+        navigate(`/material/${materialId}/${type}/${typeId}`);
       }
     )
   );
+
   // get all courses
   useEffect(() => {
     axios

@@ -13,6 +13,9 @@ export default function EngineeringTechnology() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [majors, setMajors] = useState([]); // this state to save the list of majer from API
+
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleDeleteMajorFromState = (deletedId) => {
     setMajors((prevMajors) =>
       prevMajors.filter((major) => major.departments_id !== deletedId)
@@ -70,6 +73,10 @@ export default function EngineeringTechnology() {
       })
       .catch((err) => console.error(err));
   }, [collegeId]);
+  const filteredMajors = majors.filter((major) =>
+    major.departments_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="p-4 relative">
       <div className="flex flex-row justify-between items-center">
@@ -81,6 +88,15 @@ export default function EngineeringTechnology() {
         >
           <ButtonBack to={"Back To College"} />
         </div>
+        <div className="flex justify-center my-6">
+          <input
+            type="text"
+            className="w-[300px] px-4 py-2 border-2 border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-200"
+            placeholder="Search by department name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
         {role == "superadmin" && (
           <ButtonAdd handleToAdd={handleToAdd} type={"Department"} />
@@ -90,7 +106,7 @@ export default function EngineeringTechnology() {
         className="flex flex-row items-center justify-center gap-5 flex-wrap"
         style={{ marginTop: "10px" }}
       >
-        {majors.map((major) => (
+        {filteredMajors.map((major) => (
           <CardMajer
             key={major.departments_id}
             nameOfMajer={major.departments_name}

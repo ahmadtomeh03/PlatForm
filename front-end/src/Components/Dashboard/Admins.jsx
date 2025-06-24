@@ -2,14 +2,12 @@ import "./MainDashboard.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import ClearIcon from '@mui/icons-material/Clear';
-import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
-
+import ClearIcon from "@mui/icons-material/Clear";
+import ArrowUpwardSharpIcon from "@mui/icons-material/ArrowUpwardSharp";
 
 function Admins() {
   const [admins, setAdmins] = useState([]);
   const [promoteRole, setPromoteRole] = useState("admin");
-
 
   const [form, setForm] = useState({
     name: "",
@@ -21,7 +19,6 @@ function Admins() {
     dep_id: "",
   });
   const token = localStorage.getItem("token");
-
 
   const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("name");
@@ -58,7 +55,7 @@ function Admins() {
         );
         setPromoteId(null);
         setPromoteRole("admin");
-  
+
         // ✅ Show success feedback
         Swal.fire({
           icon: "success",
@@ -70,7 +67,7 @@ function Admins() {
       })
       .catch((error) => {
         console.error("Promotion failed:", error);
-  
+
         // ❌ Show error feedback
         Swal.fire({
           icon: "error",
@@ -79,7 +76,6 @@ function Admins() {
         });
       });
   };
-  
 
   const addAdmin = () => {
     const missing = {};
@@ -121,7 +117,7 @@ function Admins() {
   }, []);
 
   const handleDelete = (id) => setConfirmId(id);
-  console.log(confirmId)
+  console.log(confirmId);
   const confirmDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -143,7 +139,7 @@ function Admins() {
             console.log("Admin deleted successfully", response.data);
             setAdmins(admins.filter((s) => s.admin_id !== confirmId));
             setConfirmId(null);
-  
+
             Swal.fire({
               icon: "success",
               title: "Deleted!",
@@ -181,23 +177,21 @@ function Admins() {
       std_id: admin.student_id?.toString(),
       dep_id: admin.department_id?.toString(),
     };
-  
+
     const fieldValue = fieldMap[searchBy] || "";
     return fieldValue.includes(searchQuery.toLowerCase());
   });
-  
 
   const promoteAdminName =
-  promoteId != null
-    ? admins.find((admin) => admin.id === promoteId || admin.admin_id === promoteId)?.admin_username || ""
-    : "";
+    promoteId != null
+      ? admins.find(
+          (admin) => admin.id === promoteId || admin.admin_id === promoteId
+        )?.admin_username || ""
+      : "";
 
-      
   return (
     <div className="dashboard-section">
       <h1 className="dashboard-title">Admins</h1>
-
-      
 
       {/* Search Filter */}
       <div className="dashboard-filter-group" style={{ marginTop: 20 }}>
@@ -245,13 +239,17 @@ function Admins() {
         </thead>
         <tbody>
           {filteredAdmins.map((admin) => (
-           
             <tr key={admin.id}>
               <td className="dashboard-td">{admin.admin_id}</td>
               <td className="dashboard-td">{admin.admin_name}</td>
               <td className="dashboard-td">{admin.admin_username}</td>
               <td className="dashboard-td">{admin.admin_email}</td>
-              <td className="dashboard-td">{admin.date_of_register}</td>
+              <td className="dashboard-td">
+                {" "}
+                {new Date(admin.date_of_register).toLocaleDateString("en-US", {
+                  timeZone: "Asia/Gaza",
+                })}
+              </td>
               <td className="dashboard-td">{admin.role}</td>
               <td className="dashboard-td">{admin.student_id}</td>
               <td className="dashboard-td">{admin.department_id}</td>
@@ -261,8 +259,7 @@ function Admins() {
                   onClick={() => handleDelete(admin.admin_id)}
                   title="Delete"
                 >
-                  <ClearIcon className="dashboard-icon-button reject"/>
-
+                  <ClearIcon className="dashboard-icon-button reject" />
                 </button>
                 <span
                   onClick={() => handlePromoteClick(admin.admin_id)}
@@ -274,7 +271,7 @@ function Admins() {
                     if (e.key === "Enter") handlePromoteClick(admin.admin_id);
                   }}
                 >
-                  <ArrowUpwardSharpIcon/>
+                  <ArrowUpwardSharpIcon />
                 </span>
               </td>
             </tr>
@@ -283,38 +280,52 @@ function Admins() {
       </table>
 
       {/* Delete Confirmation Modal */}
-          {confirmId && (
-      <div className="dashboard-modal-overlay" role="dialog" aria-modal="true">
-        <div className="dashboard-modal">
-          <p>Are you sure you want to delete this admin?</p>
-          <button className="dashboard-button confirm" onClick={confirmDelete}>
-            Yes
-          </button>
-          <button className="dashboard-button cancel" onClick={cancelDelete}>
-            No
-          </button>
+      {confirmId && (
+        <div
+          className="dashboard-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="dashboard-modal">
+            <p>Are you sure you want to delete this admin?</p>
+            <button
+              className="dashboard-button confirm"
+              onClick={confirmDelete}
+            >
+              Yes
+            </button>
+            <button className="dashboard-button cancel" onClick={cancelDelete}>
+              No
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
       {/* Promote Confirmation Modal */}
       {promoteId !== null && (
-        <div className="dashboard-modal-overlay" role="dialog" aria-modal="true">
+        <div
+          className="dashboard-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+        >
           <div className="dashboard-modal">
             <p>
               Promote <strong>{promoteAdminName}</strong> to <strong>?</strong>
             </p>
-                  <select
-                value={promoteRole}
-                onChange={(e) => setPromoteRole(e.target.value)}
-                className="dashboard-input"
-                style={{ margin: "10px 0" }}
-      >
-        <option value="admin">Admin</option>
-        <option value="superadmin">Superadmin</option>
-      </select>
+            <select
+              value={promoteRole}
+              onChange={(e) => setPromoteRole(e.target.value)}
+              className="dashboard-input"
+              style={{ margin: "10px 0" }}
+            >
+              <option value="admin">Admin</option>
+              <option value="superadmin">Superadmin</option>
+            </select>
 
-            <button className="dashboard-button confirm" onClick={confirmPromote}>
+            <button
+              className="dashboard-button confirm"
+              onClick={confirmPromote}
+            >
               Yes
             </button>
             <button className="dashboard-button cancel" onClick={cancelPromote}>

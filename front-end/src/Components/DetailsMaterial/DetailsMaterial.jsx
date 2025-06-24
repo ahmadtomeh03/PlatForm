@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 
 export default function DetailsMaterial() {
   const { collegeId } = useParams();
-  const { majorId } = useParams();
+  const { majorId, materialId, type, typeId } = useParams();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const { isLogin } = useContext(UserContext);
@@ -57,7 +57,7 @@ export default function DetailsMaterial() {
           <ButtonUpload />
         </div>
       </div>
-      <Tabs />
+      <Tabs type={type} typeId={typeId} />
       {showModal && (
         <>
           <div

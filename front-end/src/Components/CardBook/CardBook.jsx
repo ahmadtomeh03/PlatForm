@@ -14,7 +14,8 @@ export default function CardBook({
   nameOfDector,
   midOrFinal,
   isOpen,
-  onToggle,
+  onToggle, // to View file
+  onClick, // to navigate the file from profile
   id_type,
   onDelete,
   onDeleteProfile,
@@ -243,7 +244,17 @@ export default function CardBook({
         <p className="card-description">📝 {midOrFinal} Summary</p>
         <p className="card-doctor">👨‍🏫 {nameOfDector}</p>
       </div>
-      <button class="card-btn-book" onClick={onToggle}>
+      <button
+        className="card-btn-book"
+        onClick={(e) => {
+          e.preventDefault();
+          if (onClick) {
+            onClick(); // navigate when from profile
+          } else if (onToggle) {
+            onToggle(); //  toggle preview if from swiper
+          }
+        }}
+      >
         {isOpen ? "Hide" : "View"}
       </button>
     </div>

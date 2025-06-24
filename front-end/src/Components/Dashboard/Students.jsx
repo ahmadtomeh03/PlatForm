@@ -8,7 +8,6 @@ import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
 
 function Students() {
   const [students, setStudents] = useState([]);
-  const [invalidFields, setInvalidFields] = useState({});
   const [searchBy, setSearchBy] = useState("id");
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmId, setConfirmId] = useState(null);

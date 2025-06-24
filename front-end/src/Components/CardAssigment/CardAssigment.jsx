@@ -14,7 +14,8 @@ export default function CardAssigment({
   nameOfDector,
   midOrFinal,
   isOpen,
-  onToggle,
+  onToggle, // to View file
+  onClick, // to navigate the file from profile
   id_type,
   onDelete,
   onEdit,
@@ -247,7 +248,18 @@ export default function CardAssigment({
             <span className="doctor-label-slide">By:</span>
             <h3 className="doctor-name-slide">{nameOfDector}</h3>
           </div>
-          <button className="btn-slide" onClick={onToggle}>
+
+          <button
+            className="btn-slide"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onClick) {
+                onClick(); // navigate when from profile
+              } else if (onToggle) {
+                onToggle(); //  toggle preview if from swiper
+              }
+            }}
+          >
             {isOpen ? "Hide" : "View"}
           </button>
         </div>

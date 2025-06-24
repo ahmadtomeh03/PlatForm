@@ -9,29 +9,36 @@ import Progress from "../Progress";
 import Vedio from "../Vedio/Vedio";
 import CardAssigment from "../CardAssigment/CardAssigment";
 
-export default function Tabs() {
-  const [selectedTab, setSelectedTab] = useState("lectures");
+export default function Tabs({ type = "video", typeId }) {
+  const [selectedTab, setSelectedTab] = useState(type);
   const renderContent = () => {
     // every swiper contain type of card and list of detalis of this card
     switch (selectedTab) {
-      case "lectures":
+      case "video":
         return (
-          <SwiperCard key={selectedTab} CardComponent={Vedio} type={"video"} />
+          <SwiperCard
+            key={selectedTab}
+            CardComponent={Vedio}
+            type={"video"}
+            typeId={typeId}
+          />
         );
-      case "summaries":
+      case "summary":
         return (
           <SwiperCard
             key={selectedTab}
             CardComponent={Summaries}
             type={"summary"}
+            typeId={typeId}
           />
         );
-      case "exams":
+      case "exam":
         return (
           <SwiperCard
             key={selectedTab}
             CardComponent={CardExam}
             type={"exam"}
+            typeId={typeId}
           />
         );
       case "book":
@@ -40,14 +47,16 @@ export default function Tabs() {
             key={selectedTab}
             CardComponent={CardBook}
             type={"book"}
+            typeId={typeId}
           />
         );
-      case "slides":
+      case "slide":
         return (
           <SwiperCard
             key={selectedTab}
             CardComponent={CardSlides}
             type={"slide"}
+            typeId={typeId}
           />
         );
       case "assignment":
@@ -56,6 +65,7 @@ export default function Tabs() {
             key={selectedTab}
             CardComponent={CardAssigment}
             type={"assignment"}
+            typeId={typeId}
           />
         );
       default:
@@ -75,8 +85,8 @@ export default function Tabs() {
           <input
             type="radio"
             name="value-radio"
-            checked={selectedTab === "lectures"}
-            onChange={() => setSelectedTab("lectures")}
+            checked={selectedTab === "video"}
+            onChange={() => setSelectedTab("video")}
           />
           <span className="name">Lectures</span>
         </label>
@@ -84,8 +94,8 @@ export default function Tabs() {
           <input
             type="radio"
             name="value-radio"
-            checked={selectedTab === "summaries"}
-            onChange={() => setSelectedTab("summaries")}
+            checked={selectedTab === "summary"}
+            onChange={() => setSelectedTab("summary")}
           />
           <span className="name">Summaries</span>
         </label>
@@ -93,8 +103,8 @@ export default function Tabs() {
           <input
             type="radio"
             name="value-radio"
-            checked={selectedTab === "exams"}
-            onChange={() => setSelectedTab("exams")}
+            checked={selectedTab === "exam"}
+            onChange={() => setSelectedTab("exam")}
           />
           <span className="name">Exams</span>
         </label>
@@ -111,8 +121,8 @@ export default function Tabs() {
           <input
             type="radio"
             name="value-radio"
-            checked={selectedTab === "slides"}
-            onChange={() => setSelectedTab("slides")}
+            checked={selectedTab === "slide"}
+            onChange={() => setSelectedTab("slide")}
           />
           <span className="name">Slides</span>
         </label>

@@ -42,6 +42,7 @@ function Upload() {
       })
       .then((response) => {
         setFiles(response.data.data);
+        console.log(response);
       })
       .catch((error) => {
         console.error("Error getting uploads", error);
@@ -220,11 +221,6 @@ function Upload() {
     setConfirmRejectItem(null);
   };
 
-  const formatDateTime = (value) => {
-    const date = new Date(value);
-    return isNaN(date) ? "" : date.toLocaleString();
-  };
-
   const filtered = files.filter((f) => {
     const value = f?.[searchBy];
 
@@ -295,7 +291,9 @@ function Upload() {
                   if (key === "uploaded_datetime") {
                     return (
                       <td key={key} className="dashboard-td">
-                        {formatDateTime(value)}
+                        {new Date(value).toLocaleDateString("en-US", {
+                          timeZone: "Asia/Gaza",
+                        })}
                       </td>
                     );
                   }

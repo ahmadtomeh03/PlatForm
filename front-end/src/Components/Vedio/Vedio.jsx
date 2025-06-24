@@ -16,7 +16,8 @@ export default function Vedio({
   nameOfDector,
   midOrFinal,
   isOpen,
-  onToggle,
+  onToggle, // to View file
+  onClick, // to navigate the file from profile
   id_type,
   onDelete,
   onEdit,
@@ -250,7 +251,17 @@ export default function Vedio({
         <p className="vedio-description">{midOrFinal}</p>
         <h3 className="vedio-doctor">{nameOfDector}</h3>
       </div>
-      <button className="vedio-button" onClick={onToggle}>
+      <button
+        className="vedio-button"
+        onClick={(e) => {
+          e.preventDefault();
+          if (onClick) {
+            onClick(); // navigate when from profile
+          } else if (onToggle) {
+            onToggle(); //  toggle preview if from swiper
+          }
+        }}
+      >
         {isOpen ? "Hide" : "View"}
       </button>
     </div>

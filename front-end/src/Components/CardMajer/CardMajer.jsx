@@ -18,6 +18,7 @@ export default function CardMajer({
 }) {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
   const handleToEdit = async () => {
     const result = await MultiInputAlert({
       title: "تعديل بيانات التخصص",
@@ -116,8 +117,11 @@ export default function CardMajer({
         </div>
       )}
 
-      <div className="flex justify-center items-center flex-1">
+      <div className="flex justify-center items-center flex-1 flex-col">
         <h2 className="new-card-title text-center">{nameOfMajer}</h2>
+        {role === "superadmin" && (
+          <h2 className="text-left">Department ID : {majorId}</h2>
+        )}
       </div>
 
       <div className="flex justify-center mt-4">

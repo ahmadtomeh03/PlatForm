@@ -15,6 +15,13 @@ export default function Material() {
   const [allCourses, setAllCourses] = useState([]);
   const { role } = useContext(UserContext);
   const token = localStorage.getItem("token");
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredCourses = courses.filter((material) =>
+    `${material.course_name} ${material.dc_type}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   const handleDeleteCourse = (dc_id) => {
     setCourses((prevCourses) =>
       prevCourses.filter((course) => course.dc_id !== dc_id)
@@ -84,7 +91,7 @@ export default function Material() {
       .catch(() => {});
   }, [majorId]);
 
-  const listOfMaterial = courses.map((material) => {
+  const listOfMaterial = filteredCourses.map((material) => {
     return (
       <div
         key={material.dc_id}
@@ -116,6 +123,16 @@ export default function Material() {
         >
           <ButtonBack to={`Back To Department`} />
         </div>
+        <div className="flex justify-center my-6">
+          <input
+            type="text"
+            className="w-[300px] px-4 py-2 border-2 border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-200"
+            placeholder="Search by material name or type..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
         {role === "superadmin" && (
           <ButtonAdd handleToAdd={handleToAdd} type={"Courses"} />
         )}

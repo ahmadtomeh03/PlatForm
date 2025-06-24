@@ -14,7 +14,8 @@ export default function Summaries({
   nameOfDector,
   midOrFinal,
   isOpen,
-  onToggle,
+  onToggle, // to View file
+  onClick, // to navigate the file from profile
   id_type,
   onDelete,
   onEdit,
@@ -246,7 +247,17 @@ export default function Summaries({
         </div>
 
         <div className="icons">
-          <button className="btn" onClick={onToggle}>
+          <button
+            className="btn"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onClick) {
+                onClick(); // navigate when from profile
+              } else if (onToggle) {
+                onToggle(); //  toggle preview if from swiper
+              }
+            }}
+          >
             {isOpen ? "Hide" : "View"}
           </button>
         </div>

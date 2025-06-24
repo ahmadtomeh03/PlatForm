@@ -9,7 +9,7 @@ import CardNote from "../Note/CardNote";
 import ListCardNote from "../Note/ListCardNote";
 import { UserContext } from "../../Context/UserContext";
 
-function SwiperCard({ CardComponent, type }) {
+function SwiperCard({ CardComponent, type, typeId }) {
   const [openPdfIndex, setOpenPdfIndex] = useState(null);
   const [materialDetails, setMaterialDetails] = useState([]);
   const { materialId } = useParams();
@@ -36,11 +36,22 @@ function SwiperCard({ CardComponent, type }) {
       .then((response) => {
         setMaterialDetails(response.data.data);
         console.log(response.data.data);
+
+        // فتح الملف المختار مباشرة إذا كان موجود
+        if (typeId) {
+          const index = response.data.data.findIndex(
+            (item) => item[`${type}_id`] === Number(typeId)
+          );
+          if (index !== -1) {
+            setOpenPdfIndex(index);
+            setSelectedId(response.data.data[index][`${type}_id`]);
+          }
+        }
       })
       .catch((error) => {
         console.error(error.response?.data || error.message);
       });
-  }, [materialId]);
+  }, [materialId, typeId]);
 
   const getId = (item) => {
     return item[`${type}_id`];
@@ -65,9 +76,14 @@ function SwiperCard({ CardComponent, type }) {
         spaceBetween={20}
         slidesPerView="auto"
         navigation
+        style={{ height: "350px" }}
       >
         {materialDetails.map((item, i) => (
-          <SwiperSlide key={i} className="!w-[320px]">
+          <SwiperSlide
+            key={i}
+            className="!w-[320px]"
+            style={{ height: "350px" }}
+          >
             <CardComponent
               id_type={getId(item)}
               nameOfMaterial={getName(item)}

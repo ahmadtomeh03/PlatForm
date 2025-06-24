@@ -23,35 +23,45 @@ export default function App() {
   return (
     <UserProvider>
       <SnackbarProvider>
-        <div className="container">
+        <div className="containers">
           <Navbar />
 
           {/* Routes */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/college">
-              <Route index element={<College />} />
-              <Route path=":collegeId">
-                <Route index element={<EngineeringTechnology />} />
-                <Route path=":majorId">
-                  <Route index element={<Material />} />
-                  <Route path=":materialId" element={<DetailsMaterial />} />
+          <div className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/college">
+                <Route index element={<College />} />
+                <Route path=":collegeId">
+                  <Route index element={<EngineeringTechnology />} />
+                  <Route path=":majorId">
+                    <Route index element={<Material />} />
+                    <Route path=":materialId" element={<DetailsMaterial />} />
+                  </Route>
                 </Route>
               </Route>
-            </Route>
-            <Route path="/aboutSite" element={<About />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="acount/:type" element={<LoginRegisterPage />} />
-            <Route path="/material/:materialId" element={<DetailsMaterial />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/dashboard" element={<MainDashboard />} />
-            <Route path="/forgot-password" element={<ForgetPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/change-password" element={<ChangePassword />} />
-          </Routes>
+              <Route path="/aboutSite" element={<About />} />
+              <Route path="/help" element={<Help />} />
+              <Route path="acount/:type" element={<LoginRegisterPage />} />
+              <Route
+                path="/material/:materialId"
+                element={<DetailsMaterial />}
+              />
+              <Route
+                path="/material/:materialId/:type/:typeId"
+                element={<DetailsMaterial />}
+              />
+
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/dashboard" element={<MainDashboard />} />
+              <Route path="/forgot-password" element={<ForgetPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/change-password" element={<ChangePassword />} />
+            </Routes>
+            <Chatbot></Chatbot>
+          </div>
           <Footer></Footer>
-           <Chatbot></Chatbot>
         </div>
       </SnackbarProvider>
     </UserProvider>
