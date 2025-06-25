@@ -87,11 +87,12 @@ function Archive() {
       })
       .catch((error) => {
         console.error("Error restoring archive", error);
-  
+        const message =
+            error.response?.data?.message || "Failed to restore archive.";
         Swal.fire({
           icon: "error",
           title: "Error!",
-          text: "Failed to restore archive.",
+          text: message,
         });
       });
   };

@@ -59,10 +59,12 @@ function Students() {
       })
       .catch((error) => {
         console.error("Error deleting student", error);
+        const message =
+            error.response?.data?.message || "Failed to delete student. Please try again.";
         Swal.fire({
           icon: "error",
           title: "Deletion Failed",
-          text: "Failed to delete student. Please try again.",
+          text: message,
           confirmButtonColor: "#d33",
         });
       });
