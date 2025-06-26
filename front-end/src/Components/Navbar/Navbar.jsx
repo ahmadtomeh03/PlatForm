@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useSnackbar } from "../../Context/SnackbarContext";
 
 export default function Navbar() {
-  const { isLogin, role, logout, username } = React.useContext(UserContext);
+  const { isLogin, role, logout } = React.useContext(UserContext);
   const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setMobileMenuOpen] = React.useState(false);

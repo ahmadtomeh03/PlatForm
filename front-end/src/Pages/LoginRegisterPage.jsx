@@ -10,10 +10,20 @@ export default function LoginRegisterPage() {
 
   const [fade, setFade] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
   useEffect(() => {
     setFade(true);
     return () => setFade(false);
   }, [type]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleNavigation = (path) => {
     setFade(false);
@@ -21,6 +31,72 @@ export default function LoginRegisterPage() {
       navigate(`/acount/${path}`);
     }, 300);
   };
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          background: "#f3f3f3",
+          padding: "20px",
+        }}
+      >
+        <div
+          className={`fade-container ${fade ? "fade-in" : "fade-out"}`}
+          style={{
+            width: "100%",
+            maxWidth: "400px",
+            background: "white",
+            borderRadius: "10px",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+            padding: "20px",
+          }}
+        >
+          {type === "login" ? (
+            <>
+              <Login />
+              <div style={{ marginTop: "15px", textAlign: "center" }}>
+                <span>Don't have an account? </span>
+                <button
+                  onClick={() => handleNavigation("register")}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#2185D5",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Register
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Register />
+              <div style={{ marginTop: "15px", textAlign: "center" }}>
+                <span>Already have an account? </span>
+                <button
+                  onClick={() => handleNavigation("login")}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#2185D5",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Login
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

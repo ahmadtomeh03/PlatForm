@@ -124,7 +124,7 @@ const Help = () => {
                 <strong>PHONE:</strong> +970 9 000000
               </p>
               <p>
-                <strong>EMAIL:</strong> info@ptuk.edu.ps
+                <strong>EMAIL:</strong> ptukgate@gmail.com
               </p>
               <p>
                 <strong>ADDRESS:</strong> Tulkarem, Palestine

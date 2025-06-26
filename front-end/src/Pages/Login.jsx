@@ -89,10 +89,10 @@ function Login() {
             onClick={handleToRemeber}
             value={false}
           />
-          <span>Remember me for month</span>
+          <span className=" text-[12px] sm:text-lg">Remember me for month</span>
         </div>
         <button
-          className="forget"
+          className="forget text-[12px] sm:text-lg"
           onClick={handleForgetPassword}
           style={{
             background: "none",

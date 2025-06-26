@@ -136,7 +136,7 @@ export default function Material() {
           </div>
           <div style={{ marginTop: "20px" }}>
             <SearchMobile
-              placeholder="Search by department..."
+              placeholder="Search by Courses or Type..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -165,7 +165,7 @@ export default function Material() {
             }}
           >
             <Search
-              placeholder="Search by department..."
+              placeholder="Search by Courses or Type..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
