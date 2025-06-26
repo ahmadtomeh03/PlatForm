@@ -5,10 +5,24 @@ import Login from "../Login";
 import "../Home/Home.css";
 import About from "../About/About";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div>
       <div
@@ -16,19 +30,18 @@ export default function Home() {
           background: "#303841",
           display: "flex",
           flexDirection: "column",
-          height: "100vh",
+          height: isMobile ? "60vh" : "100vh",
           justifyContent: "flex-start",
           alignItems: "center",
           fontFamily: "Amiri",
-          borderRadius: "0px 0px 100px 100px",
         }}
         className="home"
       >
         <div
           style={{
             position: "absolute",
-            left: "100px",
-            top: "35%",
+            left: isMobile ? "10px" : "100px",
+            top: isMobile ? "10%" : "35%",
             transform: "translateY(-50%)",
           }}
         >
@@ -41,8 +54,8 @@ export default function Home() {
         <div
           style={{
             position: "absolute",
-            right: "100px",
-            top: "73%",
+            right: isMobile ? "10px" : "100px",
+            top: isMobile ? "50%" : "73%",
             transform: "translateY(-50%)",
           }}
         >
@@ -63,8 +76,8 @@ export default function Home() {
           }}
           className="explore"
         >
-          Explore our educational platform <br />
-          & access All your study resources with ease.
+          Explore our educational platform <br />& access All your study
+          resources with ease.
         </h3>
 
         <p

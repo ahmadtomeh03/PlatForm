@@ -85,7 +85,7 @@
 
   .welcome {
     flex-direction: row;
-    margin-top: 40px;
+    margin-top: 10px;
   }
 
   .welcome h1 {
