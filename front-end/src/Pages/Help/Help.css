@@ -107,3 +107,52 @@
   overflow: hidden;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
+@media screen and (max-width: 600px) {
+  .help-page h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .help-page .subtitle {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .help-page .contact-container {
+    padding: 20px 10px;
+  }
+
+  .help-page .contact-main {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .help-page .contact-form,
+  .help-page .contact-info {
+    width: 100%;
+    padding: 20px 15px;
+  }
+
+  .help-page .contact-form h2 {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .help-page .contact-form button {
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .help-page .contact-info h3 {
+    font-size: 13px;
+  }
+
+  .help-page .contact-info p {
+    font-size: 13px;
+  }
+
+  .help-page .map {
+    width: 100%;
+    height: auto;
+  }
+}
