@@ -40,15 +40,15 @@ const renderFavComponent = (
   };
 
   const componentsMap = {
-    exam: CardExam,
-    summary: Summaries,
-    book: CardBook,
+    exam: CardSlides,
+    summary: CardSlides,
+    book: CardSlides,
     slide: CardSlides,
-    assignment: CardAssigment,
-    video: Vedio,
+    assignment: CardSlides,
+    video: CardSlides,
   };
   const Component = componentsMap[type];
-  return Component ? <Component key={index} {...commonProps} /> : null;
+  return Component ? <Component key={index} {...commonProps} type={type}/> : null;
 };
 
 const ProfilePage = () => {

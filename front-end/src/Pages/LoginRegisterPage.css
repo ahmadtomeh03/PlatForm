@@ -18,3 +18,32 @@
   color: var(--color1);
   cursor: pointer;
 }
+@media (max-width: 768px) {
+  .fade-container {
+    flex-direction: column !important;
+    width: 95% !important;
+    margin: 20px 0;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    padding: 20px;
+  }
+
+  .left-panel label,
+  .right-panel label {
+    font-size: 1.25rem !important;
+  }
+
+  .register-login {
+    width: 100% !important;
+  }
+
+  .login-card,
+  .register-card {
+    width: 100% !important;
+  }
+}

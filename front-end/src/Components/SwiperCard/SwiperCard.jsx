@@ -8,6 +8,7 @@ import axios from "axios";
 import CardNote from "../Note/CardNote";
 import ListCardNote from "../Note/ListCardNote";
 import { UserContext } from "../../Context/UserContext";
+import "./SwiperCard.css";
 
 function SwiperCard({ CardComponent, type, typeId }) {
   const [openPdfIndex, setOpenPdfIndex] = useState(null);
@@ -68,6 +69,20 @@ function SwiperCard({ CardComponent, type, typeId }) {
   const handleDelete = (id) => {
     setMaterialDetails((prev) => prev.filter((item) => getId(item) !== id));
   };
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="swiper-container">
@@ -76,57 +91,64 @@ function SwiperCard({ CardComponent, type, typeId }) {
         spaceBetween={20}
         slidesPerView="auto"
         navigation
-        style={{ height: "350px" }}
+        grabCursor={true}
+        centeredSlides={isMobile}
+        style={{ overflow: "visible" }}
       >
         {materialDetails.map((item, i) => (
           <SwiperSlide
             key={i}
-            className="!w-[320px]"
-            style={{ height: "350px" }}
+            className="!flex justify-center sm:justify-start"
+            style={{ height: "300px" }}
           >
-            <CardComponent
-              id_type={getId(item)}
-              nameOfMaterial={getName(item)}
-              nameOfDector={item.doctor_name}
-              midOrFinal={item.description}
-              isOpen={openPdfIndex === i}
-              onToggle={() => {
-                const newIndex = openPdfIndex === i ? null : i;
-                setOpenPdfIndex(newIndex);
-                if (newIndex !== null) {
-                  setSelectedId(getId(item));
-                } else {
-                  setSelectedId(null);
+            <div className="w-[250px] sm:w-[320px] ">
+              <CardComponent
+                id_type={getId(item)}
+                nameOfMaterial={getName(item)}
+                nameOfDector={item.doctor_name}
+                midOrFinal={item.description}
+                isOpen={openPdfIndex === i}
+                onToggle={() => {
+                  const newIndex = openPdfIndex === i ? null : i;
+                  setOpenPdfIndex(newIndex);
+                  if (newIndex !== null) {
+                    setSelectedId(getId(item));
+                  } else {
+                    setSelectedId(null);
+                  }
+                }}
+                onDelete={() => handleDelete(getId(item))}
+                onEdit={(updatedData) =>
+                  updateMaterialDetails(getId(item), updatedData)
                 }
-              }}
-              onDelete={() => handleDelete(getId(item))}
-              onEdit={(updatedData) =>
-                updateMaterialDetails(getId(item), updatedData)
-              }
-            />
+                type={type}
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
       {openPdfIndex !== null && (
-        <div className="mt-6 w-full px-4 flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
+        <div
+          className="w-full px-4 flex flex-col lg:flex-row gap-4 items-center lg:items-start text-center lg:text-left lg:w-[100%]"
+          style={{ marginTop: "40px" }}
+        >
+          <div className="flex-1 flex flex-col items-center">
             <iframe
               src={`${BASE_URL}/${getPath(materialDetails[openPdfIndex])}`}
-              width="100%"
-              height="730px"
-              className="rounded border border-gray-300"
+              className="rounded border border-gray-300 w-[150%] h-[730px] sm:w-[200%] md:w-[150%] lg:w-[100%]"
               title={`PDF Preview Material ${openPdfIndex + 1}`}
               style={{ marginTop: "20px" }}
             />
             <button
-              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+              className=" bg-blue-600 text-white rounded w-full"
+              style={{ marginTop: "5px" , padding:"10px 5px" }}
               onClick={() => setOpenPdfIndex(null)}
             >
               Close Preview
             </button>
           </div>
 
-          <div className="w-full lg:w-[500px]">
+          <div className="w-[150%]  sm:w-[500px] lg:w-[500px] ">
             <ListCardNote type={type} selectedId={selectedId} />
           </div>
         </div>

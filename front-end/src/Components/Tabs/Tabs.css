@@ -73,3 +73,35 @@
   padding: 10px;
   font-size: 15px;
 }
+@media (max-width: 768px) {
+  .radio-input {
+    flex-direction: row;
+    border-radius: 12px;
+  }
+  @media (max-width: 768px) {
+    .radio-input label.active {
+      background-color: var(--color1);
+      color: white;
+    }
+  }
+
+  .radio-input label {
+    width: 100%;
+    padding: 12px 0;
+    /* font-size: 15px; */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .name {
+    font-weight: 100;
+    font-family: "Times New Roman", Times, serif;
+    padding: 10px;
+    font-size: 11px;
+  }
+  .radio-input label:last-of-type {
+    border-bottom: none;
+  }
+
+  .selection {
+    display: none !important; 
+  }
+}

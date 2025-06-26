@@ -14,7 +14,32 @@ const Department = () => {
   const [colleges, setColleges] = useState([]);
   const { role } = useContext(UserContext);
   const token = localStorage.getItem("token");
-  // edit the college
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/List-colleges")
+      .then((response) => {
+        setColleges(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const handleToEdit = async (faculty) => {
     const result = await MultiInputAlert({
       title: "تعديل بيانات الكلية",
@@ -23,7 +48,6 @@ const Department = () => {
       ],
       validate: () => null,
     });
-    console.log(faculty.college_id);
     if (result) {
       try {
         await axios.put(
@@ -59,7 +83,7 @@ const Department = () => {
       }
     }
   };
-  // delete the college
+
   const handleToDelete = (college_id) => {
     Swal.fire({
       title: "هل أنت متأكد من حذف الكلية؟",
@@ -78,8 +102,7 @@ const Department = () => {
               Authorization: `Bearer ${token}`,
             },
           })
-          .then((response) => {
-            console.log("College deleted successfully", response.data);
+          .then(() => {
             setColleges((prevColleges) =>
               prevColleges.filter(
                 (college) => college.college_id !== college_id
@@ -93,7 +116,6 @@ const Department = () => {
             });
           })
           .catch((error) => {
-            console.error("Error deleting college", error);
             Swal.fire({
               icon: "error",
               title: "حدث خطأ أثناء الحذف",
@@ -104,33 +126,13 @@ const Department = () => {
     });
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/List-colleges")
-      .then((response) => {
-        setColleges(response.data.data);
-        console.log(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
   const handleToAdd = async () => {
     const result = await MultiInputAlert({
-      title: "Inter New College",
-      inputs: [{ id: "name", placeholder: "College Name" }],
-      validate: () => {
-        return null;
-      },
+      title: "أدخل اسم الكلية الجديدة",
+      inputs: [{ id: "name", placeholder: "اسم الكلية" }],
+      validate: () => null,
     });
     if (result) {
-      console.log(result.name);
-
-      Swal.fire(
-        "Success",
-        `You entered:<br>${JSON.stringify(result)}`,
-        "success"
-      );
       axios
         .post(
           "http://localhost:3000/admin/college-create",
@@ -142,78 +144,151 @@ const Department = () => {
           }
         )
         .then((response) => {
-          console.log(response);
+          setColleges((prev) => [...prev, response.data.data]);
+          Swal.fire({
+            icon: "success",
+            title: "تمت الإضافة بنجاح",
+            timer: 1500,
+            showConfirmButton: false,
+          });
         })
         .catch((error) => {
-          console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: "حدث خطأ أثناء الإضافة",
+            text: error.response?.data?.message || "حاول مرة أخرى لاحقًا",
+          });
         });
     } else {
-      Swal.fire("Cancelled", "You closed the alert", "info");
+      Swal.fire("تم الإلغاء", "تم إغلاق النافذة", "info");
     }
   };
+
   return (
-    <div style={{ margin: "20px" }}>
-      {role == "superadmin" && (
+    <div style={{ margin: "5px" }}>
+      {role === "superadmin" && (
         <ButtonAdd handleToAdd={handleToAdd} type={"College"} />
       )}
       <div
         className="flex flex-row flex-wrap justify-evenly items-center"
         style={{ marginTop: "8px" }}
       >
-        {colleges.map((faculty, index) => (
-          <Link key={faculty.college_id} to={`/college/${faculty.college_id}`}>
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05, rotate: 1 }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-                type: "spring",
-                stiffness: 120,
-              }}
-              className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] w-[400px] h-[200px] flex flex-col justify-evenly items-center"
-              style={{ margin: "8px" }}
+        {colleges.map((faculty, index) =>
+          isMobile ? (
+            <Link
+              key={faculty.college_id}
+              to={`/college/${faculty.college_id}`}
             >
-              {role == "superadmin" && (
-                <div className="w-full flex justify-between gap-2 mb-2">
-                  <IconButton
-                    aria-label="edit"
-                    size="large"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleToEdit(faculty);
-                    }}
-                  >
-                    <EditNoteIcon fontSize="inherit" />
-                  </IconButton>
-                  <div
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (window.confirm("هل أنت متأكد من حذف الكلية؟")) {
-                        handleToDelete(faculty.college_id);
-                      }
-                    }}
-                    style={{ margin: "10px" }}
-                  >
-                    <ButtonDelete />
+              <div
+                className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] flex flex-col justify-evenly items-center"
+                style={{
+                  width: "90vw",
+                  maxWidth: "400px",
+                  height: "30vh",
+                  maxHeight: "200px",
+                  margin: "8px",
+                }}
+              >
+                {role === "superadmin" && (
+                  <div className="w-full flex justify-between gap-2 mb-2">
+                    <IconButton
+                      aria-label="edit"
+                      size="large"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleToEdit(faculty);
+                      }}
+                    >
+                      <EditNoteIcon fontSize="inherit" />
+                    </IconButton>
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (window.confirm("هل أنت متأكد من حذف الكلية؟")) {
+                          handleToDelete(faculty.college_id);
+                        }
+                      }}
+                      style={{ margin: "10px" }}
+                    >
+                      <ButtonDelete />
+                    </div>
                   </div>
+                )}
+                <h3 className="text-xl font-semibold text-center mb-4">
+                  {faculty.college_name}
+                </h3>
+                <div>
+                  <img
+                    src={`http://localhost:3000${faculty.image}`}
+                    alt={faculty.college_name}
+                    className="w-20 h-20"
+                  />
                 </div>
-              )}
-
-              <h3 className="text-xl font-semibold text-center mb-4">
-                {faculty.college_name}
-              </h3>
-              <div>
-                <img
-                  src={`http://localhost:3000${faculty.image}`}
-                  alt={faculty.college_name}
-                  className="w-20 h-20"
-                />
               </div>
-            </motion.div>
-          </Link>
-        ))}
+            </Link>
+          ) : (
+            <Link
+              key={faculty.college_id}
+              to={`/college/${faculty.college_id}`}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, rotate: 1 }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.1,
+                  type: "spring",
+                  stiffness: 120,
+                }}
+                className="rounded-xl text-white p-6 shadow-lg cursor-pointer bg-[#3D90D7] flex flex-col justify-evenly items-center"
+                style={{
+                  width: "90vw",
+                  maxWidth: "400px",
+                  height: "30vh",
+                  maxHeight: "200px",
+                  margin: "8px",
+                }}
+              >
+                {role === "superadmin" && (
+                  <div className="w-full flex justify-between gap-2 mb-2">
+                    <IconButton
+                      aria-label="edit"
+                      size="large"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleToEdit(faculty);
+                      }}
+                    >
+                      <EditNoteIcon fontSize="inherit" />
+                    </IconButton>
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (window.confirm("هل أنت متأكد من حذف الكلية؟")) {
+                          handleToDelete(faculty.college_id);
+                        }
+                      }}
+                      style={{ margin: "10px" }}
+                    >
+                      <ButtonDelete />
+                    </div>
+                  </div>
+                )}
+                <h3 className="text-xl font-semibold text-center mb-4">
+                  {faculty.college_name}
+                </h3>
+                <div>
+                  <img
+                    src={`http://localhost:3000${faculty.image}`}
+                    alt={faculty.college_name}
+                    className="w-20 h-20"
+                  />
+                </div>
+              </motion.div>
+            </Link>
+          )
+        )}
       </div>
     </div>
   );

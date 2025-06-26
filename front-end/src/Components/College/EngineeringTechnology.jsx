@@ -7,12 +7,17 @@ import ButtonAdd from "../ButtonAdd/ButtonAdd";
 import Swal from "sweetalert2";
 import MultiInputAlert from "../MultiInputAlert/MultiInputAlert";
 import { UserContext } from "../../Context/UserContext";
+import ButtonBackMobile from "../ButtonMobile/ButtonBackMobile";
+import ButtonAddMobile from "../ButtonMobile/ButtonAddMobile";
+import SearchMobile from "../ButtonMobile/SearchMobile";
+import Search from "../Search/Search";
+
 export default function EngineeringTechnology() {
   const { collegeId } = useParams();
   const { role } = useContext(UserContext);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [majors, setMajors] = useState([]); // this state to save the list of majer from API
+  const [majors, setMajors] = useState([]); 
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -77,31 +82,67 @@ export default function EngineeringTechnology() {
     major.departments_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const onClickButtonBack = () => {
+    navigate("/college");
+  };
   return (
     <div className="p-4 relative">
-      <div className="flex flex-row justify-between items-center">
-        <div
-          onClick={() => {
-            navigate("/college");
-          }}
-          style={{ marginLeft: "20px", marginTop: "20px" }}
-        >
-          <ButtonBack to={"Back To College"} />
+      {isMobile ? (
+        <div className="flex flex-row justify-evenly items-center gap-2">
+          <div>
+            <ButtonBackMobile onClickButton={onClickButtonBack} />
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <SearchMobile
+              placeholder="Search by department..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div>
+            {role === "superadmin" && (
+              <ButtonAddMobile handleToAdd={handleToAdd} />
+            )}
+          </div>
         </div>
-        <div className="flex justify-center my-6">
-          <input
-            type="text"
-            className="w-[300px] px-4 py-2 border-2 border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-200"
-            placeholder="Search by department name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+      ) : (
+        <div className="flex flex-row justify-between items-center">
+          <div
+            onClick={() => {
+              navigate("/college");
+            }}
+            style={{ marginLeft: "20px", marginTop: "20px" }}
+          >
+            <ButtonBack to={"Back To College"} />
+          </div>
+          <div
+            className="flex justify-center my-6"
+            style={{
+              marginTop: "20px",
+              marginRight: "20px",
+            }}
+          >
+            <Search
+              placeholder="Search by department..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          {role === "superadmin" && (
+            <ButtonAdd handleToAdd={handleToAdd} type={"Department"} />
+          )}
         </div>
+      )}
 
-        {role == "superadmin" && (
-          <ButtonAdd handleToAdd={handleToAdd} type={"Department"} />
-        )}
-      </div>
       <div
         className="flex flex-row items-center justify-center gap-5 flex-wrap"
         style={{ marginTop: "10px" }}

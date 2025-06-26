@@ -91,8 +91,6 @@ export default function CardMatirial({
           onRemoveFavorite(saveId);
         }
         setSaveId(null);
-
-        // استدعاء callback لإزالة المادة من قائمة المفضلة في الصفحة الأب
       } catch (err) {
         console.error(err.response?.data || err.message);
       }
@@ -100,22 +98,6 @@ export default function CardMatirial({
   };
 
   const handleToEdit = () => {
-    const requirementOptions = [
-      "University Requirement (Mandatory)",
-      "University Requirement (Optional)",
-      "College Requirement (Mandatory)",
-      "Major Requirement (Mandatory)",
-      "Major Requirement (Optional)",
-      "Remedial Requirement (Mandatory)",
-    ]
-      .map(
-        (type) =>
-          `<option value="${type}" ${
-            dc_type === type ? "selected" : ""
-          }>${type}</option>`
-      )
-      .join("");
-
     Swal.fire({
       title: "تعديل نوع المتطلب",
       html: `
@@ -127,10 +109,8 @@ export default function CardMatirial({
           <input id="swal-current-type" class="swal2-input" value="${dc_type}" readonly>
 
           <label for="swal-requirement">اختر نوع المتطلب الجديد:</label>
-          <select id="swal-requirement" class="swal2-select">
-            <option value="">اختر النوع</option>
-            ${requirementOptions}
-          </select>
+           <input id="swal-requirement" class="swal2-input" placeholder="Enter requirement type" style="width:90%; min-width:200px; margin-top: 10px;" />
+
         </div>
       `,
       showCancelButton: true,

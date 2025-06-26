@@ -85,8 +85,23 @@ export default function ListCardNote({ type, selectedId }) {
         });
       });
   };
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div className="containers min-h-screen" style={{ padding: "20px" }}>
+    <div className="containers min-h-screen " style={{ padding: "20px" }}>
       <div
         style={{
           backgroundColor: "#ffffff",
@@ -126,20 +141,23 @@ export default function ListCardNote({ type, selectedId }) {
                 }
               }}
               style={{
-                padding: "5px 10px",
+                padding: "10px 10px",
                 background: "var(--color1)",
                 borderRadius: "8px",
               }}
             >
               <AddBoxIcon style={{ color: "white" }} />
-              <span style={{ color: "white", fontWeight: "bold" }}>
+              <span
+                style={{ color: "white", fontWeight: "bold" }}
+                className="sm:text-sm text-[8px]"
+              >
                 {showAddForm ? "Cancel" : "Add Note"}
               </span>
             </button>
           </div>
 
           <h1
-            className="text2 text-2xl font-bold"
+            className="text2 text-sm font-bold sm:text-2xl"
             style={{ marginBottom: "20px" }}
           >
             All Notes

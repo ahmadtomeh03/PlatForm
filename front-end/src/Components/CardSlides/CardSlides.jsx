@@ -21,6 +21,7 @@ export default function CardSlides({
   onEdit,
   onDeleteProfile,
   showAction = true,
+  type,
 }) {
   const token = localStorage.getItem("token");
   const { role } = React.useContext(UserContext);
@@ -36,7 +37,7 @@ export default function CardSlides({
       .then((response) => {
         console.log(response.data.data);
         const match = response.data.data.find(
-          (fav) => fav.content_id === id_type && fav.content_type === "slide"
+          (fav) => fav.content_id === id_type && fav.content_type === type
         );
         console.log(match.favorite_id);
         if (match) {
@@ -77,9 +78,9 @@ export default function CardSlides({
     if (result) {
       try {
         await axios.put(
-          `http://localhost:3000/admin/slide-update/${id_type}`,
+          `http://localhost:3000/admin/${type}-update/${id_type}`,
           {
-            slide_name: result.nameOfMaterial,
+            [`${type}_name`]: result.nameOfMaterial,
             doctor_name: result.nameOfDector,
             description: result.midOrFinal,
           },
@@ -120,7 +121,7 @@ export default function CardSlides({
           "http://localhost:3000/favorite-create",
           {
             content_id: id_type,
-            content_type: "slide",
+            content_type: type,
           },
           {
             headers: {
@@ -179,13 +180,13 @@ export default function CardSlides({
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:3000/admin/slide-delete/${id_type}`, {
+          .delete(`http://localhost:3000/admin/${type}-delete/${id_type}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .then((response) => {
-            console.log("Slide deleted successfully", response.data);
+            console.log(" deleted successfully", response.data);
             onDelete();
             Swal.fire({
               icon: "success",
@@ -195,7 +196,7 @@ export default function CardSlides({
             });
           })
           .catch((error) => {
-            console.error("Error deleting slide", error);
+            console.error("Error deleting ", error);
             Swal.fire({
               icon: "error",
               title: "حدث خطأ أثناء الحذف",
@@ -207,64 +208,64 @@ export default function CardSlides({
   };
 
   return (
-    <div className="card-slide">
-      <div className="card-bg-slide">
-        <div className="flex justify-between items-center w-full gap-4">
+    <div className="card-bg-slide">
+      <div className="card-header-slide">
+        <h1 className="slide-label">{type}</h1>
+
+        <div className="action-group">
           {role === "superadmin" && showAction === true && (
             <>
-              <div className="flex-1 flex justify-start">
-                <IconButton
-                  aria-label="edit"
-                  size="large"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleToEdit();
-                  }}
-                >
-                  <EditNoteIcon fontSize="inherit" />
-                </IconButton>
-              </div>
+              <IconButton
+                aria-label="edit"
+                size="large"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToEdit();
+                }}
+              >
+                <EditNoteIcon fontSize="inherit" />
+              </IconButton>
 
-              <div className="flex-1 flex justify-center">
-                <ButtonDelete handleToDelete={handleToDelete} />
-              </div>
+              <ButtonDelete handleToDelete={handleToDelete} />
             </>
           )}
 
           {["superadmin", "student", "admin"].includes(role) && (
-            <div className="flex-1 flex justify-end">
-              <Favourites
-                isFavourite={!!favoriteId}
-                onToggleFavourite={handleToFavourites}
-              />
-            </div>
+            <Favourites
+              isFavourite={!!favoriteId}
+              onToggleFavourite={handleToFavourites}
+            />
           )}
         </div>
-
-        <div className="card-content-slide">
-          <h1 className="material-name-slide">{nameOfMaterial}</h1>
-          <p className="exam-type-slide">{midOrFinal}</p>
-          <div className="doctor-info-slide">
-            <span className="doctor-label-slide">By:</span>
-            <h3 className="doctor-name-slide">{nameOfDector}</h3>
-          </div>
-
-          <button
-            className="btn-slide"
-            onClick={(e) => {
-              e.preventDefault();
-              if (onClick) {
-                onClick(); // navigate when from profile
-              } else if (onToggle) {
-                onToggle(); //  toggle preview if from swiper
-              }
-            }}
-          >
-            {isOpen ? "Hide" : "View"}
-          </button>
-        </div>
       </div>
-      <div className="blob-slide"></div>
+
+      <div className="card-content-slide">
+        <div className="content-row">
+          <span className="doctor-label-slide">Name of file:</span>
+          <h1 className="material-name-slide">{nameOfMaterial}</h1>
+        </div>
+
+        <div className="content-row">
+          <span className="doctor-label-slide">Description:</span>
+          <p className="exam-type-slide">{midOrFinal}</p>
+        </div>
+
+        <div className="doctor-info-slide">
+          <span className="doctor-label-slide">Doctor Name:</span>
+          <h3 className="doctor-name-slide">{nameOfDector}</h3>
+        </div>
+
+        <button
+          className="btn-slide"
+          onClick={(e) => {
+            e.preventDefault();
+            if (onClick) onClick();
+            else if (onToggle) onToggle();
+          }}
+        >
+          {isOpen ? "Hide" : "View"}
+        </button>
+      </div>
     </div>
   );
 }

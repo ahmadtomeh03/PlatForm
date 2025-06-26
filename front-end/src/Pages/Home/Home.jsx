@@ -5,8 +5,10 @@ import Login from "../Login";
 import "../Home/Home.css";
 import About from "../About/About";
 import { useNavigate } from "react-router-dom";
+
 export default function Home() {
   const navigate = useNavigate();
+
   return (
     <div>
       <div
@@ -51,6 +53,7 @@ export default function Home() {
         </div>
 
         <Welcome />
+
         <h3
           style={{
             fontSize: "60px",
@@ -60,9 +63,10 @@ export default function Home() {
           }}
           className="explore"
         >
-          Explore our educational platform <br></br> & access All your study
-          resources with ease.
+          Explore our educational platform <br />
+          & access All your study resources with ease.
         </h3>
+
         <p
           style={{ fontFamily: "cursive", color: "#f3f3f3", margin: "10px" }}
           className="ourPlatForm"
@@ -70,6 +74,7 @@ export default function Home() {
           Our platform provides lecture slides, past exams, summaries, and smart
           tools like AI-powered assistance to help you study better and smarter.
         </p>
+
         <button
           className="explore-button"
           onClick={() => {

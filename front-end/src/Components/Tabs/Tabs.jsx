@@ -18,7 +18,7 @@ export default function Tabs({ type = "video", typeId }) {
         return (
           <SwiperCard
             key={selectedTab}
-            CardComponent={Vedio}
+            CardComponent={CardSlides}
             type={"video"}
             typeId={typeId}
           />
@@ -27,7 +27,7 @@ export default function Tabs({ type = "video", typeId }) {
         return (
           <SwiperCard
             key={selectedTab}
-            CardComponent={Summaries}
+            CardComponent={CardSlides}
             type={"summary"}
             typeId={typeId}
           />
@@ -36,7 +36,7 @@ export default function Tabs({ type = "video", typeId }) {
         return (
           <SwiperCard
             key={selectedTab}
-            CardComponent={CardExam}
+            CardComponent={CardSlides}
             type={"exam"}
             typeId={typeId}
           />
@@ -45,7 +45,7 @@ export default function Tabs({ type = "video", typeId }) {
         return (
           <SwiperCard
             key={selectedTab}
-            CardComponent={CardBook}
+            CardComponent={CardSlides}
             type={"book"}
             typeId={typeId}
           />
@@ -63,7 +63,7 @@ export default function Tabs({ type = "video", typeId }) {
         return (
           <SwiperCard
             key={selectedTab}
-            CardComponent={CardAssigment}
+            CardComponent={CardSlides}
             type={"assignment"}
             typeId={typeId}
           />
@@ -81,7 +81,7 @@ export default function Tabs({ type = "video", typeId }) {
       }}
     >
       <div className="radio-input">
-        <label>
+        <label className={selectedTab === "video" ? "active" : ""}>
           <input
             type="radio"
             name="value-radio"
@@ -90,7 +90,8 @@ export default function Tabs({ type = "video", typeId }) {
           />
           <span className="name">Lectures</span>
         </label>
-        <label>
+
+        <label className={selectedTab === "summary" ? "active" : ""}>
           <input
             type="radio"
             name="value-radio"
@@ -99,7 +100,8 @@ export default function Tabs({ type = "video", typeId }) {
           />
           <span className="name">Summaries</span>
         </label>
-        <label>
+
+        <label className={selectedTab === "exam" ? "active" : ""}>
           <input
             type="radio"
             name="value-radio"
@@ -108,7 +110,8 @@ export default function Tabs({ type = "video", typeId }) {
           />
           <span className="name">Exams</span>
         </label>
-        <label>
+
+        <label className={selectedTab === "book" ? "active" : ""}>
           <input
             type="radio"
             name="value-radio"
@@ -117,7 +120,8 @@ export default function Tabs({ type = "video", typeId }) {
           />
           <span className="name">Book</span>
         </label>
-        <label>
+
+        <label className={selectedTab === "slide" ? "active" : ""}>
           <input
             type="radio"
             name="value-radio"
@@ -126,7 +130,8 @@ export default function Tabs({ type = "video", typeId }) {
           />
           <span className="name">Slides</span>
         </label>
-        <label>
+
+        <label className={selectedTab === "assignment" ? "active" : ""}>
           <input
             type="radio"
             name="value-radio"
@@ -135,6 +140,7 @@ export default function Tabs({ type = "video", typeId }) {
           />
           <span className="name">Assignment</span>
         </label>
+
         <span className="selection"></span>
       </div>
 

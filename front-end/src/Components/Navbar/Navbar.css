@@ -6,16 +6,20 @@
   background-color: #303841;
   padding: 15px 3%;
   z-index: 50;
+  position: relative;
 }
+
 .logo {
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
 .navbarList {
   flex: 1;
   list-style: none;
   text-align: center;
 }
+
 .navbarList li {
   color: #f3f3f3;
   display: inline-block;
@@ -25,14 +29,17 @@
   transition: all 0.3s ease;
   width: 90px;
 }
+
 .navbarList li:hover {
   background-color: #2185d5;
   color: white;
   border-radius: 5px;
 }
+
 .logo:hover {
   transform: scale(1.2, 1.2);
 }
+
 .login,
 .register {
   background-color: #303841;
@@ -51,4 +58,69 @@
 .login:hover,
 .register:hover {
   background-color: #1a6db3;
+}
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.menu-icon {
+  display: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.mobile-only-auth {
+  display: none;
+}
+.desktop-only-auth {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .navbarList {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: #303841;
+    z-index: 100;
+    padding-bottom: 10px;
+  }
+
+  .navbarList.active {
+    display: flex;
+  }
+
+  .navbarList li {
+    display: block;
+    margin: 15px 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .auth-buttons {
+    display: none; 
+  }
+
+  .desktop-only-auth {
+    display: none;
+  }
+
+  .mobile-only-auth {
+    display: block;
+  }
+
+  .login,
+  .register {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
 }

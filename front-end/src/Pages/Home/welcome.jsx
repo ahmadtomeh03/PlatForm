@@ -1,5 +1,6 @@
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import "./Home.css";
+
 export default function Welcome() {
   return (
     <div
@@ -15,8 +16,9 @@ export default function Welcome() {
       <AutoStoriesIcon
         style={{ color: "#2185d5", margin: "10px", fontSize: "30px" }}
       />
-      <h1 style={{ color: "#2185d5", fontSize: "40px" }}>Welcome</h1>
-
+      <h1 style={{ color: "#2185d5", fontSize: "40px", textAlign: "center" }}>
+        Welcome
+      </h1>
       <AutoStoriesIcon
         style={{ color: "#2185d5", margin: "10px", fontSize: "30px" }}
       />

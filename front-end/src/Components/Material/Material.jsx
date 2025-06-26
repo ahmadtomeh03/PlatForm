@@ -7,6 +7,10 @@ import ButtonAdd from "../ButtonAdd/ButtonAdd";
 import SelectAlert from "../SelectAlert/SelectAlert";
 import Swal from "sweetalert2";
 import { UserContext } from "../../Context/UserContext";
+import ButtonBackMobile from "../ButtonMobile/ButtonBackMobile";
+import ButtonAddMobile from "../ButtonMobile/ButtonAddMobile";
+import SearchMobile from "../ButtonMobile/SearchMobile";
+import Search from "../Search/Search";
 
 export default function Material() {
   const navigate = useNavigate();
@@ -111,32 +115,68 @@ export default function Material() {
       </div>
     );
   });
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const onClickButtonBack = () => {
+    navigate(`/college/${collegeId}`);
+  };
   return (
     <div className="p-4 relative">
-      <div className="flex flex-row justify-between items-center">
-        <div
-          onClick={() => {
-            navigate(`/college/${collegeId}`);
-          }}
-          style={{ marginLeft: "20px", marginTop: "20px" }}
-        >
-          <ButtonBack to={`Back To Department`} />
+      {isMobile ? (
+        <div className="flex flex-row justify-evenly items-center gap-2">
+          <div>
+            <ButtonBackMobile onClickButton={onClickButtonBack} />
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <SearchMobile
+              placeholder="Search by department..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div>
+            {role === "superadmin" && (
+              <ButtonAddMobile handleToAdd={handleToAdd} />
+            )}
+          </div>
         </div>
-        <div className="flex justify-center my-6">
-          <input
-            type="text"
-            className="w-[300px] px-4 py-2 border-2 border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-200"
-            placeholder="Search by material name or type..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+      ) : (
+        <div className="flex flex-row justify-between items-center">
+          <div
+            onClick={() => {
+              navigate(`/college/${collegeId}`);
+            }}
+            style={{ marginLeft: "20px", marginTop: "20px" }}
+          >
+            <ButtonBack to={`Back To Department`} />
+          </div>
+          <div
+            className="flex justify-center my-6"
+            style={{
+              marginTop: "20px",
+              marginRight: "20px",
+            }}
+          >
+            <Search
+              placeholder="Search by department..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
 
-        {role === "superadmin" && (
-          <ButtonAdd handleToAdd={handleToAdd} type={"Courses"} />
-        )}
-      </div>
+          {role === "superadmin" && (
+            <ButtonAdd handleToAdd={handleToAdd} type={"Courses"} />
+          )}
+        </div>
+      )}
+
       <div
         className="flex flex-row flex-wrap items-center justify-center gap-5"
         style={{ margin: "20px" }}
