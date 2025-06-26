@@ -20,6 +20,8 @@ export default function Material() {
   const { role } = useContext(UserContext);
   const token = localStorage.getItem("token");
   const [searchTerm, setSearchTerm] = useState("");
+  const [majors, setMajors] = useState([]);
+
   const filteredCourses = courses.filter((material) =>
     `${material.course_name} ${material.dc_type}`
       .toLowerCase()
@@ -83,7 +85,14 @@ export default function Material() {
       })
       .catch(() => {});
   }, []);
-
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/department-list?id=${majorId}`)
+      .then((res) => {
+        console.log("API Response:", res.data), setMajors(res.data.data[0]);
+      })
+      .catch((err) => console.error(err));
+  }, [majorId]);
   useEffect(() => {
     axios
       .get(
@@ -130,51 +139,67 @@ export default function Material() {
   return (
     <div className="p-4 relative">
       {isMobile ? (
-        <div className="flex flex-row justify-evenly items-center gap-2">
-          <div>
-            <ButtonBackMobile onClickButton={onClickButtonBack} />
+        <>
+          <div className="flex flex-row justify-evenly items-center gap-2">
+            <div>
+              <ButtonBackMobile onClickButton={onClickButtonBack} />
+            </div>
+            <div style={{ marginTop: "20px" }}>
+              <SearchMobile
+                placeholder="Search by Courses or Type..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div>
+              {role === "superadmin" && (
+                <ButtonAddMobile handleToAdd={handleToAdd} />
+              )}
+            </div>
           </div>
-          <div style={{ marginTop: "20px" }}>
-            <SearchMobile
-              placeholder="Search by Courses or Type..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div
+            className="flex flex-row justify-center items-center text-lg font-bold"
+            style={{ margin: "10px" }}
+          >
+            {majors.departments_name}
           </div>
-          <div>
+        </>
+      ) : (
+        <>
+          <div className="flex flex-row justify-between items-center">
+            <div
+              onClick={() => {
+                navigate(`/college/${collegeId}`);
+              }}
+              style={{ marginLeft: "20px", marginTop: "20px" }}
+            >
+              <ButtonBack to={`Back To Department`} />
+            </div>
+            <div
+              className="flex justify-center my-6"
+              style={{
+                marginTop: "20px",
+                marginRight: "20px",
+              }}
+            >
+              <Search
+                placeholder="Search by Courses or Type..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
             {role === "superadmin" && (
-              <ButtonAddMobile handleToAdd={handleToAdd} />
+              <ButtonAdd handleToAdd={handleToAdd} type={"Courses"} />
             )}
           </div>
-        </div>
-      ) : (
-        <div className="flex flex-row justify-between items-center">
           <div
-            onClick={() => {
-              navigate(`/college/${collegeId}`);
-            }}
-            style={{ marginLeft: "20px", marginTop: "20px" }}
+            className="text-2xl text-bold flex flex-row justify-center items-center font-bold"
+            style={{ marginTop: "20px", marginBottom: "20px" }}
           >
-            <ButtonBack to={`Back To Department`} />
+            {majors.departments_name}
           </div>
-          <div
-            className="flex justify-center my-6"
-            style={{
-              marginTop: "20px",
-              marginRight: "20px",
-            }}
-          >
-            <Search
-              placeholder="Search by Courses or Type..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-
-          {role === "superadmin" && (
-            <ButtonAdd handleToAdd={handleToAdd} type={"Courses"} />
-          )}
-        </div>
+        </>
       )}
 
       <div

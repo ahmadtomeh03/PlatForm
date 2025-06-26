@@ -41,7 +41,7 @@ export default function Home() {
           style={{
             position: "absolute",
             left: isMobile ? "10px" : "100px",
-            top: isMobile ? "10%" : "35%",
+            top: isMobile ? "10%" : "20%",
             transform: "translateY(-50%)",
           }}
         >
