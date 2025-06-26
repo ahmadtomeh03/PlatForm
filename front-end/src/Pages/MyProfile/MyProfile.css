@@ -114,7 +114,7 @@
   border-radius: 5px;
   font-size: 0.95rem;
   position: absolute;
-  top: -20px;
+  top: -0px;
   right: 0;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -209,7 +209,6 @@
   outline: none;
 }
 
-/* === CARD CONTAINER === */
 .card-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -269,4 +268,68 @@
 
 .course-card-footer button:hover {
   background-color: #0056b3;
+}
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    padding: 0;
+    border: none;
+  }
+
+  .left-panel {
+    margin-bottom: 30px;
+  }
+
+  .about-header {
+    margin-top: 30px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .edit-button {
+    position: static;
+    margin-left: auto;
+    margin-top: -20px;
+  }
+
+  .profile-label {
+    width: auto;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr; /* عرض عنصر واحد فقط لكل صف */
+  }
+
+  .dashboard-table th,
+  .dashboard-table td {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .edit-modal {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .edit-modal input {
+    padding: 8px;
+  }
+
+  .edit-modal-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .edit-modal-buttons button {
+    width: 100%;
+  }
 }

@@ -37,8 +37,6 @@ function SwiperCard({ CardComponent, type, typeId }) {
       .then((response) => {
         setMaterialDetails(response.data.data);
         console.log(response.data.data);
-
-        // فتح الملف المختار مباشرة إذا كان موجود
         if (typeId) {
           const index = response.data.data.findIndex(
             (item) => item[`${type}_id`] === Number(typeId)

@@ -10,6 +10,11 @@ import CardBook from "../../Components/CardBook/CardBook";
 import CardAssigment from "../../Components/CardAssigment/CardAssigment";
 import Vedio from "../../Components/Vedio/Vedio";
 import { useNavigate } from "react-router-dom";
+import { Navigation } from "swiper/modules";
+import "../../Components/SwiperCard/SwiperCard.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const formatDate = (dateStr) =>
   new Date(dateStr).toLocaleDateString("en-US", { timeZone: "Asia/Gaza" });
@@ -48,7 +53,9 @@ const renderFavComponent = (
     video: CardSlides,
   };
   const Component = componentsMap[type];
-  return Component ? <Component key={index} {...commonProps} type={type}/> : null;
+  return Component ? (
+    <Component key={index} {...commonProps} type={type} />
+  ) : null;
 };
 
 const ProfilePage = () => {
@@ -259,6 +266,20 @@ const ProfilePage = () => {
   const handleCancelClick = () => {
     setEditMode(false);
   };
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div>
@@ -327,13 +348,58 @@ const ProfilePage = () => {
         <div className="right-panel">
           <div className="profile-section">
             <h3 className="profile-heading">{role} Schedule</h3>
-            <div className="card-container">{listOfStudentCourses}</div>
+            {isMobile ? (
+              <Swiper
+                modules={[Navigation]}
+                spaceBetween={20}
+                slidesPerView="auto"
+                navigation
+                grabCursor={true}
+                centeredSlides={isMobile}
+                style={{ overflow: "visible" }}
+              >
+                {listOfStudentCourses.map((course, i) => (
+                  <SwiperSlide
+                    key={i}
+                    className="!flex justify-center sm:justify-start"
+                    style={{ height: "300px" }}
+                  >
+                    {course}
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <div className="card-container">{listOfStudentCourses}</div>
+            )}
           </div>
 
           <div className="profile-section">
             <h3 className="profile-heading">Favorite Files</h3>
-            <div className="card-container">{listOfFav}</div>
+            {isMobile ? (
+              <Swiper
+                modules={[Navigation]}
+                spaceBetween={20}
+                slidesPerView="auto"
+                navigation
+                grabCursor={true}
+                centeredSlides={isMobile}
+                style={{ overflow: "visible" }}
+              >
+                {listOfFav.map((fav, i) => (
+                  <SwiperSlide
+                    key={i}
+                    className="!flex justify-center sm:justify-start"
+                    style={{ height: "300px" }}
+                  >
+                    {fav}
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <div className="card-container">{listOfFav}</div>
+            )}
           </div>
+
           {role === "student" && (
             <div className="profile-section">
               <h3 className="profile-heading">Uploaded Files</h3>

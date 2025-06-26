@@ -5,32 +5,33 @@ import axios from "axios";
 import MyProfile from "../MyProfile/MyProfile";
 import Swal from "sweetalert2";
 const Help = () => {
-
-
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
     message: "",
   });
-  
+
   const [status, setStatus] = useState("");
-  
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Sending...");
-  
+
     try {
-      const response = await axios.post("http://localhost:3000/contact", formData);
-  
+      const response = await axios.post(
+        "http://localhost:3000/contact",
+        formData
+      );
+
       if (response.data.success) {
         setStatus("Message sent successfully ✅");
         setFormData({ name: "", phone: "", email: "", message: "" });
-  
+
         Swal.fire({
           icon: "success",
           title: "Success!",
@@ -40,7 +41,7 @@ const Help = () => {
         });
       } else {
         setStatus("Failed to send ❌");
-  
+
         Swal.fire({
           icon: "error",
           title: "Oops!",
@@ -50,7 +51,7 @@ const Help = () => {
     } catch (err) {
       console.error(err);
       setStatus("Server error ❌");
-  
+
       Swal.fire({
         icon: "error",
         title: "Server Error",
@@ -58,10 +59,6 @@ const Help = () => {
       });
     }
   };
-  
-  
-  
-
 
   return (
     <div className="help-page">
@@ -69,51 +66,50 @@ const Help = () => {
         <h1>CONTACT US</h1>
         <p className="subtitle">
           If you have any questions, please feel free to get in touch with us
-          via phone, text, email, the form below, or even on social media!
+          via phone, text, email, the form below.
         </p>
 
         <div className="contact-main">
           <div className="contact-form">
             <h2>GET IN TOUCH</h2>
             <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your name*"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your name*"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
 
-            <input
-              type="text"
-              name="phone"
-              placeholder="Enter your phone number*"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type="text"
+                name="phone"
+                placeholder="Enter your phone number*"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email*"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email*"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
 
-            <textarea
-              name="message"
-              placeholder="Your message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            ></textarea>
+              <textarea
+                name="message"
+                placeholder="Your message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
 
               <button type="submit">SEND MESSAGE</button>
               <p style={{ marginTop: "10px", color: "green" }}>{status}</p>
-
             </form>
           </div>
 
@@ -131,7 +127,7 @@ const Help = () => {
               </p>
             </div>
 
-            <div className="info-box">
+            {/* <div className="info-box">
               <h3>ACTIVE HOURS</h3>
               <p>
                 <strong>Monday - Friday:</strong> 8:00 am - 4:00 pm
@@ -139,7 +135,7 @@ const Help = () => {
               <p>
                 <strong>Saturday & Sunday:</strong> Closed
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
