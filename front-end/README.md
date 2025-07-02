@@ -57,7 +57,7 @@ Students often struggle to find, organize, and access university study materials
 - MySQL  
 - JWT authentication
 
-### AI / NLP
+### AI 
 - Python  
 - HuggingFace Transformers  
 - MiniLM + LLaMA (via Groq API)  
