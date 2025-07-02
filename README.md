@@ -70,7 +70,7 @@ Students often struggle to find, organize, and access university study materials
 
 ###  Home Page
 > When the website is first opened  
-![Home Page](./frontEnd/screenshots/HomePageStudent-D.png)
+![Home Page](./front-end/screenshots/HomePageStudent-D.png)
 
 ###  Courses & Materials Page
 > After selecting the department. Courses can be saved to favorites  
