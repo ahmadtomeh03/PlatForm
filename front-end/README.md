@@ -71,14 +71,14 @@ Students often struggle to find, organize, and access university study materials
 
 ## 🖼️ Screenshots
 
-| Description                     | Image                                  |
-| ------------------------------- | -------------------------------------- |
-| Home Page                       | `./screenshots/HomePageStudent-D.png`  |
-| Courses & Materials Page        | `./screenshots/courses.png`            |
-| File View + Notes               | `./screenshots/NoteStudent.png`        |
-| AI Chatbot                      | `./screenshots/chatbot.png`            |
-| Admin Dashboard                 | `./screenshots/admin-dashboard.png`    |
-| Super Admin - Course Management | `./screenshots/superadmin-courses.png` |
+| Description                     | Image                                                   |
+| ------------------------------- | ------------------------------------------------------- |
+| Home Page                       | ./screenshots/HomePageStudent-D.png                     |
+| Courses & Materials Page        | `./screenshots/courses.png`                             |
+| File View + Notes               | `./screenshots/NoteStudent.png`                         |
+| AI Chatbot                      | `./screenshots/chatbot.png`                             |
+| Admin Dashboard                 | `./screenshots/Dashboard-Admin-Dashboard.jpg`           |
+| Super Admin - Course Management | `./screenshots/Dashboard-SuperAdmin-StudentTable-D.png` |
 
 ---
 
