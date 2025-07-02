@@ -71,8 +71,6 @@ Students often struggle to find, organize, and access university study materials
 
 ## 🖼️ Screenshots
 
-> Create a folder called `screenshots` and add these images:
-
 | Description                     | Image                                  |
 | ------------------------------- | -------------------------------------- |
 | Home Page                       | `./screenshots/HomePageStudent-D.png`  |
