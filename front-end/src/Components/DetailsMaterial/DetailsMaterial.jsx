@@ -51,7 +51,12 @@ export default function DetailsMaterial() {
             <div>
               <ButtonBackMobile onClickButton={onClickButtonBack} />
             </div>
-
+            <div
+              className="flex flex-row justify-center items-center text-lg font-bold"
+              style={{ margin: "10px" }}
+            >
+              {course?.course_name}
+            </div>
             <div
               onClick={() => {
                 if (isLogin) {
@@ -74,12 +79,6 @@ export default function DetailsMaterial() {
             >
               <ButtonAddMobile />
             </div>
-          </div>
-          <div
-            className="flex flex-row justify-center items-center text-lg font-bold"
-            style={{ margin: "10px" }}
-          >
-            {course?.course_name}
           </div>
         </>
       ) : (

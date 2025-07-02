@@ -11,7 +11,7 @@ import CardAssigment from "../../Components/CardAssigment/CardAssigment";
 import Vedio from "../../Components/Vedio/Vedio";
 import { useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
-import "../../Components/SwiperCard/SwiperCard.css";
+// import "../../Components/SwiperCard/SwiperCard.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
