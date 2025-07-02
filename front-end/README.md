@@ -71,6 +71,28 @@ Students often struggle to find, organize, and access university study materials
 
 ## 🖼️ Screenshots
 
+## 📸 Screenshots
+
+### 🏠 Home Page
+
+![Home Page](./screenshots/HomePageStudent-D.png)
+
+### 📝 File View + Notes
+
+![Notes](./screenshots/NoteStudent.png)
+
+### 🤖 AI Chatbot
+
+![Chatbot](./screenshots/chatbot.png)
+
+### 🛠️ Admin Dashboard
+
+![Admin Dashboard](./screenshots/Dashboard-Admin-Dashboard.png)
+
+### 🧑‍💼 Super Admin
+
+![Super Admin](./screenshots/Dashboard-SuperAdmin-StudentTable-D.png)
+
 | Description                     | Image                                                   |
 | ------------------------------- | ------------------------------------------------------- |
 | Home Page                       | ./screenshots/HomePageStudent-D.png                     |
