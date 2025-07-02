@@ -73,7 +73,7 @@ Students often struggle to find, organize, and access university study materials
 
 | Description                     | Image                                  |
 | ------------------------------- | -------------------------------------- |
-| Home Page                       | `../screenshots/HomePageStudent-D.png`  |
+| Home Page                       | `./screenshots/HomePageStudent-D.png`  |
 | Courses & Materials Page        | `./screenshots/courses.png`            |
 | File View + Notes               | `./screenshots/NoteStudent.png`        |
 | AI Chatbot                      | `./screenshots/chatbot.png`            |
