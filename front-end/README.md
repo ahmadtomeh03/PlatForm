@@ -79,19 +79,23 @@ Students often struggle to find, organize, and access university study materials
 
 ![Course](./screenshots/courses.jpg)
 
-### 📝 File View + Notes
+### Files Page with select course
+
+![Files](./screenshots/files.jpg)
+
+### File View + Notes
 
 ![Notes](./screenshots/NoteStudent-D.png)
 
-### 🤖 AI Chatbot
+### AI Chatbot
 
 ![Chatbot](./screenshots/chatbot.png)
 
-### 🛠️ Admin Dashboard
+### Admin Dashboard
 
 ![Admin Dashboard](./screenshots/Admin-Dashboard.jpg)
 
-### 🧑‍💼 Super Admin
+### Super Admin
 
 ![Super Admin](./screenshots/Dashboard-SuperAdmin-StudentTable-D.png)
 
