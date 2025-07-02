@@ -68,31 +68,31 @@ Students often struggle to find, organize, and access university study materials
 
 ## 🖼️ Screenshots
 
-### 🏠 Home Page
+###  Home Page
 > When the website is first opened  
 ![Home Page](./screenshots/HomePageStudent-D.png)
 
-### 📚 Courses & Materials Page
+###  Courses & Materials Page
 > After selecting the department. Courses can be saved to favorites  
 ![Courses](./screenshots/courses.jpg)
 
-### 📂 Files Page (Selected Course)
+###  Files Page (Selected Course)
 > Shows all files under a course with options to add notes or mark as favorite  
 ![Files](./screenshots/files.jpg)
 
-### 📝 File View + Notes
+###  File View + Notes
 > Allows viewing a file and attaching notes to it  
 ![Notes](./screenshots/NoteStudent-D.png)
 
-### 🤖 AI Chatbot
+###  AI Chatbot
 > The built-in AI assistant answering course-specific questions  
 ![Chatbot](./screenshots/chatbot.png)
 
-### 🛠️ Admin Dashboard
+###  Admin Dashboard
 > Admin interface to manage files, students, and course materials  
 ![Admin Dashboard](./screenshots/Admin-Dashboard.jpg)
 
-### 🧑‍💼 Super Admin Dashboard
+### Super Admin Dashboard
 > Full platform control over users, admins, departments, and content  
 ![Super Admin](./screenshots/Dashboard-SuperAdmin-StudentTable-D.png)
 
@@ -106,34 +106,3 @@ Students often struggle to find, organize, and access university study materials
 | **Student**     | Upload files, add notes, save favorites                         |
 | **Admin**       | All student features + approve/reject uploaded files            |
 | **Super Admin** | Full control: manage users, admins, departments, and courses    |
-
----
-
-## 📱 Future Enhancements
-
-- Mobile application (iOS/Android)
-- Integration with university systems (e.g., Moodle)
-- Plagiarism detection system
-- Faculty and instructor roles with upload permissions
-- AI assistant upgrades (summarization, voice interaction, Q&A generation)
-- Social features (comments, file ratings, discussions)
-- Offline access support
-
----
-
-## 👨‍💻 Developed By
-
-- Ahmad Wadee Tomeh  
-- Yazan Mohammed Husain  
-- Yaseen Saji Ashqar  
-- Yousef Taiser Jaber  
-
-**Supervised by:** Dr. Nagham Hamad  
-_Computer Systems Engineering Department – PTUK_
-
----
-
-## 📜 License
-
-This project was developed as a graduation project for the Bachelor's degree in Computer Systems Engineering at PTUK.  
-It is open for academic and educational use only.
