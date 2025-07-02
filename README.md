@@ -74,27 +74,27 @@ Students often struggle to find, organize, and access university study materials
 
 ###  Courses & Materials Page
 > After selecting the department. Courses can be saved to favorites  
-![Courses](./screenshots/courses.jpg)
+![Courses](./front-end/screenshots/courses.jpg)
 
 ###  Files Page (Selected Course)
 > Shows all files under a course with options to add notes or mark as favorite  
-![Files](./screenshots/files.jpg)
+![Files](./front-end/screenshots/files.jpg)
 
 ###  File View + Notes
 > Allows viewing a file and attaching notes to it  
-![Notes](./screenshots/NoteStudent-D.png)
+![Notes](./front-end/screenshots/NoteStudent-D.png)
 
 ###  AI Chatbot
 > The built-in AI assistant answering course-specific questions  
-![Chatbot](./screenshots/chatbot.png)
+![Chatbot](./front-end/screenshots/chatbot.png)
 
 ###  Admin Dashboard
 > Admin interface to manage files, students, and course materials  
-![Admin Dashboard](./screenshots/Admin-Dashboard.jpg)
+![Admin Dashboard](./front-end/screenshots/Admin-Dashboard.jpg)
 
 ### Super Admin Dashboard
 > Full platform control over users, admins, departments, and content  
-![Super Admin](./screenshots/Dashboard-SuperAdmin-StudentTable-D.png)
+![Super Admin](./front-end/screenshots/Dashboard-SuperAdmin-StudentTable-D.png)
 
 ---
 
